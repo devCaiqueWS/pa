@@ -294,39 +294,6 @@ Padrao recomendado:
 assets/img/nome-descritivo.jpg
 ```
 
-## Deploy
-
-O deploy esta configurado em:
-
-```text
-.github/workflows/deploy-ftp.yml
-```
-
-Fluxo atual:
-
-- o workflow roda em push para a branch `main`;
-- baixa o codigo com `actions/checkout`;
-- envia os arquivos via FTP para `public_html/`;
-- ignora `.git`, `node_modules` e `.env`.
-
-Secrets necessarios no GitHub:
-
-```text
-FTP_SERVER
-FTP_USERNAME
-FTP_PASSWORD
-```
-
-Configuracao atual do FTP:
-
-```yaml
-port: 21
-protocol: ftp
-server-dir: public_html/
-```
-
-Se a hospedagem exigir FTPS ou SFTP, sera necessario ajustar o workflow.
-
 ## Checklist antes de publicar
 
 - Revisar todos os textos comerciais.
