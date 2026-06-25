@@ -1,20 +1,21 @@
-name: Deploy via FTP
+name: Deploy via FTP (manual / legado)
 
+# O deploy principal agora é feito pela Vercel (push automático).
+# Este workflow do FTP fica apenas como legado e só roda quando acionado
+# manualmente em Actions → "Run workflow". NÃO dispara em push.
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  ftp-deploy:
-    name: Enviar arquivos para hospedagem
+  build-deploy:
+    name: Build e enviar site estático do preview-site (legado)
     runs-on: ubuntu-latest
 
     steps:
       - name: Baixar código do GitHub
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Enviar arquivos por FTP
+      - name: Enviar preview-site por FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -22,11 +23,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           protocol: ftp
-          local-dir: ./
-          server-dir: public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .env
-            
+          local-dir: ./preview-site/
+          server-dir: public_html/preview-site/

@@ -4,6 +4,54 @@ Repositorio do prototipo visual do site Pierre Alexander. O projeto e um site es
 
 > Status atual: prototipo v1. Textos, precos, integracoes, formularios reais e regras finais de publicacao ainda devem ser validados antes de producao.
 
+---
+
+## Aplicacao Next.js (reconstrucao)
+
+O protótipo de `/preview-site` foi reconstruído como uma aplicação **Next.js (App Router) + TypeScript + React 19**. O conteúdo, o layout e o CSS originais foram preservados; o cabeçalho, o rodapé, a faixa superior, o botão de WhatsApp e a faixa de CTA viraram componentes reutilizáveis e o menu mobile/formulário viraram componentes client.
+
+### Estrutura da app
+
+```text
+app/                 # rotas (App Router)
+  layout.tsx         # html/body + TopStrip, Header, Footer, FloatingBits
+  globals.css        # CSS do protótipo (+ .grid-4 e .table-like que faltavam no original)
+  page.tsx           # / (home)
+  original/ produtos/ produto-original/ fragrancias/ tratamentos/
+  maison/ kits/ consultora/ onde-comprar/ sobre/   # uma pasta page.tsx por rota
+components/          # Header (client, com dropdowns), Footer, TopStrip, FloatingBits,
+                     # CtaBand, HeroCarousel (client), ConsultoraForm (client)
+lib/nav.ts           # itens do menu / dropdowns (fonte única) + estado "ativo" por rota
+lib/site.ts          # BASE_PATH + helper asset() para prefixar imagens/vídeo
+public/assets/img/   # imagens
+public/assets/video/ # vídeo do carrossel (teaser Radicaline)
+```
+
+Mapa de rotas: `/`, `/original`, `/produtos`, `/produto-original`, `/fragrancias`, `/tratamentos`, `/maison`, `/kits`, `/consultora`, `/onde-comprar`, `/sobre` (todas servidas sob o `basePath`).
+
+### Base path `/preview-site`
+
+A app é configurada com `basePath: "/preview-site"` em [next.config.mjs](next.config.mjs), então tudo é servido sob esse caminho — ex.: `https://pierrealexander.com.br/preview-site`. Mantenha `BASE_PATH` em [lib/site.ts](lib/site.ts) sincronizado com esse valor.
+
+> Por causa do `basePath`, imagens/vídeo em `<img>`/`<video>` simples precisam ser prefixadas com o helper `asset()` (`src={asset("/assets/img/...")}`). `next/link` já recebe o prefixo automaticamente. Localmente, a home fica em `http://localhost:3000/preview-site` (a raiz `/` retorna 404 — é esperado).
+
+### Como rodar
+
+```bash
+npm install
+npm run dev      # http://localhost:3000/preview-site
+npm run build    # build de produção
+npm run start    # serve o build
+```
+
+> **Importante — Google Drive:** este repositório fica em um *Drive compartilhado* (sistema de arquivos virtual). O `npm install` **não funciona dentro do Drive** porque o `node_modules` exige milhares de escritas/junctions que o Drive não suporta (erros `EBADF`/`EPERM`/`UNKNOWN`; junctions também são bloqueadas por não ser volume NTFS). Para rodar localmente, copie o projeto para um disco local (ex.: `C:\dev\pa`, **sem** `node_modules`/`.next`) e rode o `npm install`/`npm run dev` de lá. O código no Drive continua sendo a fonte da verdade.
+
+### Deploy (Vercel)
+
+O deploy é feito pela **Vercel** (build automático a cada push na `main`). A Vercel detecta o Next.js sozinho; com o `basePath`, a app responde em `…/preview-site`. Basta apontar o domínio `pierrealexander.com.br` para o projeto na Vercel.
+
+O workflow antigo de FTP ([.github/workflows/deploy-ftp.yml](.github/workflows/deploy-ftp.yml)) foi rebaixado para execução **manual** (`workflow_dispatch`) e não dispara mais em push — fica só como legado para publicar o `preview-site/` estático, se necessário.
+
 ## Sumario
 
 - [Sobre o projeto](#sobre-o-projeto)
