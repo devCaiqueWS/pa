@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Gera site 100% estático em out/ (npm run build) para deploy via FTP.
+  output: "export",
   // App servida sob /preview-site (ex.: pierrealexander.com.br/preview-site).
   // Mantenha em sincronia com BASE_PATH em lib/site.ts.
   basePath: "/preview-site",
