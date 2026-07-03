@@ -1,33 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense } from "react";
+import { useActionState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { useSearchParams } from "next/navigation";
+import { loginAction } from "./actions";
+import type { LoginState } from "./types";
 
-export default function LoginPage() {
-  const router = useRouter();
-  const supabase = createClient();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!supabase) return;
-    setLoading(true);
-    setError(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) {
-      setError("E-mail ou senha inválidos.");
-      return;
-    }
-    const next = new URLSearchParams(window.location.search).get("next") || "/admin";
-    router.push(next);
-    router.refresh();
-  }
+function LoginForm() {
+  const params = useSearchParams();
+  const next = params.get("next") || "/painel";
+  const [state, formAction, pending] = useActionState<LoginState, FormData>(
+    loginAction,
+    {}
+  );
 
   return (
     <main className="auth">
@@ -38,42 +24,40 @@ export default function LoginPage() {
         <h1>Entrar</h1>
         <p className="auth-sub">Acesse o painel da Pierre.</p>
 
-        {!supabase ? (
-          <div className="auth-warn">
-            Supabase ainda não configurado. Defina as variáveis de ambiente
-            (veja <code>SETUP-FASE2.md</code>) para habilitar o login.
+        <form action={formAction} className="auth-form">
+          <input type="hidden" name="next" value={next} />
+          <div className="form-field full">
+            <label htmlFor="email">E-mail</label>
+            <input id="email" name="email" type="email" required autoComplete="email" />
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="form-field full">
-              <label htmlFor="email">E-mail</label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-            </div>
-            <div className="form-field full">
-              <label htmlFor="password">Senha</label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-              />
-            </div>
-            {error && <p className="auth-error">{error}</p>}
-            <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? "Entrando…" : "Entrar"}
-            </button>
-          </form>
-        )}
+          <div className="form-field full">
+            <label htmlFor="password">Senha</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              autoComplete="current-password"
+            />
+          </div>
+          {state?.error && <p className="auth-error">{state.error}</p>}
+          <button className="btn btn-primary" type="submit" disabled={pending}>
+            {pending ? "Entrando…" : "Entrar"}
+          </button>
+        </form>
+
+        <p style={{ marginTop: "1rem", textAlign: "center" }}>
+          <Link href="/recuperar-senha">Esqueci minha senha</Link>
+        </p>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // App full-stack hospedada na Vercel (site público + /admin no mesmo projeto).
-  // O modo estático (output: "export" + basePath /preview-site) foi removido na
-  // Fase 2 da migração — ver memória projeto-pa-arquitetura.
+  // Site ainda em desenvolvimento: todo o projeto é servido sob /preview-site
+  // (a raiz do domínio não expõe nada). Ao entrar em produção, remova o basePath.
+  basePath: "/preview-site",
   images: { unoptimized: true },
 };
 

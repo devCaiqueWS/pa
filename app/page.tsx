@@ -5,14 +5,16 @@ import ProductRail from "@/components/ProductRail";
 import Newsletter from "@/components/Newsletter";
 import { asset } from "@/lib/site";
 import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
+import { getTextosMap } from "@/lib/content";
 
-// Revalida do CMS a cada 60s (edições no /admin refletem no site).
+// Revalida do CMS a cada 60s (edições no /painel refletem no site).
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [destaques, novos] = await Promise.all([
+  const [destaques, novos, t] = await Promise.all([
     featuredProducts(8),
     newProducts(8),
+    getTextosMap(),
   ]);
 
   return (
@@ -24,8 +26,8 @@ export default async function HomePage() {
 
       {/* Vitrine: mais vendidos */}
       <ProductRail
-        title="Mais vendidos"
-        subtitle="Os favoritos que conquistaram o Brasil."
+        title={t.home_destaques_titulo ?? "Mais vendidos"}
+        subtitle={t.home_destaques_subtitulo ?? "Os favoritos que conquistaram o Brasil."}
         products={destaques}
         seeAllHref="/c/desodorantes"
       />
@@ -40,12 +42,14 @@ export default async function HomePage() {
             />
           </div>
           <div className="splitf-copy">
-            <span className="eyebrow">Confiança diária</span>
-            <h2>A Pierre começa no desodorante. Mas não termina nele.</h2>
+            <span className="eyebrow">{t.home_marca_eyebrow ?? "Confiança diária"}</span>
+            <h2>
+              {t.home_marca_titulo ??
+                "A Pierre começa no desodorante. Mas não termina nele."}
+            </h2>
             <p>
-              O desodorante abriu caminho porque resolve uma necessidade real. A
-              partir dessa confiança, a marca cresce para fragrâncias, cuidado
-              facial, banho, casa e muito mais.
+              {t.home_marca_texto ??
+                "O desodorante abriu caminho porque resolve uma necessidade real. A partir dessa confiança, a marca cresce para fragrâncias, cuidado facial, banho, casa e muito mais."}
             </p>
             <Link className="btn btn-primary" href="/c/desodorantes">
               Conhecer a linha
@@ -56,8 +60,8 @@ export default async function HomePage() {
 
       {/* Vitrine: novidades */}
       <ProductRail
-        title="Novidades & Lançamentos"
-        subtitle="O que está chegando na Pierre."
+        title={t.home_novidades_titulo ?? "Novidades & Lançamentos"}
+        subtitle={t.home_novidades_subtitulo ?? "O que está chegando na Pierre."}
         products={novos}
         seeAllHref="/c/cuidado-facial"
       />
@@ -66,8 +70,8 @@ export default async function HomePage() {
       <section className="section section-soft">
         <div className="container">
           <div className="sec-head">
-            <h2>Explore por categoria</h2>
-            <p>Escolha pelo momento, pelo cuidado ou pelo desejo.</p>
+            <h2>{t.home_categorias_titulo ?? "Explore por categoria"}</h2>
+            <p>{t.home_categorias_subtitulo ?? "Escolha pelo momento, pelo cuidado ou pelo desejo."}</p>
           </div>
           <div className="coll-grid">
             {categories.map((c) => (
@@ -90,11 +94,14 @@ export default async function HomePage() {
       <section className="section">
         <div className="container consultband">
           <div className="consultband-copy">
-            <span className="eyebrow">Pierre Business</span>
-            <h2>Venda Pierre. Cresça com uma marca reconhecida.</h2>
+            <span className="eyebrow">{t.home_consultora_eyebrow ?? "Pierre Business"}</span>
+            <h2>
+              {t.home_consultora_titulo ??
+                "Venda Pierre. Cresça com uma marca reconhecida."}
+            </h2>
             <p>
-              Treinamento, campanhas prontas, metas, níveis e acompanhamento.
-              Aqui a Pierre compartilha o sucesso com você.
+              {t.home_consultora_texto ??
+                "Treinamento, campanhas prontas, metas, níveis e acompanhamento. Aqui a Pierre compartilha o sucesso com você."}
             </p>
             <Link className="btn btn-light" href="/consultora">
               Quero ser consultora
