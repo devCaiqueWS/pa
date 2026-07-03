@@ -7,10 +7,20 @@ import Footer from "@/components/Footer";
 import FloatingBits from "@/components/FloatingBits";
 
 // Mostra a "chrome" do site público (top strip, header, footer, WhatsApp)
-// em todas as rotas, exceto no painel (/admin) e no login.
+// em todas as rotas, exceto nas áreas internas (painel, login, recuperação de
+// senha) — que têm layout próprio.
+const BARE_PREFIXES = [
+  "/painel",
+  "/admin",
+  "/login",
+  "/recuperar-senha",
+  "/redefinir-senha",
+  "/sem-acesso",
+];
+
 export default function ChromeGate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const bare = pathname.startsWith("/admin") || pathname.startsWith("/login");
+  const bare = BARE_PREFIXES.some((p) => pathname.startsWith(p));
 
   if (bare) return <>{children}</>;
 

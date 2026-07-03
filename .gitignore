@@ -31,3 +31,6 @@ next-env.d.ts
 # credenciais / config de servidor (não versionar)
 **/.htpasswd
 **/.htaccess
+
+# dumps de banco com dados reais (não versionar) — schema/seed pode ir
+db/backup_wordpress_pre_drop.sql
