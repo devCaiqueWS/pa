@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { upsertProduct } from "@/app/admin/produtos/actions";
+import { upsertProduct } from "@/app/_admin_desativado/produtos/actions";
 
 export type CategoryOption = {
   id: string;

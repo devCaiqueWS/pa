@@ -4,7 +4,11 @@ import CtaBand from "@/components/CtaBand";
 
 export const metadata: Metadata = { title: "Onde Comprar" };
 
-export default function OndeComprarPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function OndeComprarPage() {
+  const cms = await cmsBlocos("onde-comprar");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

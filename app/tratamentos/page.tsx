@@ -4,7 +4,11 @@ import CtaBand from "@/components/CtaBand";
 
 export const metadata: Metadata = { title: "Cuidado Facial" };
 
-export default function TratamentosPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function TratamentosPage() {
+  const cms = await cmsBlocos("tratamentos");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

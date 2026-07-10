@@ -5,7 +5,11 @@ import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Desodorante em Creme Original" };
 
-export default function ProdutoOriginalPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function ProdutoOriginalPage() {
+  const cms = await cmsBlocos("produto-original");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

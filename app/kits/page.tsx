@@ -4,7 +4,11 @@ import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Kits e Presentes" };
 
-export default function KitsPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function KitsPage() {
+  const cms = await cmsBlocos("kits");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

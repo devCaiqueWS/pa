@@ -6,7 +6,11 @@ import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Seja Consultora" };
 
-export default function ConsultoraPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function ConsultoraPage() {
+  const cms = await cmsBlocos("consultora");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

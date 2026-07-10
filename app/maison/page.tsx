@@ -5,7 +5,11 @@ import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Maison" };
 
-export default function MaisonPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function MaisonPage() {
+  const cms = await cmsBlocos("maison");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

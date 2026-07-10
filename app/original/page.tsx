@@ -5,7 +5,11 @@ import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "O Original" };
 
-export default function OriginalPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function OriginalPage() {
+  const cms = await cmsBlocos("original");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

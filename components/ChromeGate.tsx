@@ -13,7 +13,6 @@ import type { MenuItem } from "@/lib/menu";
 // senha) — que têm layout próprio.
 const BARE_PREFIXES = [
   "/painel",
-  "/admin",
   "/login",
   "/recuperar-senha",
   "/redefinir-senha",

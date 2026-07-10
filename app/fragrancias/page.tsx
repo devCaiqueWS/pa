@@ -5,7 +5,11 @@ import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Fragrâncias & Expressão" };
 
-export default function FragranciasPage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function FragranciasPage() {
+  const cms = await cmsBlocos("fragrancias");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">

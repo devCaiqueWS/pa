@@ -4,7 +4,11 @@ import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Sobre" };
 
-export default function SobrePage() {
+import { cmsBlocos } from "@/lib/cms-render";
+
+export default async function SobrePage() {
+  const cms = await cmsBlocos("sobre");
+  if (cms) return cms;
   return (
     <>
       <section className="page-hero">
