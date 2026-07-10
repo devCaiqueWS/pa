@@ -42,6 +42,33 @@ export async function criarPaginaAction(formData: FormData) {
   redirect(`/painel/paginas/${id}`);
 }
 
+// Reordena as páginas de um nível (arrastar-e-soltar).
+export async function reordenarPaginasAction(input: {
+  parentId: number | null;
+  orderedIds: number[];
+}): Promise<void> {
+  await requireRole(EDIT_ROLES, "/painel/paginas");
+  const ids = (input.orderedIds || []).map(Number).filter(Boolean);
+  for (let i = 0; i < ids.length; i++) {
+    await query("UPDATE site_paginas SET ordem = ? WHERE id = ?", [i + 1, ids[i]]);
+  }
+  revalidatePath("/painel/paginas");
+}
+
+// Define (ou remove) a página-mãe de uma página — o "aninhar".
+export async function definirPaiPaginaAction(input: {
+  id: number;
+  parentId: number | null;
+}): Promise<void> {
+  await requireRole(EDIT_ROLES, "/painel/paginas");
+  const id = Number(input.id);
+  if (!id) return;
+  const parentId = input.parentId ? Number(input.parentId) : null;
+  if (parentId === id) return; // não pode ser mãe de si mesma
+  await query("UPDATE site_paginas SET parent_id = ? WHERE id = ?", [parentId, id]);
+  revalidatePath("/painel/paginas");
+}
+
 export async function excluirPaginaAction(formData: FormData) {
   await requireRole(EDIT_ROLES, "/painel/paginas");
 

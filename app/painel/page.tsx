@@ -35,10 +35,22 @@ export default async function PainelHome() {
             Monte páginas com blocos: banner, texto, colunas, chamadas e mais.
           </p>
         </Link>
-        <Link href="/painel/textos" style={cardStyle}>
-          <h3 style={{ margin: "0 0 .25rem" }}>Textos do site</h3>
+        <Link href="/painel/cabecalho" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Cabeçalho</h3>
           <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
-            Edite títulos e chamadas exibidos no site público.
+            Logo do topo, ícone da aba (favicon) e as frases da faixa do topo.
+          </p>
+        </Link>
+        <Link href="/painel/menu" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Menu</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Monte o menu do topo arrastando itens: links, botão e busca.
+          </p>
+        </Link>
+        <Link href="/painel/rodape" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Rodapé</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Colunas de links, textos e redes sociais do rodapé do site.
           </p>
         </Link>
       </div>

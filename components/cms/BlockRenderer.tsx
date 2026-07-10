@@ -5,10 +5,25 @@
 // =============================================================================
 import Link from "next/link";
 import type { Bloco } from "@/lib/cms";
+import { asset, BASE_PATH } from "@/lib/site";
+import HeroCarousel from "@/components/HeroCarousel";
+import CategoryShortcuts from "@/components/CategoryShortcuts";
+import Newsletter from "@/components/Newsletter";
+import ProductRail from "@/components/ProductRail";
+import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
 
 const MARROM = "#3a2a1e";
 const AREIA = "#faf9f7";
 const DOURADO = "#b08d57";
+
+// Resolve o caminho de uma imagem: paths locais ("/assets/...") ganham o
+// basePath; URLs completas (http...) e paths já prefixados passam intactos.
+function img(url?: string): string | undefined {
+  if (!url) return undefined;
+  if (/^https?:\/\//i.test(url) || url.startsWith(BASE_PATH)) return url;
+  if (url.startsWith("/")) return asset(url);
+  return url;
+}
 
 function Botao({
   texto,
@@ -48,12 +63,12 @@ const container: React.CSSProperties = {
 
 function Hero({ c }: { c: Record<string, string> }) {
   const centro = c.alinhamento !== "esquerda";
-  const temImagem = !!c.imagem_url;
+  const imagem = img(c.imagem_url);
   return (
     <section
       style={{
-        background: temImagem
-          ? `linear-gradient(rgba(30,20,12,0.45), rgba(30,20,12,0.45)), url(${c.imagem_url}) center/cover`
+        background: imagem
+          ? `linear-gradient(rgba(30,20,12,0.45), rgba(30,20,12,0.45)), url(${imagem}) center/cover`
           : `linear-gradient(135deg, ${MARROM}, #6b4b32)`,
         color: "#fff",
         padding: "5rem 0",
@@ -114,7 +129,7 @@ function Destaque({ c }: { c: Record<string, string> }) {
   const Imagem = c.imagem_url ? (
     <div style={{ flex: "1 1 320px" }}>
       <img
-        src={c.imagem_url}
+        src={img(c.imagem_url)}
         alt={c.titulo || ""}
         style={{ width: "100%", borderRadius: 14, display: "block", objectFit: "cover" }}
       />
@@ -230,6 +245,50 @@ function Produtos({ c }: { c: Record<string, string> }) {
   );
 }
 
+// --- Blocos "ricos" da home: reaproveitam componentes prontos do site --------
+
+// Vitrine automática: puxa produtos do catálogo (destaques ou novidades).
+async function Vitrine({ c }: { c: Record<string, string> }) {
+  const fonte = c.fonte === "novos" ? "novos" : "destaques";
+  const produtos = fonte === "novos" ? await newProducts(8) : await featuredProducts(8);
+  return (
+    <ProductRail
+      title={c.titulo || (fonte === "novos" ? "Novidades & Lançamentos" : "Mais vendidos")}
+      subtitle={c.subtitulo || undefined}
+      products={produtos}
+      seeAllHref={c.ver_todos_link || undefined}
+    />
+  );
+}
+
+// Grade de coleções por categoria (mesma taxonomia do menu/atalhos).
+function Colecoes({ c }: { c: Record<string, string> }) {
+  return (
+    <section className="section section-soft">
+      <div className="container">
+        <div className="sec-head">
+          <h2>{c.titulo || "Explore por categoria"}</h2>
+          {c.subtitulo && <p>{c.subtitulo}</p>}
+        </div>
+        <div className="coll-grid">
+          {categories.map((cat) => (
+            <Link key={cat.slug} className="coll-card" href={`/c/${cat.slug}`}>
+              <div className="coll-media">
+                <img src={asset(cat.image)} alt={cat.name} loading="lazy" />
+              </div>
+              <div className="coll-body">
+                <h3>{cat.name}</h3>
+                <p>{cat.tagline}</p>
+                <span className="coll-link">Ver produtos →</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function RenderBloco({ bloco }: { bloco: Bloco }) {
   switch (bloco.tipo) {
     case "hero":
@@ -244,6 +303,16 @@ function RenderBloco({ bloco }: { bloco: Bloco }) {
       return <Colunas c={bloco.config} />;
     case "produtos":
       return <Produtos c={bloco.config} />;
+    case "carrossel":
+      return <HeroCarousel />;
+    case "vitrine":
+      return <Vitrine c={bloco.config} />;
+    case "atalhos":
+      return <CategoryShortcuts />;
+    case "colecoes":
+      return <Colecoes c={bloco.config} />;
+    case "newsletter":
+      return <Newsletter />;
     default:
       return null;
   }

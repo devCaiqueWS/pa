@@ -34,7 +34,9 @@ export default async function PainelLayout({
               Painel Pierre
             </Link>
             <Link href="/painel/paginas">Páginas do site</Link>
-            <Link href="/painel/textos">Textos do site</Link>
+            <Link href="/painel/cabecalho">Cabeçalho</Link>
+            <Link href="/painel/menu">Menu</Link>
+            <Link href="/painel/rodape">Rodapé</Link>
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <span style={{ color: "#666", fontSize: 13 }}>

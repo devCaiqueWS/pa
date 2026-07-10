@@ -15,7 +15,19 @@ import { query } from "@/lib/db";
 // ----------------------------------------------------------------------------
 // Tipos
 // ----------------------------------------------------------------------------
-export type BlocoTipo = "hero" | "texto" | "cta" | "colunas" | "produtos" | "destaque";
+export type BlocoTipo =
+  | "hero"
+  | "texto"
+  | "cta"
+  | "colunas"
+  | "produtos"
+  | "destaque"
+  // Blocos "ricos" da home — reaproveitam componentes prontos do site.
+  | "carrossel"
+  | "vitrine"
+  | "atalhos"
+  | "colecoes"
+  | "newsletter";
 
 export type Pagina = {
   id: number;
@@ -24,6 +36,8 @@ export type Pagina = {
   status: "rascunho" | "publicado";
   seo_titulo: string | null;
   seo_descricao: string | null;
+  ordem?: number;
+  parent_id?: number | null;
 };
 
 export type Bloco = {
@@ -172,12 +186,63 @@ export const CATALOGO: DefBloco[] = [
   },
   {
     tipo: "produtos",
-    label: "Vitrine de produtos",
-    descricao: "Exibe produtos em destaque. (Conecta ao módulo de Produtos, que entra em breve.)",
+    label: "Vitrine de produtos (placeholder)",
+    descricao: "Espaço reservado para a vitrine do futuro módulo de Produtos. Prefira o bloco 'Vitrine de produtos (automática)'.",
     campos: [
       { name: "titulo", label: "Título", tipo: "text" },
       { name: "subtitulo", label: "Subtítulo", tipo: "text" },
     ],
+  },
+  // ---------------------------------------------------------------------------
+  // Blocos "ricos" da home: reaproveitam componentes prontos (carrossel,
+  // vitrine de catálogo, atalhos, coleções, newsletter). Alguns não têm campos
+  // — servem para posicionar/ligar/desligar a seção pelo painel.
+  // ---------------------------------------------------------------------------
+  {
+    tipo: "carrossel",
+    label: "Carrossel de topo (home)",
+    descricao: "O grande carrossel animado do topo da home (banners Original e Radicaline). Sem campos por enquanto — use para posicionar e ligar/desligar a seção.",
+    campos: [],
+  },
+  {
+    tipo: "vitrine",
+    label: "Vitrine de produtos (automática)",
+    descricao: "Faixa horizontal de produtos puxada automaticamente do catálogo (mais vendidos ou novidades).",
+    campos: [
+      { name: "titulo", label: "Título", tipo: "text" },
+      { name: "subtitulo", label: "Subtítulo", tipo: "text" },
+      {
+        name: "fonte",
+        label: "Quais produtos mostrar",
+        tipo: "select",
+        opcoes: [
+          { valor: "destaques", label: "Mais vendidos (destaques)" },
+          { valor: "novos", label: "Novidades (lançamentos)" },
+        ],
+      },
+      { name: "ver_todos_link", label: "Link do 'Ver tudo' (opcional)", tipo: "text", ajuda: "Ex.: /c/desodorantes" },
+    ],
+  },
+  {
+    tipo: "atalhos",
+    label: "Atalhos de categoria (home)",
+    descricao: "A faixa de atalhos redondos por categoria (padrão Natura/Boticário). Sem campos.",
+    campos: [],
+  },
+  {
+    tipo: "colecoes",
+    label: "Coleções por categoria (grade)",
+    descricao: "Grade de cards por categoria, cada um com imagem e chamada, levando para a categoria.",
+    campos: [
+      { name: "titulo", label: "Título", tipo: "text" },
+      { name: "subtitulo", label: "Subtítulo", tipo: "text" },
+    ],
+  },
+  {
+    tipo: "newsletter",
+    label: "Cadastro de newsletter",
+    descricao: "Faixa de captura de e-mail (visual). Sem campos por enquanto.",
+    campos: [],
   },
 ];
 
@@ -211,14 +276,21 @@ function parseConfig(raw: unknown): Record<string, string> {
 
 type BlocoRow = Omit<Bloco, "config"> & { config: string | null };
 
-// Lista de páginas para o painel.
+// Lista de páginas para o painel. Resiliente: tenta com ordem/parent_id (após a
+// migração) e, se as colunas ainda não existirem, cai na consulta antiga.
 export async function getPaginas(): Promise<Pagina[]> {
   try {
     return await query<Pagina>(
-      "SELECT id, slug, titulo, status, seo_titulo, seo_descricao FROM site_paginas ORDER BY titulo"
+      "SELECT id, slug, titulo, status, seo_titulo, seo_descricao, ordem, parent_id FROM site_paginas ORDER BY ordem, titulo"
     );
   } catch {
-    return [];
+    try {
+      return await query<Pagina>(
+        "SELECT id, slug, titulo, status, seo_titulo, seo_descricao FROM site_paginas ORDER BY titulo"
+      );
+    } catch {
+      return [];
+    }
   }
 }
 

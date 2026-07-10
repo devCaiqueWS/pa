@@ -1,61 +1,76 @@
 import Link from "next/link";
-import { asset } from "@/lib/site";
-import { categories } from "@/lib/catalog";
+import { asset, BASE_PATH } from "@/lib/site";
+import type { FooterData } from "@/lib/footer";
 
-export default function Footer() {
+// Resolve o caminho do logo: URL completa passa direto; caminho local
+// ("/assets/...") ganha o basePath.
+function logoSrc(url: string): string {
+  if (!url) return asset("/assets/img/logo-pierre-white.png");
+  if (/^https?:\/\//i.test(url) || url.startsWith(BASE_PATH)) return url;
+  if (url.startsWith("/")) return asset(url);
+  return url;
+}
+
+// Link do rodapé: interno usa <Link>; externo (http...) usa <a> comum.
+function FLink({ link }: { link: FooterData["colunas"][number]["links"][number] }) {
+  const externo = /^https?:\/\//i.test(link.href);
+  if (externo) {
+    return (
+      <a href={link.href} target="_blank" rel="noopener noreferrer">
+        {link.label}
+      </a>
+    );
+  }
+  return <Link href={link.href || "#"}>{link.label}</Link>;
+}
+
+export default function Footer({ data }: { data: FooterData }) {
+  const ano = new Date().getFullYear();
+  const rodape = (data.rodapeTexto || "").replace(/\{ano\}/g, String(ano));
+  const cols = data.colunas ?? [];
+
   return (
     <footer className="ftr">
-      <div className="container ftr-grid">
+      <div
+        className="container ftr-grid"
+        style={{ ["--ftr-cols" as string]: cols.length } as React.CSSProperties}
+      >
         <div className="ftr-brand-col">
           <img
-            src={asset("/assets/img/logo-pierre-white.png")}
+            src={logoSrc(data.logoUrl)}
             alt="Pierre Alexander"
             className="ftr-logo"
           />
-          <p>
-            Marca brasileira com charme francês: perfumaria, cuidado facial, corpo,
-            banho e casa. Sofisticação e confiança de geração em geração.
-          </p>
-          <p className="ftr-sac">Atendimento Pierre · Seg a sex, 8h às 18h</p>
+          {data.marcaTexto && <p>{data.marcaTexto}</p>}
+          {data.sacTexto && <p className="ftr-sac">{data.sacTexto}</p>}
         </div>
 
-        <div className="ftr-col">
-          <h4>Produtos</h4>
-          {categories.map((c) => (
-            <Link key={c.slug} href={`/c/${c.slug}`}>
-              {c.name}
-            </Link>
-          ))}
-        </div>
-
-        <div className="ftr-col">
-          <h4>A Marca</h4>
-          <Link href="/sobre">Sobre a Pierre</Link>
-          <Link href="/onde-comprar">Onde comprar</Link>
-          <Link href="/sobre#sustentabilidade">Sustentabilidade</Link>
-        </div>
-
-        <div className="ftr-col">
-          <h4>Consultoras</h4>
-          <Link href="/consultora">Seja consultora</Link>
-          <Link href="/consultora#universidade">Universidade Pierre</Link>
-          <Link href="/consultora#conquistas">Conquistas</Link>
-        </div>
-
-        <div className="ftr-col">
-          <h4>Atendimento</h4>
-          <Link href="/onde-comprar">Fale conosco</Link>
-          <Link href="/onde-comprar">Perguntas frequentes</Link>
-          <Link href="/onde-comprar">WhatsApp</Link>
-        </div>
+        {cols.map((col, i) => (
+          <div className="ftr-col" key={i}>
+            {col.titulo && <h4>{col.titulo}</h4>}
+            {col.links.map((l, j) => (
+              <FLink key={j} link={l} />
+            ))}
+          </div>
+        ))}
       </div>
 
       <div className="container ftr-bottom">
-        <span>Pierre Alexander · {new Date().getFullYear()}</span>
+        <span>{rodape}</span>
         <div className="ftr-social" aria-label="Redes sociais">
-          <a href="#" aria-label="Instagram">Instagram</a>
-          <a href="#" aria-label="Facebook">Facebook</a>
-          <a href="#" aria-label="YouTube">YouTube</a>
+          {data.social.map((s, i) => {
+            const externo = /^https?:\/\//i.test(s.href);
+            return (
+              <a
+                key={i}
+                href={s.href || "#"}
+                aria-label={s.label}
+                {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {s.label}
+              </a>
+            );
+          })}
         </div>
       </div>
     </footer>

@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { requireRole } from "@/lib/guard";
 import { getPaginas } from "@/lib/cms";
-import { criarPaginaAction, excluirPaginaAction, duplicarPaginaAction } from "./actions";
+import { criarPaginaAction } from "./actions";
+import PaginaLista, { type PaginaNode } from "./PaginaLista";
 
 export const dynamic = "force-dynamic";
 
@@ -18,12 +18,26 @@ export default async function PaginasPage() {
   await requireRole(EDIT_ROLES, "/painel/paginas");
   const paginas = await getPaginas();
 
+  // Monta a árvore (2 níveis): páginas principais + suas páginas-filhas.
+  const tops = paginas.filter((p) => !p.parent_id);
+  const arvore: PaginaNode[] = tops.map((t) => ({
+    id: t.id,
+    titulo: t.titulo,
+    slug: t.slug,
+    status: t.status,
+    children: paginas
+      .filter((c) => c.parent_id === t.id)
+      .map((c) => ({ id: c.id, titulo: c.titulo, slug: c.slug, status: c.status })),
+  }));
+  const opcoesPai = tops.map((t) => ({ id: t.id, titulo: t.titulo }));
+  const chave = paginas.map((p) => `${p.id}.${p.parent_id ?? 0}.${p.status}`).sort().join("|");
+
   return (
     <>
       <h1 style={{ marginTop: 0 }}>Páginas do site</h1>
       <p style={{ color: "#666" }}>
-        Cada página é montada por blocos (banner, texto, colunas, chamada...). Crie uma
-        página e depois adicione os blocos.
+        Cada página é montada por blocos. Arraste pela alça <strong>⠿</strong> para reordenar, e use
+        “Dentro de” para aninhar uma página sob outra.
       </p>
 
       {/* Criar nova página */}
@@ -57,61 +71,7 @@ export default async function PaginasPage() {
         </button>
       </form>
 
-      {paginas.length === 0 ? (
-        <div style={{ ...card, background: "#fff8e1", border: "1px solid #ffe082" }}>
-          Nenhuma página ainda. Se acabou de configurar o banco, rode{" "}
-          <code>db/site_cms.sql</code> e crie a primeira página acima.
-        </div>
-      ) : (
-        <div style={{ display: "grid", gap: ".75rem" }}>
-          {paginas.map((p) => (
-            <div key={p.id} style={{ ...card, display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
-              <div>
-                <Link href={`/painel/paginas/${p.id}`} style={{ fontWeight: 600, fontSize: 16 }}>
-                  {p.titulo}
-                </Link>
-                <div style={{ color: "#888", fontSize: 13, marginTop: 2 }}>
-                  /pagina/{p.slug}
-                  <span
-                    style={{
-                      marginLeft: 8,
-                      padding: "1px 8px",
-                      borderRadius: 999,
-                      fontSize: 12,
-                      background: p.status === "publicado" ? "#e6f4ea" : "#fff0e0",
-                      color: p.status === "publicado" ? "#1e7e34" : "#a15c00",
-                    }}
-                  >
-                    {p.status}
-                  </span>
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: ".5rem", alignItems: "center" }}>
-                {p.status === "publicado" && (
-                  <Link className="btn" href={`/pagina/${p.slug}`} target="_blank">
-                    Ver
-                  </Link>
-                )}
-                <Link className="btn" href={`/painel/paginas/${p.id}`}>
-                  Editar
-                </Link>
-                <form action={duplicarPaginaAction}>
-                  <input type="hidden" name="id" value={p.id} />
-                  <button className="btn" type="submit" title="Cria uma cópia (rascunho) com os mesmos blocos">
-                    Duplicar
-                  </button>
-                </form>
-                <form action={excluirPaginaAction}>
-                  <input type="hidden" name="id" value={p.id} />
-                  <button className="btn" type="submit" style={{ color: "#b00020" }}>
-                    Excluir
-                  </button>
-                </form>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <PaginaLista key={chave} arvore={arvore} opcoesPai={opcoesPai} />
     </>
   );
 }

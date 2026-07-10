@@ -121,6 +121,22 @@ export async function moverBlocoAction(formData: FormData) {
   redirect(`/painel/paginas/${paginaId}?bloco=${blocoId}`);
 }
 
+// --- Reordenar blocos (arrastar-e-soltar) ------------------------------------
+export async function reordenarBlocosAction(input: {
+  paginaId: number;
+  orderedIds: number[];
+}): Promise<void> {
+  await requireRole(EDIT_ROLES, "/painel/paginas");
+  const paginaId = Number(input.paginaId);
+  const ids = (input.orderedIds || []).map(Number).filter(Boolean);
+  if (!paginaId || !ids.length) return;
+
+  for (let i = 0; i < ids.length; i++) {
+    await query("UPDATE site_blocos SET ordem = ? WHERE id = ? AND pagina_id = ?", [i + 1, ids[i], paginaId]);
+  }
+  revalidatePath(`/painel/paginas/${paginaId}`);
+}
+
 // --- Mostrar/ocultar bloco no site -------------------------------------------
 export async function alternarBlocoAction(formData: FormData) {
   await requireRole(EDIT_ROLES, "/painel/paginas");

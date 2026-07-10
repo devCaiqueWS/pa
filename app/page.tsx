@@ -3,14 +3,30 @@ import HeroCarousel from "@/components/HeroCarousel";
 import CategoryShortcuts from "@/components/CategoryShortcuts";
 import ProductRail from "@/components/ProductRail";
 import Newsletter from "@/components/Newsletter";
+import BlockRenderer from "@/components/cms/BlockRenderer";
 import { asset } from "@/lib/site";
 import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
 import { getTextosMap } from "@/lib/content";
+import { getPaginaPublicada, getBlocos } from "@/lib/cms";
 
 // Revalida do CMS a cada 60s (edições no /painel refletem no site).
 export const revalidate = 60;
 
+// A home é montada por blocos do CMS (página com slug "home"). Se essa página
+// ainda não existir/estiver vazia, cai na home clássica abaixo — assim nada
+// quebra enquanto o conteúdo não é semeado no banco.
 export default async function HomePage() {
+  const pagina = await getPaginaPublicada("home");
+  if (pagina) {
+    const blocos = await getBlocos(pagina.id, true);
+    if (blocos.length > 0) {
+      return <BlockRenderer blocos={blocos} />;
+    }
+  }
+  return <HomeClassica />;
+}
+
+async function HomeClassica() {
   const [destaques, novos, t] = await Promise.all([
     featuredProducts(8),
     newProducts(8),

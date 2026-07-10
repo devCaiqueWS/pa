@@ -5,6 +5,8 @@ import TopStrip from "@/components/TopStrip";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingBits from "@/components/FloatingBits";
+import type { FooterData } from "@/lib/footer";
+import type { MenuItem } from "@/lib/menu";
 
 // Mostra a "chrome" do site público (top strip, header, footer, WhatsApp)
 // em todas as rotas, exceto nas áreas internas (painel, login, recuperação de
@@ -18,7 +20,19 @@ const BARE_PREFIXES = [
   "/sem-acesso",
 ];
 
-export default function ChromeGate({ children }: { children: React.ReactNode }) {
+export default function ChromeGate({
+  children,
+  footer,
+  headerLogo,
+  menu,
+  topStrip,
+}: {
+  children: React.ReactNode;
+  footer: FooterData;
+  headerLogo: string;
+  menu: MenuItem[];
+  topStrip: string[];
+}) {
   const pathname = usePathname();
   const bare = BARE_PREFIXES.some((p) => pathname.startsWith(p));
 
@@ -26,10 +40,10 @@ export default function ChromeGate({ children }: { children: React.ReactNode }) 
 
   return (
     <>
-      <TopStrip />
-      <Header />
+      <TopStrip mensagens={topStrip} />
+      <Header logoUrl={headerLogo} menu={menu} />
       {children}
-      <Footer />
+      <Footer data={footer} />
       <FloatingBits />
     </>
   );

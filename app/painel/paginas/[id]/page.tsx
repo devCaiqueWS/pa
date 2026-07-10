@@ -2,14 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/guard";
 import { getPagina, getBlocos, CATALOGO, defDoTipo, type Campo, type Bloco } from "@/lib/cms";
-import {
-  salvarPaginaAction,
-  adicionarBlocoAction,
-  salvarBlocoAction,
-  moverBlocoAction,
-  alternarBlocoAction,
-  excluirBlocoAction,
-} from "./actions";
+import { salvarPaginaAction, salvarBlocoAction } from "./actions";
+import BlocoLista, { type BlocoItem } from "./BlocoLista";
 
 export const dynamic = "force-dynamic";
 
@@ -176,60 +170,20 @@ export default async function EditorPaginaPage({ params, searchParams }: Props) 
 
       {/* Editor: lista à esquerda, edição à direita */}
       <div style={{ display: "grid", gridTemplateColumns: "minmax(240px, 300px) 1fr", gap: "1.25rem", marginTop: "1.25rem", alignItems: "start" }}>
-        {/* ESQUERDA — lista de blocos + adicionar */}
-        <div>
-          <div style={{ ...card, padding: ".5rem" }}>
-            {blocos.length === 0 ? (
-              <p style={{ color: "#888", fontSize: 14, padding: ".5rem" }}>Nenhum bloco ainda. Adicione o primeiro abaixo.</p>
-            ) : (
-              blocos.map((b, idx) => {
-                const ativo = b.id === selecionadoId;
-                return (
-                  <div
-                    key={b.id}
-                    style={{
-                      border: ativo ? "2px solid #b08d57" : "1px solid #eee",
-                      borderRadius: 8,
-                      padding: ".5rem .6rem",
-                      marginBottom: ".4rem",
-                      background: ativo ? "#fbf7f0" : "#fff",
-                    }}
-                  >
-                    <Link href={`/painel/paginas/${paginaId}?bloco=${b.id}`} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
-                      <div style={{ fontWeight: 600, fontSize: 14 }}>
-                        {b.nome || defDoTipo(b.tipo)?.label}
-                        {!b.ativo && <span style={{ color: "#a15c00", fontSize: 11, marginLeft: 6 }}>(oculto)</span>}
-                      </div>
-                      <div style={{ fontSize: 12, color: "#999" }}>{defDoTipo(b.tipo)?.label ?? b.tipo}</div>
-                    </Link>
-                    <div style={{ display: "flex", gap: 4, marginTop: 6 }}>
-                      <MiniForm action={moverBlocoAction} paginaId={paginaId} blocoId={b.id} extra={{ dir: "cima" }} label="↑" disabled={idx === 0} />
-                      <MiniForm action={moverBlocoAction} paginaId={paginaId} blocoId={b.id} extra={{ dir: "baixo" }} label="↓" disabled={idx === blocos.length - 1} />
-                      <MiniForm action={alternarBlocoAction} paginaId={paginaId} blocoId={b.id} label={b.ativo ? "Ocultar" : "Mostrar"} />
-                      <MiniForm action={excluirBlocoAction} paginaId={paginaId} blocoId={b.id} label="Excluir" danger />
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-
-          {/* Adicionar bloco */}
-          <form action={adicionarBlocoAction} style={{ ...card, marginTop: ".75rem" }}>
-            <input type="hidden" name="paginaId" value={paginaId} />
-            <label style={labelStyle}>Adicionar bloco</label>
-            <select name="tipo" defaultValue="hero" style={{ ...inputStyle, marginBottom: ".5rem" }}>
-              {CATALOGO.map((d) => (
-                <option key={d.tipo} value={d.tipo}>
-                  {d.label}
-                </option>
-              ))}
-            </select>
-            <button className="btn btn-primary" type="submit" style={{ width: "100%" }}>
-              + Adicionar
-            </button>
-          </form>
-        </div>
+        {/* ESQUERDA — lista de blocos (arrastar-e-soltar) + adicionar */}
+        <BlocoLista
+          key={blocos.map((b) => `${b.id}:${b.ativo}`).join("-")}
+          paginaId={paginaId}
+          selecionadoId={selecionadoId}
+          itens={blocos.map<BlocoItem>((b) => ({
+            id: b.id,
+            tipo: b.tipo,
+            nome: b.nome,
+            ativo: b.ativo,
+            tipoLabel: defDoTipo(b.tipo)?.label ?? b.tipo,
+          }))}
+          tipos={CATALOGO.map((d) => ({ tipo: d.tipo, label: d.label }))}
+        />
 
         {/* DIREITA — edição do bloco selecionado */}
         <div>
@@ -241,49 +195,5 @@ export default async function EditorPaginaPage({ params, searchParams }: Props) 
         </div>
       </div>
     </>
-  );
-}
-
-// Botãozinho de ação (mover/ocultar/excluir) — cada um é um form próprio.
-function MiniForm({
-  action,
-  paginaId,
-  blocoId,
-  label,
-  extra,
-  danger,
-  disabled,
-}: {
-  action: (fd: FormData) => void;
-  paginaId: number;
-  blocoId: number;
-  label: string;
-  extra?: Record<string, string>;
-  danger?: boolean;
-  disabled?: boolean;
-}) {
-  return (
-    <form action={action} style={{ display: "inline" }}>
-      <input type="hidden" name="paginaId" value={paginaId} />
-      <input type="hidden" name="blocoId" value={blocoId} />
-      {extra &&
-        Object.entries(extra).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
-      <button
-        type="submit"
-        disabled={disabled}
-        style={{
-          fontSize: 11,
-          padding: "2px 6px",
-          borderRadius: 5,
-          border: "1px solid #ddd",
-          background: "#fff",
-          cursor: disabled ? "default" : "pointer",
-          color: danger ? "#b00020" : "#555",
-          opacity: disabled ? 0.4 : 1,
-        }}
-      >
-        {label}
-      </button>
-    </form>
   );
 }

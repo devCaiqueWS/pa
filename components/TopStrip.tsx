@@ -1,14 +1,9 @@
-const MESSAGES = [
-  "Encontre uma consultora Pierre perto de você",
-  "Beleza que funciona. Há décadas.",
-  "Novas fragrâncias chegando — fique por dentro",
-];
-
-export default function TopStrip() {
+export default function TopStrip({ mensagens }: { mensagens: string[] }) {
+  if (!mensagens || mensagens.length === 0) return null;
   return (
     <div className="topstrip">
       <div className="container topstrip-inner">
-        {MESSAGES.map((m, i) => (
+        {mensagens.map((m, i) => (
           <span key={i} className={i === 0 ? "" : "topstrip-extra"}>
             {m}
           </span>
