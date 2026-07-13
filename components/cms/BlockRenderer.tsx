@@ -10,7 +10,8 @@ import HeroCarousel from "@/components/HeroCarousel";
 import CategoryShortcuts from "@/components/CategoryShortcuts";
 import Newsletter from "@/components/Newsletter";
 import ProductRail from "@/components/ProductRail";
-import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
+import { featuredProducts, newProducts } from "@/lib/catalog-source";
+import { getCategorias } from "@/lib/categorias";
 
 const MARROM = "#3a2a1e";
 const AREIA = "#faf9f7";
@@ -262,7 +263,8 @@ async function Vitrine({ c }: { c: Record<string, string> }) {
 }
 
 // Grade de coleções por categoria (mesma taxonomia do menu/atalhos).
-function Colecoes({ c }: { c: Record<string, string> }) {
+async function Colecoes({ c }: { c: Record<string, string> }) {
+  const categorias = await getCategorias();
   return (
     <section className="section section-soft">
       <div className="container">
@@ -271,7 +273,7 @@ function Colecoes({ c }: { c: Record<string, string> }) {
           {c.subtitulo && <p>{c.subtitulo}</p>}
         </div>
         <div className="coll-grid">
-          {categories.map((cat) => (
+          {categorias.map((cat) => (
             <Link key={cat.slug} className="coll-card" href={`/c/${cat.slug}`}>
               <div className="coll-media">
                 <img src={asset(cat.image)} alt={cat.name} loading="lazy" />

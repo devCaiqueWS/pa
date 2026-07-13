@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
+import { urlPublicaDaPagina } from "@/lib/site";
 import { reordenarPaginasAction, definirPaiPaginaAction, duplicarPaginaAction, excluirPaginaAction } from "./actions";
 
 export type PaginaItem = { id: number; titulo: string; slug: string; status: string };
@@ -128,7 +129,7 @@ export default function PaginaLista({
 
         <div style={{ display: "flex", gap: ".4rem", alignItems: "center" }}>
           {p.status === "publicado" && (
-            <Link className="btn" href={`/pagina/${p.slug}`} draggable={false} target="_blank">
+            <Link className="btn" href={urlPublicaDaPagina(p.slug)} draggable={false} target="_blank">
               Ver
             </Link>
           )}

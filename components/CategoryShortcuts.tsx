@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { asset } from "@/lib/site";
-import { categories } from "@/lib/catalog";
+import { getCategorias } from "@/lib/categorias";
 
 // Faixa de atalhos de categoria (tiles redondos), padrão Natura/Boticário.
-export default function CategoryShortcuts() {
+export default async function CategoryShortcuts() {
+  const categorias = await getCategorias();
   return (
     <section className="section section-tight">
       <div className="container">
         <div className="catshort">
-          {categories.map((c) => (
+          {categorias.map((c) => (
             <Link key={c.slug} className="catshort-item" href={`/c/${c.slug}`}>
               <span className="catshort-thumb">
                 <img src={asset(c.image)} alt={c.name} loading="lazy" />

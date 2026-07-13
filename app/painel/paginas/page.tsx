@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireRole } from "@/lib/guard";
 import { getPaginas } from "@/lib/cms";
 import { criarPaginaAction } from "./actions";
@@ -38,6 +39,22 @@ export default async function PaginasPage() {
       <p style={{ color: "#666" }}>
         Cada página é montada por blocos. Arraste pela alça <strong>⠿</strong> para reordenar, e use
         “Dentro de” para aninhar uma página sob outra.
+      </p>
+      <p
+        style={{
+          background: "#f4f7fb",
+          border: "1px solid #dce6f2",
+          borderRadius: 8,
+          padding: ".6rem .8rem",
+          fontSize: 13,
+          color: "#31506e",
+          margin: "0 0 1.25rem",
+        }}
+      >
+        As páginas aqui já aparecem no site com seu <strong>endereço limpo</strong> quando ele existe (ex.: a página{" "}
+        <code>sobre</code> aparece em <code>/sobre</code>); senão, em <code>/pagina/…</code>. As{" "}
+        <strong>Categorias</strong> (<code>/c/…</code>) vêm do catálogo. Veja tudo junto no{" "}
+        <Link href="/painel/mapa">Mapa do site</Link>.
       </p>
 
       {/* Criar nova página */}

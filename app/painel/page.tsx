@@ -41,6 +41,12 @@ export default async function PainelHome() {
             Monte o menu do topo arrastando itens: links, botão e busca.
           </p>
         </Link>
+        <Link href="/painel/categorias" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Categorias</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Categorias e subcategorias do catálogo: nome, capa, frase e ordem.
+          </p>
+        </Link>
         <Link href="/painel/paginas" style={cardStyle}>
           <h3 style={{ margin: "0 0 .25rem" }}>Páginas do site</h3>
           <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
@@ -51,6 +57,12 @@ export default async function PainelHome() {
           <h3 style={{ margin: "0 0 .25rem" }}>Rodapé</h3>
           <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
             Colunas de links, textos e redes sociais do rodapé do site.
+          </p>
+        </Link>
+        <Link href="/painel/mapa" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Mapa do site</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Visão geral de todas as páginas: conteúdo, categorias e rotas fixas.
           </p>
         </Link>
       </div>
