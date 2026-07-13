@@ -35,6 +35,8 @@ export type Product = {
   family?: string;
   shortDesc: string;
   image: string;
+  /** Preço (do ERP). Opcional — nem toda fonte tem. */
+  preco?: number;
   /** Selos exibidos no card (ex.: "Mais vendido", "Novo", "Em breve"). */
   badges?: string[];
   /** Aparece em vitrines de destaque na home. */

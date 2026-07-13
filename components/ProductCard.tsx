@@ -15,12 +15,21 @@ export default function ProductCard({ product }: { product: Product }) {
             ))}
           </div>
         )}
-        <img src={imagemSrc(product.image)} alt={product.name} loading="lazy" />
+        {product.image ? (
+          <img src={imagemSrc(product.image)} alt={product.name} loading="lazy" />
+        ) : (
+          <div className="pcard-noimg" aria-hidden="true">
+            <span>Pierre</span>
+          </div>
+        )}
       </div>
       <div className="pcard-body">
         {product.line && <span className="pcard-eyebrow">{product.line}</span>}
         <h3 className="pcard-name">{product.name}</h3>
         <p className="pcard-desc">{product.shortDesc}</p>
+        {product.preco != null && (
+          <span className="pcard-price">{product.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+        )}
         <span className="pcard-cta">Consulte uma consultora →</span>
       </div>
     </Link>

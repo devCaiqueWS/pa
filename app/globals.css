@@ -536,3 +536,25 @@ code{background:var(--soft);padding:2px 6px;border-radius:5px;font-size:.9em}
 .cms-check input{width:auto;margin:0}
 .cms-form-actions{display:flex;gap:12px;margin-top:24px}
 @media (max-width:680px){.cms-form .form-grid{grid-template-columns:1fr}}
+
+/* Produto: placeholder sem foto e preço no card */
+.pcard-noimg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background: #f4f1ec;
+  color: #cbb48f;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.pcard-price {
+  display: block;
+  font-weight: 600;
+  color: #3a2a1e;
+  margin: 0.15rem 0 0.35rem;
+}

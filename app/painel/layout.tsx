@@ -36,6 +36,7 @@ export default async function PainelLayout({
             <Link href="/painel/cabecalho">Cabeçalho</Link>
             <Link href="/painel/menu">Menu</Link>
             <Link href="/painel/categorias">Categorias</Link>
+            <Link href="/painel/produtos">Produtos</Link>
             <Link href="/painel/paginas">Páginas do site</Link>
             <Link href="/painel/rodape">Rodapé</Link>
             <Link href="/painel/mapa">Mapa</Link>

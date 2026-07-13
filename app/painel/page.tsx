@@ -47,6 +47,12 @@ export default async function PainelHome() {
             Categorias e subcategorias do catálogo: nome, capa, frase e ordem.
           </p>
         </Link>
+        <Link href="/painel/produtos" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Produtos</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Curadoria dos produtos do ERP: categoria-de-vitrine, foto, destaque e visibilidade.
+          </p>
+        </Link>
         <Link href="/painel/paginas" style={cardStyle}>
           <h3 style={{ margin: "0 0 .25rem" }}>Páginas do site</h3>
           <p style={{ margin: 0, color: "#666", fontSize: 14 }}>

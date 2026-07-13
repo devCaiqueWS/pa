@@ -5,7 +5,8 @@ import ProductRail from "@/components/ProductRail";
 import Newsletter from "@/components/Newsletter";
 import BlockRenderer from "@/components/cms/BlockRenderer";
 import { asset, imagemSrc } from "@/lib/site";
-import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
+import { featuredProducts, newProducts } from "@/lib/catalog-source";
+import { getCategorias } from "@/lib/categorias";
 import { getTextosMap } from "@/lib/content";
 import { getPaginaPublicada, getBlocos } from "@/lib/cms";
 
@@ -27,10 +28,11 @@ export default async function HomePage() {
 }
 
 async function HomeClassica() {
-  const [destaques, novos, t] = await Promise.all([
+  const [destaques, novos, t, categorias] = await Promise.all([
     featuredProducts(8),
     newProducts(8),
     getTextosMap(),
+    getCategorias(),
   ]);
 
   return (
@@ -90,7 +92,7 @@ async function HomeClassica() {
             <p>{t.home_categorias_subtitulo ?? "Escolha pelo momento, pelo cuidado ou pelo desejo."}</p>
           </div>
           <div className="coll-grid">
-            {categories.map((c) => (
+            {categorias.map((c) => (
               <Link key={c.slug} className="coll-card" href={`/c/${c.slug}`}>
                 <div className="coll-media">
                   <img src={imagemSrc(c.image)} alt={c.name} loading="lazy" />
