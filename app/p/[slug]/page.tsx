@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ProductRail from "@/components/ProductRail";
-import { asset } from "@/lib/site";
+import { imagemSrc } from "@/lib/site";
 import { getProduct, relatedProducts } from "@/lib/catalog-source";
 import { getCategoriaBySlug } from "@/lib/categorias";
 import { products } from "@/lib/catalog";
@@ -59,7 +59,7 @@ export default async function ProductPage({
                   ))}
                 </div>
               )}
-              <img src={asset(product.image)} alt={product.name} />
+              <img src={imagemSrc(product.image)} alt={product.name} />
             </div>
 
             <div className="pdp-info">

@@ -4,7 +4,7 @@ import CategoryShortcuts from "@/components/CategoryShortcuts";
 import ProductRail from "@/components/ProductRail";
 import Newsletter from "@/components/Newsletter";
 import BlockRenderer from "@/components/cms/BlockRenderer";
-import { asset } from "@/lib/site";
+import { asset, imagemSrc } from "@/lib/site";
 import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
 import { getTextosMap } from "@/lib/content";
 import { getPaginaPublicada, getBlocos } from "@/lib/cms";
@@ -93,7 +93,7 @@ async function HomeClassica() {
             {categories.map((c) => (
               <Link key={c.slug} className="coll-card" href={`/c/${c.slug}`}>
                 <div className="coll-media">
-                  <img src={asset(c.image)} alt={c.name} loading="lazy" />
+                  <img src={imagemSrc(c.image)} alt={c.name} loading="lazy" />
                 </div>
                 <div className="coll-body">
                   <h3>{c.name}</h3>

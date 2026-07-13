@@ -5,7 +5,7 @@
 // =============================================================================
 import Link from "next/link";
 import type { Bloco } from "@/lib/cms";
-import { asset, BASE_PATH } from "@/lib/site";
+import { asset, BASE_PATH, imagemSrc } from "@/lib/site";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryShortcuts from "@/components/CategoryShortcuts";
 import Newsletter from "@/components/Newsletter";
@@ -276,7 +276,7 @@ async function Colecoes({ c }: { c: Record<string, string> }) {
           {categorias.map((cat) => (
             <Link key={cat.slug} className="coll-card" href={`/c/${cat.slug}`}>
               <div className="coll-media">
-                <img src={asset(cat.image)} alt={cat.name} loading="lazy" />
+                <img src={imagemSrc(cat.image)} alt={cat.name} loading="lazy" />
               </div>
               <div className="coll-body">
                 <h3>{cat.name}</h3>

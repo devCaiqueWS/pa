@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { asset } from "@/lib/site";
+import { imagemSrc } from "@/lib/site";
 import type { Product } from "@/lib/catalog";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -15,7 +15,7 @@ export default function ProductCard({ product }: { product: Product }) {
             ))}
           </div>
         )}
-        <img src={asset(product.image)} alt={product.name} loading="lazy" />
+        <img src={imagemSrc(product.image)} alt={product.name} loading="lazy" />
       </div>
       <div className="pcard-body">
         {product.line && <span className="pcard-eyebrow">{product.line}</span>}
