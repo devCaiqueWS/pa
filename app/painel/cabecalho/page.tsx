@@ -34,6 +34,7 @@ export default async function CabecalhoPage() {
               label="Logo do topo"
               defaultValue={cfg.headerLogoUrl}
               formato="wide"
+              preset="logo"
               ajuda={
                 <>
                   Caminho de imagem do site (ex.: <strong>/assets/img/logo-pierre.png</strong>) ou URL completa (https://…).
@@ -47,6 +48,7 @@ export default async function CabecalhoPage() {
               label="Ícone da aba (favicon)"
               defaultValue={cfg.faviconUrl}
               formato="square"
+              preset="favicon"
               ajuda="Imagem pequena que aparece na aba do navegador. Ideal um PNG quadrado."
             />
           </div>

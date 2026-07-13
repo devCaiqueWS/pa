@@ -161,6 +161,7 @@ export default function CategoriasEditor({ initial }: { initial: Category[] }) {
             <div style={{ marginBottom: ".75rem" }}>
               <ImagemCampo
                 label="Capa da categoria"
+                preset="capa-categoria"
                 value={c.image}
                 onChange={(v) => patchCat(c.id, "image", v)}
                 ajuda={

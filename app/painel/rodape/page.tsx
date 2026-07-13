@@ -46,6 +46,7 @@ export default async function RodapePage() {
               label="Logo do rodapé"
               defaultValue={f.logoUrl}
               formato="wide"
+              preset="logo-rodape"
               ajuda={
                 <>
                   Caminho de uma imagem do site (ex.: <strong>/assets/img/logo-pierre-white.png</strong>) ou uma URL completa (https://…). O upload direto entra numa próxima etapa.
