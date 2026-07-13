@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireRole } from "@/lib/guard";
 import { getSiteConfig } from "@/lib/site-config";
 import { salvarCabecalhoAction } from "./actions";
+import FaixaTopoEditor from "./FaixaTopoEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -53,10 +54,17 @@ export default async function CabecalhoPage() {
         {/* Faixa do topo */}
         <div style={{ ...card, marginBottom: "1rem" }}>
           <h2 style={{ margin: "0 0 .5rem", fontSize: 18 }}>Faixa do topo</h2>
-          <p style={{ ...ajuda, margin: "0 0 .5rem", fontSize: 13 }}>
-            As frases que passam na faixa fininha acima do cabeçalho. Uma frase por linha.
+          <p style={{ ...ajuda, margin: "0 0 .75rem", fontSize: 13, lineHeight: 1.6 }}>
+            As frases que passam na faixa fininha acima do cabeçalho. Escreva a <strong>frase</strong> e,
+            se quiser que ela seja clicável, o <strong>link</strong>. Dicas:
+            <br />• <strong>Negrito:</strong> coloque <code>**</code> antes e depois do trecho. Ex.:{" "}
+            <code>Fale no **WhatsApp**</code>.
+            <br />• <strong>Ícone do WhatsApp:</strong> escreva <code>:whatsapp:</code> onde quiser o ícone.
+            <br />• <strong>Link do WhatsApp:</strong> no link use <code>https://wa.me/55SEUNUMERO</code> (só números).
+            <br />• <strong>Página do site:</strong> no link use <code>/onde-comprar</code>, <code>/consultora</code> etc.
+            <br />• <strong>Ordem:</strong> arraste pela alça <strong>⠿</strong> para reordenar as frases.
           </p>
-          <textarea name="top_strip" defaultValue={cfg.topStrip.join("\n")} rows={4} style={inputStyle} />
+          <FaixaTopoEditor initial={cfg.topStrip} />
         </div>
 
         <div style={{ textAlign: "right" }}>

@@ -10,10 +10,15 @@ const EDIT_ROLES = ["admin", "admin_ti"];
 export async function salvarCabecalhoAction(formData: FormData) {
   await requireRole(EDIT_ROLES, "/painel/cabecalho");
 
-  const topStrip = String(formData.get("top_strip") || "")
-    .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  // Faixa do topo: pares de campos faixa{i}_texto / faixa{i}_link (na ordem
+  // em que o editor arrastável enviou).
+  const topStrip: { texto: string; link: string }[] = [];
+  for (let i = 1; i <= 30; i++) {
+    const texto = String(formData.get(`faixa${i}_texto`) || "").trim();
+    if (!texto) continue;
+    const link = String(formData.get(`faixa${i}_link`) || "").trim();
+    topStrip.push({ texto, link });
+  }
 
   const data: SiteConfig = {
     headerLogoUrl: String(formData.get("header_logo_url") || "").trim(),

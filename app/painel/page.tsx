@@ -29,12 +29,6 @@ export default async function PainelHome() {
           marginTop: "1rem",
         }}
       >
-        <Link href="/painel/paginas" style={cardStyle}>
-          <h3 style={{ margin: "0 0 .25rem" }}>Páginas do site</h3>
-          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
-            Monte páginas com blocos: banner, texto, colunas, chamadas e mais.
-          </p>
-        </Link>
         <Link href="/painel/cabecalho" style={cardStyle}>
           <h3 style={{ margin: "0 0 .25rem" }}>Cabeçalho</h3>
           <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
@@ -45,6 +39,12 @@ export default async function PainelHome() {
           <h3 style={{ margin: "0 0 .25rem" }}>Menu</h3>
           <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
             Monte o menu do topo arrastando itens: links, botão e busca.
+          </p>
+        </Link>
+        <Link href="/painel/paginas" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Páginas do site</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Monte páginas com blocos: banner, texto, colunas, chamadas e mais.
           </p>
         </Link>
         <Link href="/painel/rodape" style={cardStyle}>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { asset, BASE_PATH } from "@/lib/site";
 import type { FooterData } from "@/lib/footer";
+import { renderRich } from "@/components/rich-text";
 
 // Resolve o caminho do logo: URL completa passa direto; caminho local
 // ("/assets/...") ganha o basePath.
@@ -17,11 +18,11 @@ function FLink({ link }: { link: FooterData["colunas"][number]["links"][number] 
   if (externo) {
     return (
       <a href={link.href} target="_blank" rel="noopener noreferrer">
-        {link.label}
+        {renderRich(link.label)}
       </a>
     );
   }
-  return <Link href={link.href || "#"}>{link.label}</Link>;
+  return <Link href={link.href || "#"}>{renderRich(link.label)}</Link>;
 }
 
 export default function Footer({ data }: { data: FooterData }) {
@@ -41,13 +42,13 @@ export default function Footer({ data }: { data: FooterData }) {
             alt="Pierre Alexander"
             className="ftr-logo"
           />
-          {data.marcaTexto && <p>{data.marcaTexto}</p>}
-          {data.sacTexto && <p className="ftr-sac">{data.sacTexto}</p>}
+          {data.marcaTexto && <p>{renderRich(data.marcaTexto)}</p>}
+          {data.sacTexto && <p className="ftr-sac">{renderRich(data.sacTexto)}</p>}
         </div>
 
         {cols.map((col, i) => (
           <div className="ftr-col" key={i}>
-            {col.titulo && <h4>{col.titulo}</h4>}
+            {col.titulo && <h4>{renderRich(col.titulo)}</h4>}
             {col.links.map((l, j) => (
               <FLink key={j} link={l} />
             ))}
@@ -56,7 +57,7 @@ export default function Footer({ data }: { data: FooterData }) {
       </div>
 
       <div className="container ftr-bottom">
-        <span>{rodape}</span>
+        <span>{renderRich(rodape)}</span>
         <div className="ftr-social" aria-label="Redes sociais">
           {data.social.map((s, i) => {
             const externo = /^https?:\/\//i.test(s.href);
@@ -67,7 +68,7 @@ export default function Footer({ data }: { data: FooterData }) {
                 aria-label={s.label}
                 {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               >
-                {s.label}
+                {renderRich(s.label)}
               </a>
             );
           })}

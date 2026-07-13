@@ -32,8 +32,10 @@ export default async function RodapePage() {
   return (
     <>
       <h1 style={{ margin: "0 0 .25rem" }}>Rodapé do site</h1>
-      <p style={{ color: "#888", margin: "0 0 1.5rem", fontSize: 14 }}>
+      <p style={{ color: "#888", margin: "0 0 1.5rem", fontSize: 14, lineHeight: 1.6 }}>
         Configure as colunas, os textos e as redes sociais do rodapé. As mudanças aparecem em todas as páginas do site.
+        <br />
+        Nos textos e rótulos você pode usar <code>**negrito**</code> e o ícone <code>:whatsapp:</code> — igual à faixa do topo.
       </p>
 
       <form action={salvarRodapeAction}>

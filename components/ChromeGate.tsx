@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingBits from "@/components/FloatingBits";
 import type { FooterData } from "@/lib/footer";
 import type { MenuItem } from "@/lib/menu";
+import type { TopStripItem } from "@/lib/site-config";
 
 // Mostra a "chrome" do site público (top strip, header, footer, WhatsApp)
 // em todas as rotas, exceto nas áreas internas (painel, login, recuperação de
@@ -30,7 +31,7 @@ export default function ChromeGate({
   footer: FooterData;
   headerLogo: string;
   menu: MenuItem[];
-  topStrip: string[];
+  topStrip: TopStripItem[];
 }) {
   const pathname = usePathname();
   const bare = BARE_PREFIXES.some((p) => pathname.startsWith(p));

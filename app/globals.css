@@ -70,7 +70,8 @@ p{color:var(--muted);font-size:16px}
 .topstrip{background:var(--carbon);color:#fff}
 .topstrip-inner{height:38px;display:flex;align-items:center;justify-content:center;gap:30px;
   font-size:12px;letter-spacing:.04em}
-.topstrip-extra{opacity:.7}
+.topstrip a{color:inherit;text-decoration:none}
+.topstrip a:hover{text-decoration:underline}
 @media (max-width:720px){.topstrip-extra{display:none}}
 
 /* ---- Header -------------------------------------------------------------- */
