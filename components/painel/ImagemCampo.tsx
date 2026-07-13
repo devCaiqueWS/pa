@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { asset, BASE_PATH } from "@/lib/site";
 
 // Resolve o caminho da imagem igual o site faz (Header/Footer):
@@ -54,6 +54,29 @@ export default function ImagemCampo({
   const src = resolveSrc(valor);
   const quadrado = formato === "square";
 
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [enviando, setEnviando] = useState(false);
+  const [erroUp, setErroUp] = useState("");
+
+  async function enviar(file: File) {
+    setEnviando(true);
+    setErroUp("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const resp = await fetch(`${BASE_PATH}/api/upload`, { method: "POST", body: fd });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.url) throw new Error(data.error || "Falha no upload.");
+      setValor(data.url);
+      setErro(false);
+    } catch (e) {
+      setErroUp(e instanceof Error ? e.message : "Falha no upload.");
+    } finally {
+      setEnviando(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
   const previewBox: React.CSSProperties = {
     width: quadrado ? 64 : 180,
     height: 64,
@@ -99,6 +122,37 @@ export default function ImagemCampo({
           }}
           style={inputStyle}
         />
+
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) enviar(f);
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            disabled={enviando}
+            style={{
+              border: "1px solid #b08d57",
+              background: enviando ? "#f2ece2" : "#fff",
+              color: "#7a5c1e",
+              borderRadius: 6,
+              padding: "5px 12px",
+              cursor: enviando ? "default" : "pointer",
+              fontSize: 13,
+            }}
+          >
+            {enviando ? "Enviando…" : "⬆ Enviar imagem"}
+          </button>
+          {erroUp && <span style={{ color: "#b00020", fontSize: 12 }}>{erroUp}</span>}
+        </div>
+
         <p style={ajudaStyle}>{ajuda}</p>
       </div>
     </div>

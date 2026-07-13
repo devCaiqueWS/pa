@@ -13,6 +13,7 @@
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.10.0",
     "jose": "^5.9.6",
     "mysql2": "^3.11.5",
     "next": "^16.2.9",
