@@ -251,7 +251,24 @@ p{color:var(--muted);font-size:16px}
 /* ---- Listagem de categoria (filtros + grid) ----------------------------- */
 .listing{display:grid;grid-template-columns:230px 1fr;gap:36px;align-items:start}
 .listing-filters h4{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 14px}
+.filter-block{margin-bottom:24px}
+.filter-block:not(:first-child){padding-top:22px;border-top:1px solid var(--line)}
 .filter-group{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:2px}
+.filter-checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.filter-check{display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:8px;font-size:14.5px;
+  color:var(--ink);cursor:pointer;transition:.15s}
+.filter-check:hover{background:var(--soft)}
+.filter-check input{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
+/* Chips dos filtros ativos */
+.listing-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-6px 0 20px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--accent-soft);
+  background:var(--accent-soft);color:var(--accent-dark);border-radius:999px;padding:6px 13px;
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip span{font-size:15px;line-height:1}
+.listing-clear{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;
+  text-decoration:underline;cursor:pointer;padding:6px 4px}
+.listing-clear:hover{color:var(--ink)}
 .filter-group button{display:block;width:100%;text-align:left;border:0;background:transparent;
   padding:9px 12px;border-radius:8px;font:inherit;font-size:14.5px;color:var(--ink);cursor:pointer;transition:.15s}
 .filter-group button:hover{background:var(--soft)}

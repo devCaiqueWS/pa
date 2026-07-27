@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { imagemSrc } from "@/lib/site";
+import ProductImage from "@/components/ProductImage";
 import type { Product } from "@/lib/catalog";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -15,13 +15,7 @@ export default function ProductCard({ product }: { product: Product }) {
             ))}
           </div>
         )}
-        {product.image ? (
-          <img src={imagemSrc(product.image)} alt={product.name} loading="lazy" />
-        ) : (
-          <div className="pcard-noimg" aria-hidden="true">
-            <span>Pierre</span>
-          </div>
-        )}
+        <ProductImage src={product.image} alt={product.name} />
       </div>
       <div className="pcard-body">
         {product.line && <span className="pcard-eyebrow">{product.line}</span>}
