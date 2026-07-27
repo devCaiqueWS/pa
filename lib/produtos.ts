@@ -87,7 +87,9 @@ function imagemDoBling(midia: unknown): string {
   }
   const im = (m as { imagens?: { internas?: { link?: string }[]; externas?: { link?: string }[] } })?.imagens;
   if (!im) return "";
-  const arr = (im.internas && im.internas.length ? im.internas : im.externas) || [];
+  // Preferimos "externas" (URLs próprias, PERMANENTES) a "internas" (links S3
+  // assinados do Bling, que EXPIRAM em semanas → dariam imagem quebrada).
+  const arr = (im.externas && im.externas.length ? im.externas : im.internas) || [];
   return arr[0]?.link || "";
 }
 
