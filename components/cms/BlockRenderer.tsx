@@ -12,6 +12,7 @@ import Newsletter from "@/components/Newsletter";
 import ProductRail from "@/components/ProductRail";
 import { featuredProducts, newProducts } from "@/lib/catalog-source";
 import { getCategorias } from "@/lib/categorias";
+import { getBanners } from "@/lib/banners";
 
 const MARROM = "#3a2a1e";
 const AREIA = "#faf9f7";
@@ -291,6 +292,12 @@ async function Colecoes({ c }: { c: Record<string, string> }) {
   );
 }
 
+// Carrossel de topo: os slides vêm do painel (/painel/banners).
+async function Carrossel() {
+  const slides = await getBanners();
+  return <HeroCarousel slides={slides} />;
+}
+
 function RenderBloco({ bloco }: { bloco: Bloco }) {
   switch (bloco.tipo) {
     case "hero":
@@ -306,7 +313,7 @@ function RenderBloco({ bloco }: { bloco: Bloco }) {
     case "produtos":
       return <Produtos c={bloco.config} />;
     case "carrossel":
-      return <HeroCarousel />;
+      return <Carrossel />;
     case "vitrine":
       return <Vitrine c={bloco.config} />;
     case "atalhos":

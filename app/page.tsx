@@ -7,6 +7,7 @@ import BlockRenderer from "@/components/cms/BlockRenderer";
 import { asset, imagemSrc } from "@/lib/site";
 import { featuredProducts, newProducts } from "@/lib/catalog-source";
 import { getCategorias } from "@/lib/categorias";
+import { getBanners } from "@/lib/banners";
 import { getTextosMap } from "@/lib/content";
 import { getPaginaPublicada, getBlocos } from "@/lib/cms";
 
@@ -28,16 +29,17 @@ export default async function HomePage() {
 }
 
 async function HomeClassica() {
-  const [destaques, novos, t, categorias] = await Promise.all([
+  const [destaques, novos, t, categorias, banners] = await Promise.all([
     featuredProducts(8),
     newProducts(8),
     getTextosMap(),
     getCategorias(),
+    getBanners(),
   ]);
 
   return (
     <>
-      <HeroCarousel />
+      <HeroCarousel slides={banners} />
 
       {/* Atalhos de categoria — padrão Natura/Boticário */}
       <CategoryShortcuts />

@@ -41,6 +41,12 @@ export default async function PainelHome() {
             Monte o menu do topo arrastando itens: links, botão e busca.
           </p>
         </Link>
+        <Link href="/painel/banners" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Banners</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Os slides do carrossel do topo da home: imagem, textos, botões e ordem.
+          </p>
+        </Link>
         <Link href="/painel/categorias" style={cardStyle}>
           <h3 style={{ margin: "0 0 .25rem" }}>Categorias</h3>
           <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
