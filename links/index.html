@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pierre Cosméticos | Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Abhaya+Libre:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:        #E3341C;
+    --red-deep:   #C82A15;
+    --orange:     #ED6C2D;
+    --peach:      #F6AC8E;
+    --gold-1:     #F7DFA6;
+    --gold-2:     #EFC06B;
+    --ink:        #3A2013;
+    --cream:      #FFF3DD;
+    --white:      #FFFFFF;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html,body{
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Quicksand', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    overflow-x:hidden;
+  }
+
+  /* ---------- wave background: spans the FULL viewport width ---------- */
+  .waves{
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    pointer-events:none;
+    background-image: url('assets/backgrounds/img_bgpierrelinksnotebook.webp');
+    background-size: contain;
+    background-position: top center;
+    background-repeat: no-repeat;
+  }
+
+  /* > 1440px (telas grandes, até 1920px) */
+  @media (min-width: 1441px){
+    .waves{ background-image: url('assets/backgrounds/img_bgpierrelinksdesktop.webp'); }
+  }
+
+  /* <= 800px (mobile) */
+  @media (max-width: 500px){
+    .waves{
+      /* background-image: url('assets/backgrounds/img_bgpierrelinksmobile.webp'); */
+      background-size: cover;
+    }
+  }
+
+  .page{
+    position:relative;
+    width:100%;
+    max-width:600px;
+    min-height:100vh;
+    padding: 40px 24px 36px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow:hidden;
+  }
+
+  /* ---------- logo circle ---------- */
+  .brand{
+    position:relative;
+    z-index:2;
+    width:195px;
+    height:195px;
+    margin-top: 84px;
+    flex-shrink:0;
+  }
+  .brand img{
+    width:100%;
+    height:100%;
+    display:block;
+    filter: drop-shadow(0 11px 26.1px rgba(0, 0, 0, 0.26));
+  }
+
+  /* ---------- headline / subtitle ---------- */
+  .headline{
+    position:relative;
+    z-index:2;
+    color: #FEF7F4;
+    text-align: center;
+    font-family: "Abhaya Libre", serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 28px;
+  }
+
+  .tagline{
+    position:relative;
+    z-index:2;
+    color: #FEF7F4;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    margin-top: 14px;
+  }
+  .tagline p{ margin:0; }
+  .tagline .strong{
+    font-weight:500;
+  }
+
+  /* ---------- link list ---------- */
+  .links{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width: 534px;
+    margin-top: 34px;
+    display:flex;
+    flex-direction:column;
+    gap: 16px;
+  }
+
+  .link-btn{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    background: var(--white);
+    text-decoration:none;
+    color: #380D08;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 20px 24px;
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.10);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .link-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+  }
+  .link-btn:active{ transform: translateY(0); }
+
+  .link-btn img{
+    width:20px;
+    height:20px;
+    flex-shrink:0;
+    object-fit: contain;
+  }
+
+  .link-btn.featured{
+    background: linear-gradient(135deg, var(--gold-1) 0%, var(--gold-2) 100%);
+    text-transform:uppercase;
+    letter-spacing: 0.4px;
+    font-size: 15px;
+    color: #380D08;
+  }
+
+  .ribbon{
+    position:absolute;
+    top:-14px;
+    right:22px;
+    background: var(--cream);
+    color: #380D08;
+    font-size: 10.5px;
+    font-weight:700;
+    letter-spacing: 0.6px;
+    padding: 5px 12px;
+    border-radius: 999px 999px 4px 999px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+
+  /* ---------- footer logo ---------- */
+  .footer-logo{
+    position:relative;
+    z-index:2;
+    margin-top: 40px;
+    width: 51px;
+  }
+  .footer-logo img{
+    width:100%;
+    display:block;
+  }
+
+  @media (max-width: 640px){
+    .brand{
+      width:172px;
+      height:172px;
+      margin-top: 40px;
+    }
+    .headline{ font-size:26px; }
+
+    .tagline{ font-size:16px; }
+    .waves{ height:280px; }
+    .links{ margin-top:26px; gap:14px; }
+    .link-btn{ padding:17px 20px; font-size:15px; }
+    .link-btn.featured{ font-size:12.5px; letter-spacing:0.2px; padding:17px 18px; }
+    .ribbon{ top:-12px; right:16px; font-size:9.5px; padding:4px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="waves" aria-hidden="true"></div>
+
+<div class="page">
+
+  <div class="brand"><img src="assets/logo/img_logopierre.webp" alt="Pierre"></div>
+
+  <h1 class="headline">Que bom ter você por aqui. ✨</h1>
+  <div class="tagline">
+    <p>O que você procura hoje?</p>
+    <p class="strong">Escolha uma opção abaixo.</p>
+  </div>
+
+  <div class="links">
+    <!-- <a href="#" class="link-btn featured">
+      <span class="ribbon">Lançamento</span>
+      <img src="assets/icons/Icon-PierreBtn01.svg" alt="">
+      Novidade Pierre: Linha Radicaline
+    </a> -->
+    <a href="https://anyflip.com/uxxii/hpby/" class="link-btn" target="_blank" rel="noopener">
+      <img src="assets/icons/Icon-PierreBtn02.svg" alt="">
+      Revista Pierre - Ciclo atual
+    </a>
+    <a href="http://pierrecosmeticos.com.br/" class="link-btn" target="_blank" rel="noopener">
+      <img src="assets/icons/Icon-PierreBtn03.svg" alt="">
+      Loja virtual
+    </a>
+    <a href="https://consultora.pierrealexander.com.br/login.aspx" class="link-btn" target="_blank" rel="noopener">
+      <img src="assets/icons/Icon-PierreBtn04.svg" alt="">
+      Seja uma consultora
+    </a>
+    <a href="https://wa.me/5511938101888" class="link-btn" target="_blank" rel="noopener">
+      <img src="assets/icons/Icon-PierreBtn05.svg" alt="">
+      Atendimento via WhatsApp
+    </a>
+  </div>
+
+  <div class="footer-logo"><img src="assets/logo/icon-logopierre.svg" alt="Pierre"></div>
+
+</div>
+
+</body>
+</html>
