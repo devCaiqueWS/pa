@@ -201,7 +201,7 @@ export const CATALOGO: DefBloco[] = [
   {
     tipo: "carrossel",
     label: "Carrossel de topo (home)",
-    descricao: "O grande carrossel animado do topo da home (banners Original e Radicaline). Sem campos por enquanto — use para posicionar e ligar/desligar a seção.",
+    descricao: "O grande carrossel animado do topo da home. Os slides são gerenciados em Banners (/painel/banners); aqui você só posiciona e liga/desliga a seção.",
     campos: [],
   },
   {

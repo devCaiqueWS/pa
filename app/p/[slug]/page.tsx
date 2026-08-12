@@ -2,8 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ProductRail from "@/components/ProductRail";
-import { asset } from "@/lib/site";
-import { getProduct, getCategory, relatedProducts } from "@/lib/catalog-source";
+import { imagemSrc } from "@/lib/site";
+import { getProduct, relatedProducts } from "@/lib/catalog-source";
+import { getCategoriaBySlug } from "@/lib/categorias";
 import { products } from "@/lib/catalog";
 
 export const revalidate = 60;
@@ -32,7 +33,7 @@ export default async function ProductPage({
   const product = await getProduct(slug);
   if (!product) notFound();
 
-  const category = getCategory(product.categorySlug);
+  const category = await getCategoriaBySlug(product.categorySlug);
   const related = await relatedProducts(product);
 
   return (
@@ -58,7 +59,7 @@ export default async function ProductPage({
                   ))}
                 </div>
               )}
-              <img src={asset(product.image)} alt={product.name} />
+              <img src={imagemSrc(product.image)} alt={product.name} />
             </div>
 
             <div className="pdp-info">

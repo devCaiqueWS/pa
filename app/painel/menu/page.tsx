@@ -1,5 +1,5 @@
 import { requireRole } from "@/lib/guard";
-import { getMenuRows, montarArvore } from "@/lib/menu";
+import { getMenuRows, montarArvore, getOpcoesLinkInterno } from "@/lib/menu";
 import MenuEditor from "./MenuEditor";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +10,7 @@ export default async function MenuPage() {
   await requireRole(EDIT_ROLES, "/painel/menu");
   const rows = await getMenuRows();
   const arvore = montarArvore(rows);
+  const opcoes = await getOpcoesLinkInterno();
 
   return (
     <>
@@ -23,7 +24,7 @@ export default async function MenuPage() {
           Ainda não há itens salvos — o site mostra o menu padrão. Adicione itens abaixo para assumir o controle.
         </p>
       )}
-      <MenuEditor inicial={arvore} />
+      <MenuEditor inicial={arvore} opcoes={opcoes} />
     </>
   );
 }

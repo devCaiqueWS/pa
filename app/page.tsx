@@ -4,8 +4,10 @@ import CategoryShortcuts from "@/components/CategoryShortcuts";
 import ProductRail from "@/components/ProductRail";
 import Newsletter from "@/components/Newsletter";
 import BlockRenderer from "@/components/cms/BlockRenderer";
-import { asset } from "@/lib/site";
-import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
+import { asset, imagemSrc } from "@/lib/site";
+import { featuredProducts, newProducts } from "@/lib/catalog-source";
+import { getCategorias } from "@/lib/categorias";
+import { getBanners } from "@/lib/banners";
 import { getTextosMap } from "@/lib/content";
 import { getPaginaPublicada, getBlocos } from "@/lib/cms";
 
@@ -27,15 +29,17 @@ export default async function HomePage() {
 }
 
 async function HomeClassica() {
-  const [destaques, novos, t] = await Promise.all([
+  const [destaques, novos, t, categorias, banners] = await Promise.all([
     featuredProducts(8),
     newProducts(8),
     getTextosMap(),
+    getCategorias(),
+    getBanners(),
   ]);
 
   return (
     <>
-      <HeroCarousel />
+      <HeroCarousel slides={banners} />
 
       {/* Atalhos de categoria — padrão Natura/Boticário */}
       <CategoryShortcuts />
@@ -90,10 +94,10 @@ async function HomeClassica() {
             <p>{t.home_categorias_subtitulo ?? "Escolha pelo momento, pelo cuidado ou pelo desejo."}</p>
           </div>
           <div className="coll-grid">
-            {categories.map((c) => (
+            {categorias.map((c) => (
               <Link key={c.slug} className="coll-card" href={`/c/${c.slug}`}>
                 <div className="coll-media">
-                  <img src={asset(c.image)} alt={c.name} loading="lazy" />
+                  <img src={imagemSrc(c.image)} alt={c.name} loading="lazy" />
                 </div>
                 <div className="coll-body">
                   <h3>{c.name}</h3>

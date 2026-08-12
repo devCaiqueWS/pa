@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import type { MenuItem, MenuTipo } from "@/lib/menu";
+import type { MenuItem, MenuTipo, OpcaoLink } from "@/lib/menu";
+import LinkField from "@/components/painel/LinkField";
 import { adicionarItemMenu, salvarItemMenu, excluirItemMenu, reordenarMenu } from "./actions";
 
 type Node = { id: number; label: string; href: string; tipo: MenuTipo; children: Leaf[] };
@@ -49,7 +50,7 @@ function paraNodes(inicial: MenuItem[]): Node[] {
   }));
 }
 
-export default function MenuEditor({ inicial }: { inicial: MenuItem[] }) {
+export default function MenuEditor({ inicial, opcoes }: { inicial: MenuItem[]; opcoes: OpcaoLink[] }) {
   const [tops, setTops] = useState<Node[]>(() => paraNodes(inicial));
   const [pending, startTransition] = useTransition();
   const [editId, setEditId] = useState<number | null>(null);
@@ -198,11 +199,11 @@ export default function MenuEditor({ inicial }: { inicial: MenuItem[] }) {
               placeholder="Texto"
               onChange={(e) => setCampo(item.id, parentId, "label", e.target.value)}
             />
-            <input
+            <LinkField
               style={inputStyle}
               value={item.href}
-              placeholder="Link (ex.: /sobre, /busca, https://...)"
-              onChange={(e) => setCampo(item.id, parentId, "href", e.target.value)}
+              opcoes={opcoes}
+              onChange={(v) => setCampo(item.id, parentId, "href", v)}
             />
             {isTop && (
               <select
@@ -264,20 +265,20 @@ export default function MenuEditor({ inicial }: { inicial: MenuItem[] }) {
             )}
 
             {/* adicionar subitem */}
-            <form onSubmit={(e) => addSub(e, top.id)} style={{ display: "flex", gap: 6, margin: "8px 0 0 28px", flexWrap: "wrap" }}>
+            <form onSubmit={(e) => addSub(e, top.id)} style={{ display: "grid", gap: 6, margin: "8px 0 0 28px", maxWidth: 460 }}>
               <input
-                style={{ ...inputStyle, flex: "1 1 140px" }}
+                style={inputStyle}
                 placeholder="Texto do subitem"
                 value={novoSub.parentId === top.id ? novoSub.label : ""}
                 onChange={(e) => setNovoSub({ parentId: top.id, label: e.target.value, href: novoSub.parentId === top.id ? novoSub.href : "" })}
               />
-              <input
-                style={{ ...inputStyle, flex: "1 1 140px" }}
-                placeholder="Link"
+              <LinkField
+                style={inputStyle}
+                opcoes={opcoes}
                 value={novoSub.parentId === top.id ? novoSub.href : ""}
-                onChange={(e) => setNovoSub({ parentId: top.id, label: novoSub.parentId === top.id ? novoSub.label : "", href: e.target.value })}
+                onChange={(v) => setNovoSub({ parentId: top.id, label: novoSub.parentId === top.id ? novoSub.label : "", href: v })}
               />
-              <button type="submit" style={btnMini}>
+              <button type="submit" style={{ ...btnMini, justifySelf: "start" }}>
                 + Subitem
               </button>
             </form>
@@ -289,7 +290,7 @@ export default function MenuEditor({ inicial }: { inicial: MenuItem[] }) {
       <form onSubmit={addTop} style={{ marginTop: 16, padding: 12, border: "1px dashed #ccc", borderRadius: 10, display: "grid", gap: 8, maxWidth: 520 }}>
         <strong style={{ fontSize: 14 }}>Adicionar item principal</strong>
         <input style={inputStyle} placeholder="Texto (ex.: A Pierre)" value={novo.label} onChange={(e) => setNovo({ ...novo, label: e.target.value })} />
-        <input style={inputStyle} placeholder="Link (ex.: /sobre, /busca, /consultora)" value={novo.href} onChange={(e) => setNovo({ ...novo, href: e.target.value })} />
+        <LinkField style={inputStyle} opcoes={opcoes} value={novo.href} onChange={(v) => setNovo({ ...novo, href: v })} />
         <select style={inputStyle} value={novo.tipo} onChange={(e) => setNovo({ ...novo, tipo: e.target.value as MenuTipo })}>
           {TIPOS.map((t) => (
             <option key={t.valor} value={t.valor}>

@@ -5,12 +5,14 @@
 // =============================================================================
 import Link from "next/link";
 import type { Bloco } from "@/lib/cms";
-import { asset, BASE_PATH } from "@/lib/site";
+import { asset, BASE_PATH, imagemSrc } from "@/lib/site";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryShortcuts from "@/components/CategoryShortcuts";
 import Newsletter from "@/components/Newsletter";
 import ProductRail from "@/components/ProductRail";
-import { categories, featuredProducts, newProducts } from "@/lib/catalog-source";
+import { featuredProducts, newProducts } from "@/lib/catalog-source";
+import { getCategorias } from "@/lib/categorias";
+import { getBanners } from "@/lib/banners";
 
 const MARROM = "#3a2a1e";
 const AREIA = "#faf9f7";
@@ -262,7 +264,8 @@ async function Vitrine({ c }: { c: Record<string, string> }) {
 }
 
 // Grade de coleções por categoria (mesma taxonomia do menu/atalhos).
-function Colecoes({ c }: { c: Record<string, string> }) {
+async function Colecoes({ c }: { c: Record<string, string> }) {
+  const categorias = await getCategorias();
   return (
     <section className="section section-soft">
       <div className="container">
@@ -271,10 +274,10 @@ function Colecoes({ c }: { c: Record<string, string> }) {
           {c.subtitulo && <p>{c.subtitulo}</p>}
         </div>
         <div className="coll-grid">
-          {categories.map((cat) => (
+          {categorias.map((cat) => (
             <Link key={cat.slug} className="coll-card" href={`/c/${cat.slug}`}>
               <div className="coll-media">
-                <img src={asset(cat.image)} alt={cat.name} loading="lazy" />
+                <img src={imagemSrc(cat.image)} alt={cat.name} loading="lazy" />
               </div>
               <div className="coll-body">
                 <h3>{cat.name}</h3>
@@ -287,6 +290,12 @@ function Colecoes({ c }: { c: Record<string, string> }) {
       </div>
     </section>
   );
+}
+
+// Carrossel de topo: os slides vêm do painel (/painel/banners).
+async function Carrossel() {
+  const slides = await getBanners();
+  return <HeroCarousel slides={slides} />;
 }
 
 function RenderBloco({ bloco }: { bloco: Bloco }) {
@@ -304,7 +313,7 @@ function RenderBloco({ bloco }: { bloco: Bloco }) {
     case "produtos":
       return <Produtos c={bloco.config} />;
     case "carrossel":
-      return <HeroCarousel />;
+      return <Carrossel />;
     case "vitrine":
       return <Vitrine c={bloco.config} />;
     case "atalhos":
