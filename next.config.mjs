@@ -5,6 +5,9 @@ const nextConfig = {
   // (a raiz do domínio não expõe nada). Ao entrar em produção, remova o basePath.
   basePath: "/preview-site",
   images: { unoptimized: true },
+  // Nota: /links responde na raiz do domínio via rewrite da Vercel (vercel.json).
+  // Não dá para fazer isso aqui: o Next recusa rewrite com `basePath: false`
+  // cujo destino não seja uma URL http(s) absoluta.
 };
 
 export default nextConfig;

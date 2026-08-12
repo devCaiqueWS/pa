@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pierre Cosméticos | Links</title>
+<!-- Caminhos absolutos incluem o basePath /preview-site (next.config.mjs): a página
+     é alcançada por /links (rewrite da Vercel), então caminho relativo quebraria. -->
+<link rel="icon" type="image/png" href="/preview-site/links/assets/favicon.png">
+<link rel="apple-touch-icon" href="/preview-site/links/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Abhaya+Libre:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -45,7 +49,7 @@
     height:100%;
     z-index:0;
     pointer-events:none;
-    background-image: url('assets/backgrounds/img_bgpierrelinksnotebook.webp');
+    background-image: url('/preview-site/links/assets/backgrounds/img_bgpierrelinksnotebook.webp');
     background-size: contain;
     background-position: top center;
     background-repeat: no-repeat;
@@ -53,13 +57,13 @@
 
   /* > 1440px (telas grandes, até 1920px) */
   @media (min-width: 1441px){
-    .waves{ background-image: url('assets/backgrounds/img_bgpierrelinksdesktop.webp'); }
+    .waves{ background-image: url('/preview-site/links/assets/backgrounds/img_bgpierrelinksdesktop.webp'); }
   }
 
   /* <= 800px (mobile) */
   @media (max-width: 500px){
     .waves{
-      /* background-image: url('assets/backgrounds/img_bgpierrelinksmobile.webp'); */
+      /* background-image: url('/preview-site/links/assets/backgrounds/img_bgpierrelinksmobile.webp'); */
       background-size: cover;
     }
   }
@@ -226,7 +230,7 @@
 
 <div class="page">
 
-  <div class="brand"><img src="assets/logo/img_logopierre.webp" alt="Pierre"></div>
+  <div class="brand"><img src="/preview-site/links/assets/logo/img_logopierre.webp" alt="Pierre"></div>
 
   <h1 class="headline">Que bom ter você por aqui. ✨</h1>
   <div class="tagline">
@@ -237,28 +241,28 @@
   <div class="links">
     <!-- <a href="#" class="link-btn featured">
       <span class="ribbon">Lançamento</span>
-      <img src="assets/icons/Icon-PierreBtn01.svg" alt="">
+      <img src="/preview-site/links/assets/icons/Icon-PierreBtn01.svg" alt="">
       Novidade Pierre: Linha Radicaline
     </a> -->
     <a href="https://anyflip.com/uxxii/hpby/" class="link-btn" target="_blank" rel="noopener">
-      <img src="assets/icons/Icon-PierreBtn02.svg" alt="">
+      <img src="/preview-site/links/assets/icons/Icon-PierreBtn02.svg" alt="">
       Revista Pierre - Ciclo atual
     </a>
     <a href="http://pierrecosmeticos.com.br/" class="link-btn" target="_blank" rel="noopener">
-      <img src="assets/icons/Icon-PierreBtn03.svg" alt="">
+      <img src="/preview-site/links/assets/icons/Icon-PierreBtn03.svg" alt="">
       Loja virtual
     </a>
     <a href="https://consultora.pierrealexander.com.br/login.aspx" class="link-btn" target="_blank" rel="noopener">
-      <img src="assets/icons/Icon-PierreBtn04.svg" alt="">
+      <img src="/preview-site/links/assets/icons/Icon-PierreBtn04.svg" alt="">
       Seja uma consultora
     </a>
     <a href="https://wa.me/5511938101888" class="link-btn" target="_blank" rel="noopener">
-      <img src="assets/icons/Icon-PierreBtn05.svg" alt="">
+      <img src="/preview-site/links/assets/icons/Icon-PierreBtn05.svg" alt="">
       Atendimento via WhatsApp
     </a>
   </div>
 
-  <div class="footer-logo"><img src="assets/logo/icon-logopierre.svg" alt="Pierre"></div>
+  <div class="footer-logo"><img src="/preview-site/links/assets/logo/icon-logopierre.svg" alt="Pierre"></div>
 
 </div>
 
