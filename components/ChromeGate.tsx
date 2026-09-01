@@ -18,6 +18,10 @@ const BARE_PREFIXES = [
   "/recuperar-senha",
   "/redefinir-senha",
   "/sem-acesso",
+  // Formulários de eventos: páginas "escondidas" (só quem tem o link) — sem
+  // menu/rodapé do site; a página pública mostra apenas a logo centralizada,
+  // e os dashboards /forms/*/respostas usam a casca administrativa própria.
+  "/forms",
 ];
 
 export default function ChromeGate({

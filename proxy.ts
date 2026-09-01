@@ -20,6 +20,13 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Protege apenas as áreas internas. O site público fica livre.
-  matcher: ["/painel/:path*"],
+  // Protege apenas as áreas internas. O site público fica livre
+  // (as páginas públicas /forms/:id NÃO entram aqui — só os dashboards de
+  // respostas e a API de exportação; ambos revalidam a sessão no servidor).
+  matcher: [
+    "/painel/:path*",
+    "/forms/respostas",
+    "/forms/:id/respostas",
+    "/api/forms/:path*",
+  ],
 };

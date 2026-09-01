@@ -1,14 +1,20 @@
+// =============================================================================
+// CASCA ADMINISTRATIVA DOS DASHBOARDS DE RESPOSTAS
+// Mesmo visual do /painel (cabeçalho branco, fundo suave), com o caminho de
+// volta para o painel e o logout. As páginas que a usam já chegaram aqui
+// autenticadas (requireRole roda ANTES, na própria página).
+// =============================================================================
 import Link from "next/link";
-import { requireAuth } from "@/lib/guard";
 import { logoutAction } from "@/app/login/actions";
+import type { Session } from "@/lib/session";
 
-export default async function PainelLayout({
+export default function AdminShell({
+  session,
   children,
 }: {
+  session: Session;
   children: React.ReactNode;
 }) {
-  const session = await requireAuth("/painel");
-
   return (
     <div style={{ minHeight: "100vh", background: "#faf9f7" }}>
       <header
@@ -20,7 +26,7 @@ export default async function PainelLayout({
       >
         <div
           style={{
-            maxWidth: 1000,
+            maxWidth: 1100,
             margin: "0 auto",
             display: "flex",
             alignItems: "center",
@@ -33,14 +39,6 @@ export default async function PainelLayout({
             <Link href="/painel" style={{ fontWeight: 700 }}>
               Painel Pierre
             </Link>
-            <Link href="/painel/cabecalho">Cabeçalho</Link>
-            <Link href="/painel/menu">Menu</Link>
-            <Link href="/painel/banners">Banners</Link>
-            <Link href="/painel/categorias">Categorias</Link>
-            <Link href="/painel/produtos">Produtos</Link>
-            <Link href="/painel/paginas">Páginas do site</Link>
-            <Link href="/painel/rodape">Rodapé</Link>
-            <Link href="/painel/mapa">Mapa</Link>
             <Link href="/forms/respostas">Formulários</Link>
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
@@ -55,7 +53,7 @@ export default async function PainelLayout({
           </div>
         </div>
       </header>
-      <main style={{ maxWidth: 1000, margin: "0 auto", padding: "1.5rem 1rem" }}>
+      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "1.5rem 1rem 3rem" }}>
         {children}
       </main>
     </div>

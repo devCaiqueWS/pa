@@ -3,6 +3,10 @@
   "rewrites": [
     { "source": "/links", "destination": "/preview-site/links/index.html" },
     { "source": "/links/", "destination": "/preview-site/links/index.html" },
-    { "source": "/links/:path*", "destination": "/preview-site/links/:path*" }
+    { "source": "/links/:path*", "destination": "/preview-site/links/:path*" },
+
+    { "source": "/forms", "destination": "/preview-site/forms" },
+    { "source": "/forms/:path*", "destination": "/preview-site/forms/:path*" },
+    { "source": "/api/forms/:path*", "destination": "/preview-site/api/forms/:path*" }
   ]
 }

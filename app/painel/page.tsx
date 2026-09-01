@@ -77,6 +77,12 @@ export default async function PainelHome() {
             Visão geral de todas as páginas: conteúdo, categorias e rotas fixas.
           </p>
         </Link>
+        <Link href="/forms/respostas" style={cardStyle}>
+          <h3 style={{ margin: "0 0 .25rem" }}>Formulários</h3>
+          <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+            Respostas das pesquisas dos eventos: dashboards, filtros e exportação.
+          </p>
+        </Link>
       </div>
     </>
   );
