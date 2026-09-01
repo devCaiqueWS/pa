@@ -13,7 +13,7 @@ import {
   FORMULARIOS,
   getFormulario,
 } from "@/lib/forms/definicoes";
-import { imagemSrc } from "@/lib/site";
+import { asset, imagemSrc } from "@/lib/site";
 import { getSiteConfig } from "@/lib/site-config";
 
 type Props = { params: Promise<{ id: string }> };
@@ -52,6 +52,13 @@ export default async function PaginaFormulario({ params }: Props) {
           <img src={imagemSrc(cfg.headerLogoUrl)} alt="Pierre Alexander" />
         </Link>
       </header>
+      {/* Banner da linha Radicaline (mesmo nos dois formulários do evento). */}
+      <div className="frm-banner">
+        <img
+          src={asset("/assets/img/banner-radicaline.jpg")}
+          alt="Linha Radicaline: sérum facial, resveratrol sérum facial, sabonete facial, loção tônica e creme facial"
+        />
+      </div>
       <section className="frm-hero">
         <div className="container frm-wrap">
           <span className="eyebrow">Eventos Pierre</span>
