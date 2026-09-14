@@ -12,7 +12,7 @@ import { asset, BASE_PATH } from "@/lib/site";
 // ópticos) nos títulos; Manrope na interface. Poucos pesos; font-display swap.
 const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "variable",
   style: ["normal", "italic"],
   axes: ["opsz"],
   display: "swap",
