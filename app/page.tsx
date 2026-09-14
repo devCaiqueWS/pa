@@ -1,5 +1,5 @@
 import HeroEditorial from "@/components/home/HeroEditorial";
-import UniverseIndex from "@/components/home/UniverseIndex";
+import UniverseStrip from "@/components/home/UniverseStrip";
 import UniverseMosaic from "@/components/home/UniverseMosaic";
 import Heritage from "@/components/home/Heritage";
 import EditorialFeature from "@/components/home/EditorialFeature";
@@ -38,7 +38,7 @@ async function HomeClassica() {
   return (
     <>
       <HeroEditorial slides={banners} />
-      <UniverseIndex />
+      <UniverseStrip />
       <Heritage />
       <ProductRail
         title={t.home_destaques_titulo ?? "Mais vendidos"}

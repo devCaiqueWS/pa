@@ -227,8 +227,8 @@ export const CATALOGO: DefBloco[] = [
   },
   {
     tipo: "atalhos",
-    label: "Atalhos de categoria (home)",
-    descricao: "A faixa de atalhos redondos por categoria (padrão Natura/Boticário). Sem campos.",
+    label: "Universos em scroll lateral (home)",
+    descricao: "Fila de universos (categorias) que desliza para o lado enquanto você rola a página. Sem campos — os dados vêm de Categorias.",
     campos: [],
   },
   {

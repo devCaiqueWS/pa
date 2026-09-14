@@ -13,6 +13,8 @@ export const VIAGEM: Faixa = { inicio: 1, fim: 0 };
 export const SAIDA: Faixa = { inicio: 0, fim: 0 };
 /** Faixa de leitura: entra a 85% da tela e termina quando a base passa de 35%. */
 export const LEITURA: Faixa = { inicio: 0.85, fim: 0.35 };
+/** Seção presa (sticky): 0 com o topo colado no topo da tela, 1 com a base colada na base. */
+export const PRESO: Faixa = { inicio: 0, fim: 1 };
 
 // Escreve --p (0→1) no elemento conforme ele atravessa a faixa. Só escuta o
 // scroll enquanto o elemento está perto da tela; mede em requestAnimationFrame.

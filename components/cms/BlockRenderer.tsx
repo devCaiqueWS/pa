@@ -8,7 +8,7 @@ import Link from "next/link";
 import type { Bloco } from "@/lib/cms";
 import { imagemSrc } from "@/lib/site";
 import HeroEditorial from "@/components/home/HeroEditorial";
-import UniverseIndex from "@/components/home/UniverseIndex";
+import UniverseStrip from "@/components/home/UniverseStrip";
 import UniverseMosaic from "@/components/home/UniverseMosaic";
 import Heritage, { parseMarcos } from "@/components/home/Heritage";
 import EditorialFeature from "@/components/home/EditorialFeature";
@@ -183,7 +183,7 @@ function RenderBloco({ bloco }: { bloco: Bloco }) {
     case "vitrine":
       return <Vitrine c={c} />;
     case "atalhos":
-      return <UniverseIndex />;
+      return <UniverseStrip />;
     case "colecoes":
       return <UniverseMosaic titulo={c.titulo} subtitulo={c.subtitulo} />;
     case "historia":

@@ -76,26 +76,29 @@
   .hero-progress::after{animation:none;transform:scaleX(1)}
 }
 
-/* --- Índice de universos (atalhos) ----------------------------------------- */
-.uidx{padding:var(--space-5) 0;border-bottom:1px solid var(--line);background:var(--bg)}
-.uidx-inner{display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.uidx-inner::-webkit-scrollbar{display:none}
-.uidx-intro{flex:none;font-family:var(--font-serif);font-style:italic;font-size:1.15rem;color:var(--muted);padding-right:var(--space-6);white-space:nowrap}
-.uidx-list{display:flex;list-style:none;margin:0;padding:0}
-.uidx-item{flex:none}
-.uidx-link{display:flex;align-items:center;gap:14px;padding:6px 26px;border-left:1px solid var(--line);min-height:64px;white-space:nowrap}
-.uidx-item:last-child .uidx-link{padding-right:0}
-.uidx-thumb{width:46px;height:46px;border-radius:14px;overflow:hidden;background:var(--areia);flex:none;transition:transform var(--t-base) var(--ease-out)}
-.uidx-thumb img{width:100%;height:100%;object-fit:cover}
-.uidx-name{font-family:var(--font-serif);font-size:1.35rem;font-weight:600;color:var(--ink);transition:color var(--t-fast)}
-.uidx-link:hover .uidx-thumb{transform:scale(1.08)}
-.uidx-link:hover .uidx-name{color:var(--vinho)}
-@media (max-width:760px){
-  .uidx-inner{margin:0 calc(-1*var(--gutter));padding:0 var(--gutter)}
-  .uidx-intro{display:none}
-  .uidx-link{padding:6px 18px}
-  .uidx-item:first-child .uidx-link{border-left:0;padding-left:0}
-  .uidx-name{font-size:1.2rem}
+/* --- Universos em scroll lateral ------------------------------------------- */
+.ustrip{height:260svh;position:relative;background:var(--papel);overflow-x:clip}
+.ustrip-sticky{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:var(--space-6);overflow:hidden;padding-top:var(--hdr-h)}
+.ustrip-head{display:flex;align-items:center;gap:var(--space-5)}
+.ustrip-intro{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:clamp(1.4rem,1.1rem + 1.2vw,2.2rem);color:var(--vinho);margin:0;white-space:nowrap}
+.ustrip-bar{flex:1;height:1px;background:var(--line);position:relative}
+.ustrip-bar::after{content:"";position:absolute;inset:0;background:var(--ouro);transform-origin:left;transform:scaleX(var(--p,0))}
+.ustrip-track{display:flex;gap:var(--space-5);list-style:none;margin:0;padding:0 var(--gutter);width:max-content;transform:translateX(calc(var(--p,0) * (100vw - 100%)));will-change:transform}
+.ustrip-item{flex:none;width:clamp(260px,28vw,420px)}
+.ustrip-card{position:relative;display:block;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;background:var(--marfim);isolation:isolate}
+.ustrip-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease-out)}
+.ustrip-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,24,30,0) 45%,rgba(43,24,30,.72) 100%)}
+@media (hover:hover){.ustrip-card:hover img{transform:scale(1.04)}}
+.ustrip-cap{position:absolute;left:clamp(16px,2vw,26px);right:clamp(16px,2vw,26px);bottom:clamp(16px,2vw,24px);z-index:1;color:var(--marfim)}
+.ustrip-cap strong{display:block;font-family:var(--font-serif);font-weight:600;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.6rem);line-height:1;margin-bottom:4px}
+.ustrip-cap small{display:block;font-size:.9rem;opacity:.85;max-width:30ch}
+@media (max-width:900px),(prefers-reduced-motion:reduce){
+  .ustrip{height:auto;padding:var(--section) 0}
+  .ustrip-sticky{position:static;height:auto;padding-top:0;overflow:visible}
+  .ustrip-track{width:auto;transform:none;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:none}
+  .ustrip-track::-webkit-scrollbar{display:none}
+  .ustrip-item{width:min(72vw,320px);scroll-snap-align:start}
+  .ustrip-bar::after{transform:none}
 }
 
 /* --- Mosaico de universos (coleções) --------------------------------------- */
