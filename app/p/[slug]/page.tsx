@@ -2,10 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ProductRail from "@/components/ProductRail";
+import ProductImage from "@/components/ProductImage";
 import Tilt from "@/components/ui/Tilt";
 import PdpBar from "@/components/PdpBar";
-import { imagemSrc } from "@/lib/site";
-import { srcSetProduto } from "@/lib/imagens";
 import { getProduct, relatedProducts } from "@/lib/catalog-source";
 import { getCategoriaBySlug } from "@/lib/categorias";
 import { products } from "@/lib/catalog";
@@ -62,7 +61,7 @@ export default async function ProductPage({
                   ))}
                 </div>
               )}
-              <img src={imagemSrc(product.image)} srcSet={srcSetProduto(product.image)} sizes="(min-width: 820px) 50vw, 100vw" alt={product.name} />
+              <ProductImage src={product.image} alt={product.name} sizes="(min-width: 820px) 50vw, 100vw" />
             </Tilt>
 
             <div className="pdp-info">
@@ -71,7 +70,7 @@ export default async function ProductPage({
               {product.preco != null && (
                 <p className="pdp-price">{product.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>
               )}
-              <p className="pdp-lead">{product.shortDesc}</p>
+              {product.shortDesc && <p className="pdp-lead">{product.shortDesc}</p>}
 
               <dl className="pdp-attrs">
                 {category && (
@@ -111,7 +110,7 @@ export default async function ProductPage({
 
           <div className="pdp-desc">
             <h2>Sobre o produto</h2>
-            <p>{product.shortDesc}</p>
+            {product.shortDesc && <p>{product.shortDesc}</p>}
             <p>
               A linha Pierre Alexander une charme francês e alegria brasileira em
               produtos pensados para a sua rotina. Qualidade que conquista pela

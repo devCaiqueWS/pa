@@ -39,7 +39,7 @@ export default function EditorialFeature({ eyebrow, titulo, corpo, imagem, image
           </Reveal>
         )}
         <Reveal className="feat-copy" delay={1}>
-          {eyebrow && <span className="hero-kicker">{eyebrow}</span>}
+          {eyebrow && <span className="eyebrow">{eyebrow}</span>}
           {titulo && (
             <h2>
               <SplitWords texto={titulo} />

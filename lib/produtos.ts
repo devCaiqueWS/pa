@@ -3,12 +3,17 @@
 //
 // Origem: ofc_pierre_produto_bling_espelho (base: bling_id, código, nome, preço)
 // enriquecida por ofc_pc_produtos (descrição, categoria do ERP, tags, imagem).
-// Um produto entra no site quando carrega a TAG configurada (padrão
-// "Agrupamento:Origem") E é da MARCA configurada (padrão "Pierre Alexander",
-// lida da coluna `marca` do ERP ou da tag "Marca:..."). É o mesmo filtro
-// "Tag: Origem + Marca: Pierre Alexander" feito no Bling. A tabela
-// site_produtos guarda a CURADORIA (categoria-de-vitrine, destaque, ordem,
-// visível, imagem caprichada), ligada por bling_id.
+// Um produto entra no site de duas formas:
+//   1. REGRA: carrega a TAG configurada (padrão "Agrupamento:Origem") E é da
+//      MARCA configurada (padrão "Pierre Alexander", lida da coluna `marca` do
+//      ERP ou da tag "Marca:..."). É o mesmo filtro "Tag: Origem + Marca" do
+//      Bling.
+//   2. CURADORIA: tem linha em site_produtos marcada como visível. Serve para
+//      os produtos que existem no espelho mas ainda não têm tag/marca em
+//      ofc_pc_produtos (tabela que depende da sincronização do ERP) — e, ao
+//      contrário, para esconder o que a regra traz mas não deve aparecer.
+// A tabela site_produtos guarda a CURADORIA (categoria-de-vitrine, destaque,
+// ordem, visível, imagem caprichada), ligada por bling_id.
 //
 // Se o ERP estiver indisponível, cai no catálogo estático (lib/catalog).
 // =============================================================================
@@ -135,14 +140,15 @@ async function carregarElegiveis(incluirOcultos: boolean): Promise<ProdutoAdmin[
 
   const rows = await query<Row>(
     `SELECT e.produto_bling_id AS bling_id, e.codigo, e.nome, e.preco,
-            p.descricao_curta, p.categoria AS categoria_erp, p.midia_json,
+            COALESCE(NULLIF(p.descricao_curta, ''), e.descricao_curta) AS descricao_curta,
+            p.categoria AS categoria_erp, p.midia_json,
             s.slug AS s_slug, s.categoria_slug AS s_cat, s.subcategoria_slug AS s_sub,
             s.imagem AS s_imagem, s.destaque AS s_destaque, s.novo AS s_novo,
             s.visivel AS s_visivel, s.ordem AS s_ordem
        FROM ofc_pierre_produto_bling_espelho e
-       JOIN ofc_pc_produtos p ON p.bling_id = e.produto_bling_id
+       LEFT JOIN ofc_pc_produtos p ON p.bling_id = e.produto_bling_id
        LEFT JOIN site_produtos s ON s.bling_id = e.produto_bling_id
-      WHERE p.ativo = 1 AND (${cond})${condMarca}
+      WHERE ((p.ativo = 1 AND (${cond})${condMarca}) OR s.bling_id IS NOT NULL)
       ORDER BY COALESCE(s.ordem, 9999), e.nome`,
     [...tags, ...paramsMarca]
   );
