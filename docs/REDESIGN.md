@@ -17,6 +17,7 @@ como profundidade. Cormorant Garamond nos títulos, Manrope na interface.
 | Packshots dos produtos por código do ERP | `scripts/produtos-imagens.mjs` → `public/assets/img/produtos/` + `lib/produtos-imagens.json` |
 | Helpers de imagem responsiva | `lib/imagens.ts`, `components/ui/Picture.tsx` |
 | Reveal por scroll (IntersectionObserver) | `components/ui/Reveal.tsx` |
+| Inclinação com reflexo (cards, galeria do produto) e barra fixa do produto | `components/ui/Tilt.tsx`, `components/PdpBar.tsx` |
 | Progresso de scroll (`--p`), texto por palavras, contador | `components/ui/ScrollProgress.tsx`, `SplitWords.tsx`, `CountUp.tsx` |
 | Cena sticky tradição → presente | `components/home/HeritageScene.tsx` |
 
@@ -79,7 +80,11 @@ Spec completa em `docs/superpowers/specs/2026-09-14-design-system-maison-design.
 e planos por etapa em `docs/superpowers/plans/`. Etapas: (1) tokens, tipografia
 e chrome — **feita**; (2) home — **feita** (hero em bleed com foco/tom,
 universos em scroll lateral, anel 3D, faixa Original, manifesto vinho-noir);
-(3) categoria e produto; (4) institucionais, blocos do CMS e formulários.
+(3) categoria e produto — **feita** (card sem caixa com packshot em multiply
+sobre marfim e inclinação com reflexo; cabeçalho de categoria com foto 21:9 em
+parallax; filtros com fios; página de produto com preço, ficha em fios, sem
+estrelas e barra fixa no celular); (4) institucionais, blocos do CMS e
+formulários.
 
 Para a home publicada mostrar a faixa Original, adicionar o bloco no painel
 ou rodar `db/site_home_original.sql` uma vez. Os banners existentes ganham
