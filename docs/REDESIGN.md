@@ -12,7 +12,7 @@ como profundidade. Cormorant Garamond nos títulos, Manrope na interface.
 | Design tokens (cores, tipografia, espaço, raios, transições) | `app/globals.css` (`:root`) |
 | Header, footer, botões, cards, listagem, PDP, blocos genéricos do CMS, compatibilidade legada | `app/globals.css` |
 | Seções editoriais da home | `components/home/*.tsx` + `components/home/home.css` |
-| Fontes (next/font, `--font-cormorant` / `--font-manrope`) e metadados/OG/JSON-LD | `app/layout.tsx` |
+| Fontes (next/font, `--font-bodoni` / `--font-manrope`) e metadados/OG/JSON-LD | `app/layout.tsx` |
 | Variantes WebP responsivas | `scripts/optimize-images.mjs` → `public/assets/img/opt/` |
 | Packshots dos produtos por código do ERP | `scripts/produtos-imagens.mjs` → `public/assets/img/produtos/` + `lib/produtos-imagens.json` |
 | Helpers de imagem responsiva | `lib/imagens.ts`, `components/ui/Picture.tsx` |
@@ -71,6 +71,25 @@ linha do tempo só aparece quando preenchida — **nenhum fato foi inventado**.
 - **Newsletter**: o formulário anterior não gravava nada; foi substituído pelos
   canais reais. Para captar e-mails é preciso backend (tabela + action).
 - **TikTok** no rodapé está com `#` no painel e por isso não aparece.
+
+## Design system Maison (set/2026)
+
+Spec completa em `docs/superpowers/specs/2026-09-14-design-system-maison-design.md`
+e planos por etapa em `docs/superpowers/plans/`. Etapas: (1) tokens, tipografia
+e chrome — **feita**; (2) home; (3) categoria e produto; (4) institucionais,
+blocos do CMS e formulários.
+
+Regras rápidas: vermelho `--pierre` só no logotipo e em `.btn-primary`; fundo
+escuro é `--vinho-noir`, nunca preto; ouro (`--ouro`, `--ouro-foil`, classe
+`.foil`) só como fio, numeral ou brilho; eyebrows em Bodoni itálico
+(`.eyebrow`), nunca caixa alta; foco de teclado em ouro; botões com raio 2px e
+sem pulo no hover. Fontes: Bodoni Moda (`--font-bodoni`, peso variável com eixo
+`opsz`) e Manrope (`--font-manrope`), em `app/layout.tsx`. Logo em ouro para
+fundos escuros: `public/assets/img/logo-pierre-gold.png`, gerada por
+`node scripts/logo-ouro.mjs` no espelho local.
+
+Ajuste de conteúdo pendente no painel: "Onde comprar" e "Consultora" têm dois
+blocos "cta" seguidos (duas faixas escuras); remover um em cada página.
 
 ## Movimento
 
