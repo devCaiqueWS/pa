@@ -191,7 +191,7 @@ export default function Header({
               );
             }
             return (
-              <Link key={`botao-${idx}`} className="btn btn-primary hdr-cta" href={it.href} onClick={close}>
+              <Link key={`botao-${idx}`} className="btn btn-carbon hdr-cta" href={it.href} onClick={close}>
                 {it.label}
               </Link>
             );
