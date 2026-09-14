@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { asset, imagemSrc } from "@/lib/site";
+import HeroVideo from "@/components/home/HeroVideo";
 import { IMAGENS, srcSetWebp } from "@/lib/imagens";
 import type { Banner } from "@/lib/banners";
 
@@ -83,6 +84,7 @@ export default function HeroEditorial({ slides }: { slides: Banner[] }) {
 
   if (total === 0) return null;
   const s = slides[atual];
+  const lancamento = s.estilo === "lancamento";
 
   const nav =
     total > 1 ? (
@@ -110,6 +112,8 @@ export default function HeroEditorial({ slides }: { slides: Banner[] }) {
         <span className="hero-nav-count" aria-live="polite">
           {atual + 1} / {total}
         </span>
+        {/* Linha de progresso do slide: recomeça a cada troca (key). */}
+        <span className="hero-progress" key={`p-${atual}`} aria-hidden="true" style={{ animationDuration: `${INTERVALO}ms` }} />
       </div>
     ) : null;
 
@@ -121,47 +125,22 @@ export default function HeroEditorial({ slides }: { slides: Banner[] }) {
         </Link>
       )}
       {s.botao2Texto && (
-        <Link className="link-line" href={s.botao2Link || "/onde-comprar"}>
+        <Link className={s.tom === "claro" ? "link-line" : "btn btn-ghost-light"} href={s.botao2Link || "/onde-comprar"}>
           {s.botao2Texto}
         </Link>
       )}
     </div>
   );
 
-  if (s.estilo === "lancamento") {
-    return (
-      <section
-        ref={secao}
-        className="hero hero-cine"
-        aria-roledescription="carrossel"
-        aria-label="Destaques Pierre Alexander"
-        onMouseEnter={parar}
-        onMouseLeave={iniciar}
-        onFocus={parar}
-        onBlur={iniciar}
-      >
-        <div className="hero-cine-media" key={`m-${atual}`}>
-          <Midia s={s} prioridade={atual === 0} />
-        </div>
-        <div className="container">
-          <div className="hero-cine-copy" key={`c-${atual}`}>
-            {s.mostrarLogo && (
-              <img className="hero-cine-logo" src={asset("/assets/img/logo-pierre-white.png")} alt="Pierre" width={256} height={160} />
-            )}
-            {s.subtitulo && <span className="hero-kicker">{s.subtitulo}</span>}
-            {s.titulo && (atual === 0 ? <h1 className="hero-title">{s.titulo}</h1> : <h2 className="hero-title">{s.titulo}</h2>)}
-            {acoes}
-            {nav}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
+  // Mídia em bleed total; o texto fica do lado oposto ao assunto (data-foco) e
+  // o véu só do lado do texto (data-tom). Estilo "lancamento" = logo + frase +
+  // título, sem botões.
   return (
     <section
       ref={secao}
-      className="hero"
+      className={`hero${lancamento ? " hero-cine" : ""}`}
+      data-foco={s.foco}
+      data-tom={s.tom}
       aria-roledescription="carrossel"
       aria-label="Destaques Pierre Alexander"
       onMouseEnter={parar}
@@ -169,34 +148,34 @@ export default function HeroEditorial({ slides }: { slides: Banner[] }) {
       onFocus={parar}
       onBlur={iniciar}
     >
+      <div className="hero-media" key={`m-${atual}`}>
+        <Midia s={s} prioridade={atual === 0} />
+      </div>
+      <div className="hero-veil" aria-hidden="true" />
       <div className="container hero-inner">
         <div className="hero-copy" key={`c-${atual}`}>
-          {s.eyebrow && <span className="hero-kicker">{s.eyebrow}</span>}
+          {s.mostrarLogo && (
+            <img className="hero-logo" src={asset("/assets/img/logo-pierre-white.png")} alt="Pierre" width={256} height={160} />
+          )}
+          {lancamento
+            ? s.subtitulo && <span className="hero-kicker">{s.subtitulo}</span>
+            : s.eyebrow && <span className="hero-kicker">{s.eyebrow}</span>}
           {s.titulo && (atual === 0 ? <h1 className="hero-title">{s.titulo}</h1> : <h2 className="hero-title">{s.titulo}</h2>)}
-          {s.subtitulo && <p className="hero-lead">{s.subtitulo}</p>}
-          {acoes}
-          <p className="hero-note">Cosméticos, perfumaria e cuidados pessoais. Uma marca brasileira há mais de 45 anos.</p>
+          {!lancamento && s.subtitulo && <p className="hero-lead">{s.subtitulo}</p>}
+          {!lancamento && acoes}
           {nav}
-        </div>
-        <div className="hero-media" key={`m-${atual}`}>
-          <div className="hero-media-frame">
-            <Midia s={s} prioridade={atual === 0} />
-          </div>
         </div>
       </div>
     </section>
   );
 }
 
-// Mídia do slide: vídeo (com poster) ou imagem. A foto padrão da campanha usa
-// as variantes WebP responsivas; imagens do painel usam a URL como veio.
+// Mídia do slide em bleed total. Vídeo só carrega no desktop (HeroVideo); a
+// foto da campanha usa as variantes WebP; imagens do painel vão como vieram.
+// object-position vem do CSS por data-foco.
 function Midia({ s, prioridade }: { s: Banner; prioridade: boolean }) {
   if (s.tipo === "video" && s.video) {
-    return (
-      <video autoPlay muted loop playsInline preload="metadata" poster={s.imagem ? imagemSrc(s.imagem) : undefined} aria-label={s.alt || s.titulo}>
-        <source src={imagemSrc(s.video)} type="video/mp4" />
-      </video>
-    );
+    return <HeroVideo src={imagemSrc(s.video)} poster={s.imagem ? imagemSrc(s.imagem) : undefined} label={s.alt || s.titulo} />;
   }
   if (!s.imagem) return null;
   const campanha = s.imagem === `/assets/img/${IMAGENS.heroCampanha.nome}.jpg`;
@@ -204,7 +183,7 @@ function Midia({ s, prioridade }: { s: Banner; prioridade: boolean }) {
     const img = IMAGENS.heroCampanha;
     return (
       <picture>
-        <source type="image/webp" srcSet={srcSetWebp(img)} sizes="(min-width: 900px) 58vw, 100vw" />
+        <source type="image/webp" srcSet={srcSetWebp(img)} sizes="100vw" />
         <img
           src={imagemSrc(s.imagem)}
           alt={s.alt || s.titulo}
