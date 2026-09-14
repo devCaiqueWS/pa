@@ -4,8 +4,11 @@
 // Origem: ofc_pierre_produto_bling_espelho (base: bling_id, código, nome, preço)
 // enriquecida por ofc_pc_produtos (descrição, categoria do ERP, tags, imagem).
 // Um produto entra no site quando carrega a TAG configurada (padrão
-// "Agrupamento:Origem"). A tabela site_produtos guarda a CURADORIA (categoria-de-
-// vitrine, destaque, ordem, visível, imagem caprichada), ligada por bling_id.
+// "Agrupamento:Origem") E é da MARCA configurada (padrão "Pierre Alexander",
+// lida da coluna `marca` do ERP ou da tag "Marca:..."). É o mesmo filtro
+// "Tag: Origem + Marca: Pierre Alexander" feito no Bling. A tabela
+// site_produtos guarda a CURADORIA (categoria-de-vitrine, destaque, ordem,
+// visível, imagem caprichada), ligada por bling_id.
 //
 // Se o ERP estiver indisponível, cai no catálogo estático (lib/catalog).
 // =============================================================================
@@ -24,10 +27,12 @@ export type ProdutoAdmin = Product & {
 
 // ---- Configuração (tag que marca o produto + mapa categoria ERP->site) ----
 type MapaItem = { categoria: string; sub?: string };
-export type CfgProdutos = { tags: string[]; mapa: Record<string, MapaItem> };
+/** `marca` vazia = não filtra por marca. */
+export type CfgProdutos = { tags: string[]; marca: string; mapa: Record<string, MapaItem> };
 
 export const CFG_PADRAO: CfgProdutos = {
   tags: ["Agrupamento:Origem"],
+  marca: "Pierre Alexander",
   mapa: {
     Desodorante: { categoria: "desodorantes" },
     Perfumaria: { categoria: "perfumaria" },
@@ -57,6 +62,8 @@ export async function getCfgProdutos(): Promise<CfgProdutos> {
     const p = JSON.parse(raw) as Partial<CfgProdutos>;
     return {
       tags: Array.isArray(p.tags) && p.tags.length ? p.tags.map(String) : CFG_PADRAO.tags,
+      // Config antiga (sem o campo) mantém o padrão; string vazia desliga o filtro.
+      marca: typeof p.marca === "string" ? p.marca.trim() : CFG_PADRAO.marca,
       mapa: p.mapa && typeof p.mapa === "object" ? (p.mapa as CfgProdutos["mapa"]) : CFG_PADRAO.mapa,
     };
   } catch {
@@ -118,6 +125,13 @@ async function carregarElegiveis(incluirOcultos: boolean): Promise<ProdutoAdmin[
   const cfg = await getCfgProdutos();
   const tags = cfg.tags.length ? cfg.tags : CFG_PADRAO.tags;
   const cond = tags.map(() => "JSON_SEARCH(p.tags, 'one', ?) IS NOT NULL").join(" OR ");
+  // Marca: coluna `marca` do ERP (fonte principal) ou tag "Marca:<nome>"
+  // (alguns produtos trazem o fabricante na tag e a marca certa na coluna).
+  const marca = cfg.marca.trim();
+  const condMarca = marca
+    ? " AND (LOWER(p.marca) LIKE ? OR JSON_SEARCH(p.tags, 'one', ?) IS NOT NULL OR JSON_SEARCH(p.tags, 'one', ?) IS NOT NULL)"
+    : "";
+  const paramsMarca = marca ? [`%${marca.toLowerCase()}%`, `Marca:${marca}`, `Marca:${marca.toUpperCase()}`] : [];
 
   const rows = await query<Row>(
     `SELECT e.produto_bling_id AS bling_id, e.codigo, e.nome, e.preco,
@@ -128,9 +142,9 @@ async function carregarElegiveis(incluirOcultos: boolean): Promise<ProdutoAdmin[
        FROM ofc_pierre_produto_bling_espelho e
        JOIN ofc_pc_produtos p ON p.bling_id = e.produto_bling_id
        LEFT JOIN site_produtos s ON s.bling_id = e.produto_bling_id
-      WHERE p.ativo = 1 AND (${cond})
+      WHERE p.ativo = 1 AND (${cond})${condMarca}
       ORDER BY COALESCE(s.ordem, 9999), e.nome`,
-    tags
+    [...tags, ...paramsMarca]
   );
 
   const vistos = new Set<string>();

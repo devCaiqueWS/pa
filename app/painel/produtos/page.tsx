@@ -28,8 +28,9 @@ export default async function ProdutosPage() {
     <>
       <h1 style={{ margin: "0 0 .25rem" }}>Produtos</h1>
       <p style={{ color: "#888", margin: "0 0 1.25rem", fontSize: 14, lineHeight: 1.6 }}>
-        A origem é o <strong>ERP (Bling)</strong>. Entram no site os produtos com a <strong>tag</strong> abaixo. Aqui você
-        faz a <strong>curadoria</strong>: categoria-de-vitrine, foto, destaque e visibilidade. Nome e preço vêm do ERP.
+        A origem é o <strong>ERP (Bling)</strong>. Entram no site os produtos com a <strong>tag</strong> e a{" "}
+        <strong>marca</strong> abaixo (o mesmo filtro “Tag + Marca” do Bling). Aqui você faz a <strong>curadoria</strong>:
+        categoria-de-vitrine, foto, destaque e visibilidade. Nome e preço vêm do ERP.
       </p>
 
       {/* Config da tag */}
@@ -43,7 +44,16 @@ export default async function ProdutosPage() {
             Separadas por vírgula. Padrão: <code>Agrupamento:Origem</code>.
           </p>
         </div>
-        <button className="btn btn-primary" type="submit">Salvar tag</button>
+        <div style={{ flex: "1 1 220px" }}>
+          <label style={{ display: "block", fontWeight: 600, marginBottom: 4, fontSize: 13 }}>
+            Marca exigida
+          </label>
+          <input name="marca" defaultValue={cfg.marca} style={{ ...inputStyle, width: "100%" }} />
+          <p style={{ margin: "3px 0 0", fontSize: 12, color: "#999" }}>
+            Campo “Marca” do Bling. Padrão: <code>Pierre Alexander</code>. Vazio = sem filtro de marca.
+          </p>
+        </div>
+        <button className="btn btn-primary" type="submit">Salvar filtro</button>
       </form>
 
       {/* Resumo */}

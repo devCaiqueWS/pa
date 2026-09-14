@@ -37,7 +37,8 @@ export async function salvarProdutoCuradoriaAction(formData: FormData) {
   revalidatePath("/painel/produtos");
 }
 
-// Salva a configuração: quais tags marcam um produto como "do site".
+// Salva a configuração: quais tags marcam um produto como "do site" e a marca
+// exigida (vazia = sem filtro de marca).
 export async function salvarCfgProdutosAction(formData: FormData) {
   await requireRole(EDIT_ROLES, "/painel/produtos");
 
@@ -45,9 +46,10 @@ export async function salvarCfgProdutosAction(formData: FormData) {
     .split(",")
     .map((t) => t.trim())
     .filter(Boolean);
+  const marca = String(formData.get("marca") ?? "").trim();
 
   const atual = await getCfgProdutos();
-  const cfg = { tags: tags.length ? tags : atual.tags, mapa: atual.mapa };
+  const cfg = { tags: tags.length ? tags : atual.tags, marca, mapa: atual.mapa };
 
   await getPool().execute(
     "INSERT INTO site_produtos_cfg (id, config) VALUES (1, ?) ON DUPLICATE KEY UPDATE config = VALUES(config)",
