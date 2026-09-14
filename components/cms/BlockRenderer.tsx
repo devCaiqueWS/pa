@@ -1,219 +1,122 @@
 // =============================================================================
 // RENDERIZADOR DE BLOCOS — transforma cada bloco do CMS no visual do site.
 // Recebe a lista de blocos (já lidos do banco) e desenha um por um conforme o
-// tipo. Estilo comercial (venda direta), consistente com o restante do site.
+// tipo. Os blocos "ricos" da home reaproveitam os componentes editoriais; os
+// genéricos (hero, texto, cta, colunas) usam as classes .cms-* do globals.css.
 // =============================================================================
 import Link from "next/link";
 import type { Bloco } from "@/lib/cms";
-import { asset, BASE_PATH, imagemSrc } from "@/lib/site";
-import HeroCarousel from "@/components/HeroCarousel";
-import CategoryShortcuts from "@/components/CategoryShortcuts";
-import Newsletter from "@/components/Newsletter";
+import { imagemSrc } from "@/lib/site";
+import HeroEditorial from "@/components/home/HeroEditorial";
+import UniverseIndex from "@/components/home/UniverseIndex";
+import UniverseMosaic from "@/components/home/UniverseMosaic";
+import Heritage, { parseMarcos } from "@/components/home/Heritage";
+import EditorialFeature from "@/components/home/EditorialFeature";
+import Manifesto from "@/components/home/Manifesto";
+import Closing from "@/components/home/Closing";
 import ProductRail from "@/components/ProductRail";
 import { featuredProducts, newProducts } from "@/lib/catalog-source";
-import { getCategorias } from "@/lib/categorias";
 import { getBanners } from "@/lib/banners";
 
-const MARROM = "#3a2a1e";
-const AREIA = "#faf9f7";
-const DOURADO = "#b08d57";
+type Cfg = Record<string, string>;
 
-// Resolve o caminho de uma imagem: paths locais ("/assets/...") ganham o
-// basePath; URLs completas (http...) e paths já prefixados passam intactos.
-function img(url?: string): string | undefined {
-  if (!url) return undefined;
-  if (/^https?:\/\//i.test(url) || url.startsWith(BASE_PATH)) return url;
-  if (url.startsWith("/")) return asset(url);
-  return url;
-}
-
-function Botao({
-  texto,
-  link,
-  estilo = "primario",
-}: {
-  texto?: string;
-  link?: string;
-  estilo?: string;
-}) {
+function Botao({ texto, link, estilo = "primario", claro = false }: { texto?: string; link?: string; estilo?: string; claro?: boolean }) {
   if (!texto) return null;
-  const href = link || "#";
+  const href = link || "/onde-comprar";
   const primario = estilo !== "secundario";
-  const style: React.CSSProperties = {
-    display: "inline-block",
-    padding: "0.75rem 1.5rem",
-    borderRadius: 999,
-    fontWeight: 600,
-    textDecoration: "none",
-    fontSize: 15,
-    border: `2px solid ${DOURADO}`,
-    background: primario ? DOURADO : "transparent",
-    color: primario ? "#fff" : DOURADO,
-  };
+  const cls = claro ? (primario ? "btn btn-light" : "btn btn-ghost-light") : primario ? "btn btn-primary" : "btn btn-outline";
   return (
-    <Link href={href} style={style}>
+    <Link href={href} className={cls}>
       {texto}
     </Link>
   );
 }
 
-const container: React.CSSProperties = {
-  maxWidth: 1100,
-  margin: "0 auto",
-  padding: "0 1.25rem",
-};
+function paragrafos(txt?: string) {
+  return (txt || "")
+    .split("\n")
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
 
-function Hero({ c }: { c: Record<string, string> }) {
+function Hero({ c }: { c: Cfg }) {
   const centro = c.alinhamento !== "esquerda";
-  const imagem = img(c.imagem_url);
+  const imagem = imagemSrc(c.imagem_url);
   return (
-    <section
-      style={{
-        background: imagem
-          ? `linear-gradient(rgba(30,20,12,0.45), rgba(30,20,12,0.45)), url(${imagem}) center/cover`
-          : `linear-gradient(135deg, ${MARROM}, #6b4b32)`,
-        color: "#fff",
-        padding: "5rem 0",
-      }}
-    >
-      <div style={{ ...container, textAlign: centro ? "center" : "left", maxWidth: 820 }}>
-        {c.eyebrow && (
-          <p style={{ letterSpacing: 2, textTransform: "uppercase", fontSize: 13, color: "#e9d9c3", margin: "0 0 .75rem" }}>
-            {c.eyebrow}
-          </p>
-        )}
-        {c.titulo && <h1 style={{ fontSize: "2.6rem", margin: "0 0 1rem", lineHeight: 1.15 }}>{c.titulo}</h1>}
-        {c.subtitulo && <p style={{ fontSize: "1.15rem", color: "#f0e7db", margin: "0 0 1.75rem" }}>{c.subtitulo}</p>}
-        <Botao texto={c.botao_texto} link={c.botao_link} estilo={c.botao_estilo} />
+    <section className={`cms-hero${centro ? " center" : ""}`}>
+      {imagem && <img className="cms-hero-bg" src={imagem} alt="" aria-hidden="true" />}
+      <div className="container">
+        {c.eyebrow && <span className="eyebrow">{c.eyebrow}</span>}
+        {c.titulo && <h1>{c.titulo}</h1>}
+        {c.subtitulo && <p className="lead">{c.subtitulo}</p>}
+        <Botao texto={c.botao_texto} link={c.botao_link} estilo={c.botao_estilo} claro />
       </div>
     </section>
   );
 }
 
-function Texto({ c }: { c: Record<string, string> }) {
-  const centro = c.alinhamento === "centro";
+function Texto({ c }: { c: Cfg }) {
   return (
-    <section style={{ padding: "3.5rem 0" }}>
-      <div style={{ ...container, maxWidth: 760, textAlign: centro ? "center" : "left" }}>
-        {c.titulo && <h2 style={{ fontSize: "1.9rem", margin: "0 0 1rem", color: MARROM }}>{c.titulo}</h2>}
-        {c.corpo &&
-          c.corpo.split("\n").filter(Boolean).map((par, i) => (
-            <p key={i} style={{ fontSize: "1.05rem", lineHeight: 1.7, color: "#4a4038", margin: "0 0 1rem" }}>
-              {par}
-            </p>
-          ))}
-      </div>
-    </section>
-  );
-}
-
-function Cta({ c }: { c: Record<string, string> }) {
-  return (
-    <section style={{ background: MARROM, color: "#fff", padding: "3.5rem 0" }}>
-      <div style={{ ...container, textAlign: "center", maxWidth: 760 }}>
-        {c.titulo && <h2 style={{ fontSize: "2rem", margin: "0 0 .75rem" }}>{c.titulo}</h2>}
-        {c.texto && <p style={{ fontSize: "1.1rem", color: "#f0e7db", margin: "0 0 1.75rem" }}>{c.texto}</p>}
-        <Botao texto={c.botao_texto} link={c.botao_link} estilo="primario" />
-      </div>
-    </section>
-  );
-}
-
-function Destaque({ c }: { c: Record<string, string> }) {
-  const imgEsquerda = c.imagem_lado === "esquerda";
-  const tags = (c.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
-  const botoes: { texto?: string; link?: string; estilo: string }[] = [
-    { texto: c.botao1_texto, link: c.botao1_link, estilo: "primario" },
-    { texto: c.botao2_texto, link: c.botao2_link, estilo: "secundario" },
-    { texto: c.botao3_texto, link: c.botao3_link, estilo: "secundario" },
-  ].filter((b) => b.texto);
-
-  const Imagem = c.imagem_url ? (
-    <div style={{ flex: "1 1 320px" }}>
-      <img
-        src={img(c.imagem_url)}
-        alt={c.titulo || ""}
-        style={{ width: "100%", borderRadius: 14, display: "block", objectFit: "cover" }}
-      />
-    </div>
-  ) : null;
-
-  const Texto = (
-    <div style={{ flex: "1 1 340px" }}>
-      {c.eyebrow && (
-        <p style={{ letterSpacing: 2, textTransform: "uppercase", fontSize: 13, color: DOURADO, margin: "0 0 .75rem" }}>
-          {c.eyebrow}
-        </p>
-      )}
-      {c.titulo && <h2 style={{ fontSize: "1.9rem", margin: "0 0 1rem", color: MARROM, lineHeight: 1.2 }}>{c.titulo}</h2>}
-      {c.corpo &&
-        c.corpo.split("\n").filter(Boolean).map((par, i) => (
-          <p key={i} style={{ fontSize: "1.05rem", lineHeight: 1.7, color: "#4a4038", margin: "0 0 1rem" }}>
-            {par}
-          </p>
+    <section className={`cms-texto${c.alinhamento === "centro" ? " center" : ""}`}>
+      <div className="container">
+        {c.titulo && <h2>{c.titulo}</h2>}
+        {paragrafos(c.corpo).map((par, i) => (
+          <p key={i}>{par}</p>
         ))}
-      {tags.length > 0 && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: ".5rem", margin: "0 0 1.25rem" }}>
-          {tags.map((t, i) => (
-            <span key={i} style={{ border: `1px solid ${DOURADO}`, color: MARROM, borderRadius: 999, padding: "3px 12px", fontSize: 13 }}>
-              {t}
-            </span>
-          ))}
-        </div>
-      )}
-      {botoes.length > 0 && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: ".75rem" }}>
-          {botoes.map((b, i) => (
-            <Botao key={i} texto={b.texto} link={b.link} estilo={b.estilo} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-
-  return (
-    <section style={{ padding: "3.5rem 0" }}>
-      <div style={{ ...container, display: "flex", gap: "2.5rem", alignItems: "center", flexWrap: "wrap" }}>
-        {imgEsquerda ? (
-          <>
-            {Imagem}
-            {Texto}
-          </>
-        ) : (
-          <>
-            {Texto}
-            {Imagem}
-          </>
-        )}
       </div>
     </section>
   );
 }
 
-function Colunas({ c }: { c: Record<string, string> }) {
+function Cta({ c }: { c: Cfg }) {
+  return (
+    <section className="cms-cta">
+      <div className="container">
+        {c.titulo && <h2>{c.titulo}</h2>}
+        {c.texto && <p>{c.texto}</p>}
+        <Botao texto={c.botao_texto} link={c.botao_link} claro />
+      </div>
+    </section>
+  );
+}
+
+function Destaque({ c }: { c: Cfg }) {
+  const tags = (c.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
+  return (
+    <EditorialFeature
+      eyebrow={c.eyebrow}
+      titulo={c.titulo}
+      corpo={c.corpo}
+      imagem={c.imagem_url}
+      imagemLado={c.imagem_lado === "direita" ? "direita" : "esquerda"}
+      tags={tags}
+      botoes={[
+        { texto: c.botao1_texto, link: c.botao1_link, estilo: "primario" },
+        { texto: c.botao2_texto, link: c.botao2_link, estilo: "secundario" },
+        { texto: c.botao3_texto, link: c.botao3_link, estilo: "secundario" },
+      ]}
+    />
+  );
+}
+
+function Colunas({ c }: { c: Cfg }) {
   const qtd = Math.min(Math.max(Number(c.qtd) || 3, 2), 6);
   const cols = Array.from({ length: qtd }, (_, i) => i + 1)
-    .map((n) => ({
-      titulo: c[`col${n}_titulo`],
-      texto: c[`col${n}_texto`],
-      link: c[`col${n}_link`],
-    }))
+    .map((n) => ({ titulo: c[`col${n}_titulo`], texto: c[`col${n}_texto`], link: c[`col${n}_link`] }))
     .filter((col) => col.titulo || col.texto);
 
   return (
-    <section style={{ padding: "3.5rem 0", background: AREIA }}>
-      <div style={container}>
-        {c.titulo && (
-          <h2 style={{ fontSize: "1.9rem", margin: "0 0 2rem", color: MARROM, textAlign: "center" }}>{c.titulo}</h2>
-        )}
-        <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fit, minmax(220px, 1fr))`, gap: "1.5rem" }}>
+    <section className="cms-colunas">
+      <div className="container">
+        {c.titulo && <h2>{c.titulo}</h2>}
+        <div className="cms-colunas-grid">
           {cols.map((col, i) => (
-            <div key={i} style={{ background: "#fff", border: "1px solid #eee", borderRadius: 12, padding: "1.5rem" }}>
-              {col.titulo && <h3 style={{ margin: "0 0 .5rem", color: MARROM }}>{col.titulo}</h3>}
-              {col.texto && <p style={{ margin: "0 0 .75rem", color: "#5a5048", lineHeight: 1.6 }}>{col.texto}</p>}
+            <div key={i} className="cms-col">
+              {col.titulo && <h3>{col.titulo}</h3>}
+              {col.texto && <p>{col.texto}</p>}
               {col.link && (
-                <Link href={col.link} style={{ color: DOURADO, fontWeight: 600, textDecoration: "none" }}>
-                  Saiba mais →
+                <Link href={col.link} className="link-line">
+                  Saiba mais
                 </Link>
               )}
             </div>
@@ -224,33 +127,24 @@ function Colunas({ c }: { c: Record<string, string> }) {
   );
 }
 
-function Produtos({ c }: { c: Record<string, string> }) {
+function Produtos({ c }: { c: Cfg }) {
   return (
-    <section style={{ padding: "3.5rem 0" }}>
-      <div style={{ ...container, textAlign: "center" }}>
-        {c.titulo && <h2 style={{ fontSize: "1.9rem", margin: "0 0 .5rem", color: MARROM }}>{c.titulo}</h2>}
-        {c.subtitulo && <p style={{ color: "#7a6f64", margin: "0 0 2rem" }}>{c.subtitulo}</p>}
-        <div
-          style={{
-            border: `2px dashed ${DOURADO}`,
-            borderRadius: 12,
-            padding: "2.5rem",
-            color: "#7a6f64",
-            maxWidth: 600,
-            margin: "0 auto",
-          }}
-        >
-          Vitrine de produtos — conecta ao módulo de <strong>Produtos</strong>, que entra na próxima etapa.
+    <section className="cms-produtos">
+      <div className="container">
+        {c.titulo && <h2>{c.titulo}</h2>}
+        {c.subtitulo && <p className="lead" style={{ marginInline: "auto" }}>{c.subtitulo}</p>}
+        <div className="cms-produtos-vazio">
+          Vitrine de produtos — use o bloco <strong>Vitrine de produtos (automática)</strong> para puxar o catálogo.
         </div>
       </div>
     </section>
   );
 }
 
-// --- Blocos "ricos" da home: reaproveitam componentes prontos do site --------
+// --- Blocos "ricos" da home ---------------------------------------------------
 
 // Vitrine automática: puxa produtos do catálogo (destaques ou novidades).
-async function Vitrine({ c }: { c: Record<string, string> }) {
+async function Vitrine({ c }: { c: Cfg }) {
   const fonte = c.fonte === "novos" ? "novos" : "destaques";
   const produtos = fonte === "novos" ? await newProducts(8) : await featuredProducts(8);
   return (
@@ -263,76 +157,57 @@ async function Vitrine({ c }: { c: Record<string, string> }) {
   );
 }
 
-// Grade de coleções por categoria (mesma taxonomia do menu/atalhos).
-async function Colecoes({ c }: { c: Record<string, string> }) {
-  const categorias = await getCategorias();
-  return (
-    <section className="section section-soft">
-      <div className="container">
-        <div className="sec-head">
-          <h2>{c.titulo || "Explore por categoria"}</h2>
-          {c.subtitulo && <p>{c.subtitulo}</p>}
-        </div>
-        <div className="coll-grid">
-          {categorias.map((cat) => (
-            <Link key={cat.slug} className="coll-card" href={`/c/${cat.slug}`}>
-              <div className="coll-media">
-                <img src={imagemSrc(cat.image)} alt={cat.name} loading="lazy" />
-              </div>
-              <div className="coll-body">
-                <h3>{cat.name}</h3>
-                <p>{cat.tagline}</p>
-                <span className="coll-link">Ver produtos →</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Carrossel de topo: os slides vêm do painel (/painel/banners).
+// Hero de topo: os slides vêm do painel (/painel/banners).
 async function Carrossel() {
   const slides = await getBanners();
-  return <HeroCarousel slides={slides} />;
+  return <HeroEditorial slides={slides} />;
 }
 
 function RenderBloco({ bloco }: { bloco: Bloco }) {
+  const c = bloco.config;
   switch (bloco.tipo) {
     case "hero":
-      return <Hero c={bloco.config} />;
+      return <Hero c={c} />;
     case "texto":
-      return <Texto c={bloco.config} />;
+      return <Texto c={c} />;
     case "destaque":
-      return <Destaque c={bloco.config} />;
+      return <Destaque c={c} />;
     case "cta":
-      return <Cta c={bloco.config} />;
+      return <Cta c={c} />;
     case "colunas":
-      return <Colunas c={bloco.config} />;
+      return <Colunas c={c} />;
     case "produtos":
-      return <Produtos c={bloco.config} />;
+      return <Produtos c={c} />;
     case "carrossel":
       return <Carrossel />;
     case "vitrine":
-      return <Vitrine c={bloco.config} />;
+      return <Vitrine c={c} />;
     case "atalhos":
-      return <CategoryShortcuts />;
+      return <UniverseIndex />;
     case "colecoes":
-      return <Colecoes c={bloco.config} />;
+      return <UniverseMosaic titulo={c.titulo} subtitulo={c.subtitulo} />;
+    case "historia":
+      return <Heritage titulo={c.titulo} corpo={c.corpo} marcos={parseMarcos(c.marcos)} />;
+    case "manifesto":
+      return <Manifesto titulo={c.titulo} texto={c.texto} botaoTexto={c.botao_texto} botaoLink={c.botao_link} />;
     case "newsletter":
-      return <Newsletter />;
+      return <Closing />;
     default:
       return null;
   }
 }
 
-export default function BlockRenderer({ blocos }: { blocos: Bloco[] }) {
+export default function BlockRenderer({ blocos, home = false }: { blocos: Bloco[]; home?: boolean }) {
   return (
     <>
-      {blocos.map((b) => (
-        <RenderBloco key={b.id} bloco={b} />
-      ))}
+      {blocos.map((b) => {
+        // Na home, a "faixa consultora" (bloco cta) vira o manifesto em vermelho
+        // Pierre; nas demais páginas o cta continua sendo a faixa simples.
+        if (home && b.tipo === "cta") {
+          return <Manifesto key={b.id} titulo={b.config.titulo} texto={b.config.texto} botaoTexto={b.config.botao_texto} botaoLink={b.config.botao_link} />;
+        }
+        return <RenderBloco key={b.id} bloco={b} />;
+      })}
     </>
   );
 }

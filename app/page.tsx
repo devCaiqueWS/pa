@@ -1,12 +1,13 @@
-import Link from "next/link";
-import HeroCarousel from "@/components/HeroCarousel";
-import CategoryShortcuts from "@/components/CategoryShortcuts";
+import HeroEditorial from "@/components/home/HeroEditorial";
+import UniverseIndex from "@/components/home/UniverseIndex";
+import UniverseMosaic from "@/components/home/UniverseMosaic";
+import Heritage from "@/components/home/Heritage";
+import EditorialFeature from "@/components/home/EditorialFeature";
+import Manifesto from "@/components/home/Manifesto";
+import Closing from "@/components/home/Closing";
 import ProductRail from "@/components/ProductRail";
-import Newsletter from "@/components/Newsletter";
 import BlockRenderer from "@/components/cms/BlockRenderer";
-import { asset, imagemSrc } from "@/lib/site";
 import { featuredProducts, newProducts } from "@/lib/catalog-source";
-import { getCategorias } from "@/lib/categorias";
 import { getBanners } from "@/lib/banners";
 import { getTextosMap } from "@/lib/content";
 import { getPaginaPublicada, getBlocos } from "@/lib/cms";
@@ -22,115 +23,54 @@ export default async function HomePage() {
   if (pagina) {
     const blocos = await getBlocos(pagina.id, true);
     if (blocos.length > 0) {
-      return <BlockRenderer blocos={blocos} />;
+      return <BlockRenderer blocos={blocos} home />;
     }
   }
   return <HomeClassica />;
 }
 
+// Mesma narrativa da home do CMS, com os textos editáveis de site_textos:
+// hero → universos → história → mais vendidos → destaque → categorias →
+// novidades → manifesto → encerramento.
 async function HomeClassica() {
-  const [destaques, novos, t, categorias, banners] = await Promise.all([
-    featuredProducts(8),
-    newProducts(8),
-    getTextosMap(),
-    getCategorias(),
-    getBanners(),
-  ]);
+  const [destaques, novos, t, banners] = await Promise.all([featuredProducts(8), newProducts(8), getTextosMap(), getBanners()]);
 
   return (
     <>
-      <HeroCarousel slides={banners} />
-
-      {/* Atalhos de categoria — padrão Natura/Boticário */}
-      <CategoryShortcuts />
-
-      {/* Vitrine: mais vendidos */}
+      <HeroEditorial slides={banners} />
+      <UniverseIndex />
+      <Heritage />
       <ProductRail
         title={t.home_destaques_titulo ?? "Mais vendidos"}
         subtitle={t.home_destaques_subtitulo ?? "Os favoritos que conquistaram o Brasil."}
         products={destaques}
         seeAllHref="/c/desodorantes"
       />
-
-      {/* Faixa de marca */}
-      <section className="section section-soft">
-        <div className="container splitf">
-          <div className="splitf-img">
-            <img
-              src={asset("/assets/img/desodorantes-varios.jpg")}
-              alt="Linha de desodorantes Pierre"
-            />
-          </div>
-          <div className="splitf-copy">
-            <span className="eyebrow">{t.home_marca_eyebrow ?? "Confiança diária"}</span>
-            <h2>
-              {t.home_marca_titulo ??
-                "A Pierre começa no desodorante. Mas não termina nele."}
-            </h2>
-            <p>
-              {t.home_marca_texto ??
-                "O desodorante abriu caminho porque resolve uma necessidade real. A partir dessa confiança, a marca cresce para fragrâncias, cuidado facial, banho, casa e muito mais."}
-            </p>
-            <Link className="btn btn-primary" href="/c/desodorantes">
-              Conhecer a linha
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Vitrine: novidades */}
+      <EditorialFeature
+        eyebrow={t.home_marca_eyebrow ?? "Confiança diária"}
+        titulo={t.home_marca_titulo ?? "A Pierre começa no desodorante. Mas não termina nele."}
+        corpo={
+          t.home_marca_texto ??
+          "O desodorante abriu caminho porque resolve uma necessidade real. A partir dessa confiança, a marca cresce para fragrâncias, cuidado facial, banho, casa e muito mais."
+        }
+        imagem="/assets/img/desodorantes-varios.jpg"
+        imagemAlt="Linha de desodorantes Pierre"
+        botoes={[{ texto: "Conhecer a linha", link: "/c/desodorantes", estilo: "primario" }]}
+      />
+      <UniverseMosaic titulo={t.home_categorias_titulo ?? "Explore por categoria"} subtitulo={t.home_categorias_subtitulo ?? "Escolha pelo momento, pelo cuidado ou pelo desejo."} />
       <ProductRail
         title={t.home_novidades_titulo ?? "Novidades & Lançamentos"}
         subtitle={t.home_novidades_subtitulo ?? "O que está chegando na Pierre."}
         products={novos}
         seeAllHref="/c/cuidado-facial"
       />
-
-      {/* Coleções por categoria */}
-      <section className="section section-soft">
-        <div className="container">
-          <div className="sec-head">
-            <h2>{t.home_categorias_titulo ?? "Explore por categoria"}</h2>
-            <p>{t.home_categorias_subtitulo ?? "Escolha pelo momento, pelo cuidado ou pelo desejo."}</p>
-          </div>
-          <div className="coll-grid">
-            {categorias.map((c) => (
-              <Link key={c.slug} className="coll-card" href={`/c/${c.slug}`}>
-                <div className="coll-media">
-                  <img src={imagemSrc(c.image)} alt={c.name} loading="lazy" />
-                </div>
-                <div className="coll-body">
-                  <h3>{c.name}</h3>
-                  <p>{c.tagline}</p>
-                  <span className="coll-link">Ver produtos →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Faixa consultora */}
-      <section className="section">
-        <div className="container consultband">
-          <div className="consultband-copy">
-            <span className="eyebrow">{t.home_consultora_eyebrow ?? "Pierre Business"}</span>
-            <h2>
-              {t.home_consultora_titulo ??
-                "Venda Pierre. Cresça com uma marca reconhecida."}
-            </h2>
-            <p>
-              {t.home_consultora_texto ??
-                "Treinamento, campanhas prontas, metas, níveis e acompanhamento. Aqui a Pierre compartilha o sucesso com você."}
-            </p>
-            <Link className="btn btn-light" href="/consultora">
-              Quero ser consultora
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <Newsletter />
+      <Manifesto
+        titulo={t.home_consultora_titulo ?? "Venda Pierre. Cresça com uma marca reconhecida."}
+        texto={t.home_consultora_texto ?? "Treinamento, campanhas prontas, metas, níveis e acompanhamento. Aqui a Pierre compartilha o sucesso com você."}
+        botaoTexto="Quero ser consultora"
+        botaoLink="/consultora"
+      />
+      <Closing />
     </>
   );
 }

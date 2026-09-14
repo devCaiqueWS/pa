@@ -35,3 +35,9 @@ next-env.d.ts
 # dumps de banco com dados reais (não versionar) — schema/seed pode ir
 db/backup_wordpress_pre_drop.sql
 dev-server.log
+
+# fontes brutas de imagens (originais pesados; o site usa public/assets/img/produtos/*.webp)
+/fontes/
+
+# artefatos do navegador de testes (Playwright MCP)
+.playwright-mcp/

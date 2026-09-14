@@ -12,6 +12,7 @@
 import { query } from "@/lib/db";
 import { slugify } from "@/lib/cms";
 import { products as PRODUTOS_ESTATICOS, type Product } from "@/lib/catalog";
+import { imagemLocalProduto } from "@/lib/imagens";
 
 export type ProdutoAdmin = Product & {
   blingId: number;
@@ -154,7 +155,8 @@ async function carregarElegiveis(incluirOcultos: boolean): Promise<ProdutoAdmin[
       categorySlug: categoria,
       subcategorySlug: sub || undefined,
       shortDesc: textoLimpo(r.descricao_curta),
-      image: r.s_imagem || imagemDoBling(r.midia_json) || "",
+      // Prioridade: curadoria do painel > packshot local (por código) > foto do Bling.
+      image: r.s_imagem || imagemLocalProduto(r.codigo) || imagemDoBling(r.midia_json) || "",
       preco: Number.isFinite(preco) ? preco : undefined,
       featured: r.s_destaque === 1,
       isNew: r.s_novo === 1,

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ProductRail from "@/components/ProductRail";
 import { imagemSrc } from "@/lib/site";
+import { srcSetProduto } from "@/lib/imagens";
 import { getProduct, relatedProducts } from "@/lib/catalog-source";
 import { getCategoriaBySlug } from "@/lib/categorias";
 import { products } from "@/lib/catalog";
@@ -59,7 +60,7 @@ export default async function ProductPage({
                   ))}
                 </div>
               )}
-              <img src={imagemSrc(product.image)} alt={product.name} />
+              <img src={imagemSrc(product.image)} srcSet={srcSetProduto(product.image)} sizes="(min-width: 820px) 50vw, 100vw" alt={product.name} />
             </div>
 
             <div className="pdp-info">

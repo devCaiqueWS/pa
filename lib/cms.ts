@@ -27,6 +27,8 @@ export type BlocoTipo =
   | "vitrine"
   | "atalhos"
   | "colecoes"
+  | "historia"
+  | "manifesto"
   | "newsletter";
 
 export type Pagina = {
@@ -239,9 +241,37 @@ export const CATALOGO: DefBloco[] = [
     ],
   },
   {
+    tipo: "historia",
+    label: "História (45+ anos)",
+    descricao:
+      "Seção institucional: o número 45+ como elemento gráfico, a narrativa da marca, linha do tempo opcional e a cena tradição → presente controlada pelo scroll.",
+    campos: [
+      { name: "titulo", label: "Título", tipo: "text", ajuda: "Vazio = usa o título institucional padrão." },
+      { name: "corpo", label: "Texto (uma linha em branco separa parágrafos)", tipo: "textarea", ajuda: "Vazio = usa o texto da página Sobre." },
+      {
+        name: "marcos",
+        label: "Linha do tempo (uma por linha: ano | texto)",
+        tipo: "textarea",
+        ajuda: "Ex.: 1979 | Nasce a Pierre Alexander. Deixe vazio para não exibir.",
+      },
+    ],
+  },
+  {
+    tipo: "manifesto",
+    label: "Manifesto (faixa vermelha)",
+    descricao: "Frase editorial grande em vermelho Pierre, texto de apoio e um botão. Na home, o bloco 'Chamada com botão' já é exibido assim.",
+    campos: [
+      { name: "titulo", label: "Frase principal", tipo: "text" },
+      { name: "texto", label: "Texto de apoio", tipo: "textarea" },
+      { name: "botao_texto", label: "Texto do botão", tipo: "text" },
+      { name: "botao_link", label: "Link do botão", tipo: "text" },
+    ],
+  },
+  {
     tipo: "newsletter",
-    label: "Cadastro de newsletter",
-    descricao: "Faixa de captura de e-mail (visual). Sem campos por enquanto.",
+    label: "Encerramento: canais da marca",
+    descricao:
+      "Faixa final com os canais reais (WhatsApp da faixa do topo, redes sociais do rodapé, onde comprar e seja consultora). Sem campos — os dados vêm do painel.",
     campos: [],
   },
 ];

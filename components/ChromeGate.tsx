@@ -44,9 +44,12 @@ export default function ChromeGate({
 
   return (
     <>
+      <a className="skip-link" href="#conteudo">
+        Ir para o conteúdo
+      </a>
       <TopStrip mensagens={topStrip} />
-      <Header logoUrl={headerLogo} menu={menu} />
-      {children}
+      <Header logoUrl={headerLogo} menu={menu} transparent={pathname === "/"} />
+      <main id="conteudo">{children}</main>
       <Footer data={footer} />
       <FloatingBits />
     </>
