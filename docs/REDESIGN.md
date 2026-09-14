@@ -27,13 +27,14 @@ bloco agora renderiza um componente editorial (`components/cms/BlockRenderer.tsx
 
 | Bloco no painel | Componente |
 | --- | --- |
-| Carrossel de topo | `HeroEditorial` (slides de `/painel/banners`; estilo *lançamento* vira cena cinematográfica) |
-| Atalhos de categoria | `UniverseIndex` (linha tipográfica com as categorias) |
-| Vitrine de produtos (automática) | `ProductRail` (produtos do ERP; trilho com snap no celular) |
+| Carrossel de topo | `HeroEditorial` (slides de `/painel/banners`, mídia em bleed; campos *foco* e *tom* definem o lado do texto e o véu; vídeo só no desktop) |
+| Atalhos de categoria | `UniverseStrip` (universos em scroll lateral preso; trilho no celular) |
+| Vitrine de produtos (automática) | `ProductRail` (grade com entrada 3D ou **anel 3D** girado pelo scroll, campo *apresentação*; trilho no celular) |
 | Destaque com imagem | `EditorialFeature` |
-| **História (45+ anos)** — novo | `Heritage` + `HeritageScene` |
+| **História (45+ anos)** | `Heritage` + `HeritageScene` |
+| **Faixa Original** — novo (`original`) | `OriginalBand` (arte em bleed inclinada com o scroll; SQL opcional `db/site_home_original.sql`) |
 | Coleções por categoria | `UniverseMosaic` |
-| Chamada com botão (na home) / **Manifesto** — novo | `Manifesto` (faixa vermelha) |
+| Chamada com botão (na home) / **Manifesto** | `Manifesto` (faixa vinho-noir, marquee em ouro, botão vermelho) |
 | Encerramento: canais da marca (ex-newsletter) | `Closing` (WhatsApp da faixa do topo, redes do rodapé, onde comprar, seja consultora) |
 
 Sem página `home` no CMS, `app/page.tsx` monta a mesma narrativa com os textos
@@ -76,8 +77,14 @@ linha do tempo só aparece quando preenchida — **nenhum fato foi inventado**.
 
 Spec completa em `docs/superpowers/specs/2026-09-14-design-system-maison-design.md`
 e planos por etapa em `docs/superpowers/plans/`. Etapas: (1) tokens, tipografia
-e chrome — **feita**; (2) home; (3) categoria e produto; (4) institucionais,
-blocos do CMS e formulários.
+e chrome — **feita**; (2) home — **feita** (hero em bleed com foco/tom,
+universos em scroll lateral, anel 3D, faixa Original, manifesto vinho-noir);
+(3) categoria e produto; (4) institucionais, blocos do CMS e formulários.
+
+Para a home publicada mostrar a faixa Original, adicionar o bloco no painel
+ou rodar `db/site_home_original.sql` uma vez. Os banners existentes ganham
+`foco: centro` e `tom: escuro` por padrão; ajuste em /painel/banners (a foto
+das gerações fica melhor com foco à direita e tom claro).
 
 Regras rápidas: vermelho `--pierre` só no logotipo e em `.btn-primary`; fundo
 escuro é `--vinho-noir`, nunca preto; ouro (`--ouro`, `--ouro-foil`, classe
