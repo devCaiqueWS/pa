@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Bodoni_Moda, Manrope } from "next/font/google";
 import "./globals.css";
 import "@/components/home/home.css";
 import ChromeGate from "@/components/ChromeGate";
@@ -8,14 +8,15 @@ import { getSiteConfig } from "@/lib/site-config";
 import { getMenu } from "@/lib/menu";
 import { asset, BASE_PATH } from "@/lib/site";
 
-// Tipografia editorial: serifa nos títulos, sans nos textos e na interface.
-// Poucos pesos para manter o carregamento leve; font-display: swap.
-const cormorant = Cormorant_Garamond({
+// Tipografia editorial: Bodoni Moda (Didone de alto contraste, com tamanhos
+// ópticos) nos títulos; Manrope na interface. Poucos pesos; font-display swap.
+const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
+  axes: ["opsz"],
   display: "swap",
-  variable: "--font-cormorant",
+  variable: "--font-bodoni",
 });
 const manrope = Manrope({
   subsets: ["latin"],
@@ -82,7 +83,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
 
   return (
-    <html lang="pt-BR" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="pt-BR" className={`${bodoni.variable} ${manrope.variable}`}>
       <body>
         <script
           type="application/ld+json"
