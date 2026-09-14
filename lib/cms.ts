@@ -222,6 +222,15 @@ export const CATALOGO: DefBloco[] = [
           { valor: "novos", label: "Novidades (lançamentos)" },
         ],
       },
+      {
+        name: "apresentacao",
+        label: "Apresentação",
+        tipo: "select",
+        opcoes: [
+          { valor: "grade", label: "Grade (padrão)" },
+          { valor: "anel", label: "Anel 3D girado pelo scroll (só no desktop; no celular vira trilho)" },
+        ],
+      },
       { name: "ver_todos_link", label: "Link do 'Ver tudo' (opcional)", tipo: "text", ajuda: "Ex.: /c/desodorantes" },
     ],
   },

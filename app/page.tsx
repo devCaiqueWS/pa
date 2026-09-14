@@ -45,6 +45,7 @@ async function HomeClassica() {
         subtitle={t.home_destaques_subtitulo ?? "Os favoritos que conquistaram o Brasil."}
         products={destaques}
         seeAllHref="/c/desodorantes"
+        apresentacao="anel"
       />
       <EditorialFeature
         eyebrow={t.home_marca_eyebrow ?? "Confiança diária"}

@@ -20,8 +20,12 @@ export const PRESO: Faixa = { inicio: 0, fim: 1 };
 // scroll enquanto o elemento está perto da tela; mede em requestAnimationFrame.
 // Com prefers-reduced-motion não faz nada (o CSS já trata --p ausente como 0
 // e/ou desliga o efeito).
-export function useScrollProgress(ref: RefObject<HTMLElement | null>, faixa: Faixa = VIAGEM) {
+// `onChange` (opcional) recebe o mesmo p a cada medição — útil quando um
+// componente precisa reagir em JS (ex.: escolher o card da frente no anel).
+export function useScrollProgress(ref: RefObject<HTMLElement | null>, faixa: Faixa = VIAGEM, onChange?: (p: number) => void) {
   const { inicio, fim } = faixa;
+  const cb = useRef(onChange);
+  cb.current = onChange;
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -38,6 +42,7 @@ export function useScrollProgress(ref: RefObject<HTMLElement | null>, faixa: Fai
       const andado = inicio * vh - r.top;
       const p = total > 0 ? Math.min(1, Math.max(0, andado / total)) : 0;
       el.style.setProperty("--p", p.toFixed(4));
+      cb.current?.(p);
     };
     const onScroll = () => {
       if (!ativo || raf) return;

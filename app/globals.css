@@ -483,6 +483,27 @@ textarea{resize:vertical}
 .rail-3d{perspective:1400px;overflow-x:clip}
 .rail-3d .pcard{opacity:0;transform:rotateY(-24deg) translateX(56px) translateZ(-80px);transform-origin:left center;transition:opacity .6s var(--ease),transform 1.05s var(--ease-out);transition-delay:calc(var(--i,0) * 90ms)}
 .rail-3d.is-in .pcard{opacity:1;transform:none}
+/* Vitrine em anel 3D: cilindro de cards girado pelo scroll (--p). */
+.ring-section{padding-bottom:0}
+.ring{height:240svh;position:relative;overflow-x:clip;--r:clamp(380px,32vw,600px);--w:clamp(200px,19vw,280px)}
+.ring-sticky{position:sticky;top:0;height:100svh;display:grid;place-items:center;overflow:hidden;perspective:1600px;padding-top:calc(var(--hdr-h) + 56px)}
+.ring-head{position:absolute;top:calc(var(--hdr-h) + var(--space-5));left:var(--gutter);right:var(--gutter);z-index:2}
+.ring-head .rail-head{margin-bottom:0}
+.ring-stage{position:relative;width:var(--w);aspect-ratio:4/6;transform-style:preserve-3d;transform:rotateY(calc(-1 * var(--p,0) * (360deg / var(--n,8)) * (var(--n,8) - 1)));will-change:transform}
+.ring-card{position:absolute;inset:0;transform:rotateY(calc(var(--i,0) * (360deg / var(--n,8)))) translateZ(var(--r));backface-visibility:hidden;transition:opacity .4s var(--ease),scale .5s var(--ease-out);opacity:.55;scale:.92}
+.ring-card[data-frente="true"]{opacity:1;scale:1.04;z-index:1}
+.ring-card[data-frente="true"] .pcard-media{box-shadow:var(--shadow-3d)}
+.ring-card[data-frente="true"] .pcard-media::after{content:"";position:absolute;inset:0;background:var(--ouro-foil);opacity:.1;mix-blend-mode:screen;pointer-events:none}
+@media (max-width:900px),(prefers-reduced-motion:reduce){
+  .ring{height:auto;--r:0px}
+  .ring-sticky{position:static;height:auto;display:block;perspective:none;overflow:visible;padding-top:0}
+  .ring-head{position:static;padding:0 var(--gutter);margin-bottom:var(--space-6)}
+  .ring-head .rail-head{margin-bottom:0}
+  .ring-stage{width:100%;aspect-ratio:auto;transform:none;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);padding:4px var(--gutter) 18px;scrollbar-width:none}
+  .ring-stage::-webkit-scrollbar{display:none}
+  .ring-card{position:static;transform:none;flex:0 0 min(72vw,300px);scroll-snap-align:start;opacity:1;scale:1}
+  .ring-card[data-frente="true"] .pcard-media{box-shadow:none}
+}
 @media (prefers-reduced-motion:reduce){
   .split-w{overflow:visible}
   .split-w>span,.is-in .split-w>span{transform:none;opacity:1;transition:none}

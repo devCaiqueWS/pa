@@ -153,6 +153,7 @@ async function Vitrine({ c }: { c: Cfg }) {
       subtitle={c.subtitulo || undefined}
       products={produtos}
       seeAllHref={c.ver_todos_link || undefined}
+      apresentacao={c.apresentacao === "anel" ? "anel" : "grade"}
     />
   );
 }
