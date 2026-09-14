@@ -18,6 +18,8 @@ function bannerVazio(): Banner {
     alt: "",
     estilo: "padrao",
     mostrarLogo: false,
+    foco: "centro",
+    tom: "escuro",
     eyebrow: "",
     titulo: "",
     subtitulo: "",
@@ -223,6 +225,25 @@ export default function BannersEditor({
                       />
                       Mostrar a logo Pierre (branca) acima do texto
                     </label>
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".75rem", marginBottom: ".6rem" }}>
+                  <div>
+                    <label style={labelStyle}>Onde está o assunto da foto</label>
+                    <select style={inputStyle} value={b.foco} onChange={(e) => patch(b.id, "foco", e.target.value as Banner["foco"])}>
+                      <option value="esquerda">À esquerda (texto fica à direita)</option>
+                      <option value="centro">No centro (texto embaixo, à esquerda)</option>
+                      <option value="direita">À direita (texto fica à esquerda)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Cor do texto</label>
+                    <select style={inputStyle} value={b.tom} onChange={(e) => patch(b.id, "tom", e.target.value as Banner["tom"])}>
+                      <option value="escuro">Texto claro sobre véu escuro (fotos escuras ou coloridas)</option>
+                      <option value="claro">Texto escuro sobre véu marfim (fotos claras)</option>
+                    </select>
+                    <p style={ajudaStyle}>O véu é um degradê suave só do lado do texto; a foto continua inteira.</p>
                   </div>
                 </div>
 

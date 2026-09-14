@@ -21,6 +21,11 @@ export type Banner = {
   // "lancamento" = versão centrada/sóbria usada nos teasers (ex.: Radicaline).
   estilo: "padrao" | "lancamento";
   mostrarLogo: boolean; // logo Pierre branca acima do texto
+  // Direção de arte do slide: onde está o assunto da foto (o texto fica do
+  // lado oposto) e se o texto é claro (sobre véu escuro) ou escuro (sobre véu
+  // marfim). Padrões: centro + escuro.
+  foco: "esquerda" | "centro" | "direita";
+  tom: "claro" | "escuro";
   eyebrow: string;
   titulo: string;
   subtitulo: string;
@@ -40,6 +45,8 @@ export function bannerVazio(): Banner {
     alt: "",
     estilo: "padrao",
     mostrarLogo: false,
+    foco: "centro",
+    tom: "escuro",
     eyebrow: "",
     titulo: "",
     subtitulo: "",
@@ -57,6 +64,8 @@ export const BANNERS_PADRAO: Banner[] = [
     ...bannerVazio(),
     imagem: "/assets/img/inigualavel-hero.jpg",
     alt: "Original e Inigualável — A tradição Pierre Alexander que passa de geração em geração",
+    foco: "direita",
+    tom: "claro",
     eyebrow: "Original e Inigualável",
     titulo: "A tradição que passa de geração em geração.",
     subtitulo: "O desodorante em creme que une mães, filhas e avós há décadas.",
@@ -71,6 +80,8 @@ export const BANNERS_PADRAO: Banner[] = [
     video: "/assets/video/teaser-radicaline.mp4",
     imagem: "/assets/img/teaser-radicaline-poster.jpg",
     alt: "Radicaline — um novo cuidado facial está chegando",
+    foco: "centro",
+    tom: "escuro",
     estilo: "lancamento",
     mostrarLogo: true,
     subtitulo: "Um novo cuidado facial está chegando.",
@@ -93,6 +104,8 @@ function normalizar(x: unknown): Banner | null {
     alt: texto(o.alt),
     estilo: o.estilo === "lancamento" ? "lancamento" : "padrao",
     mostrarLogo: o.mostrarLogo === true || o.mostrarLogo === "true",
+    foco: o.foco === "esquerda" || o.foco === "direita" ? o.foco : "centro",
+    tom: o.tom === "claro" ? "claro" : "escuro",
     eyebrow: texto(o.eyebrow),
     titulo: texto(o.titulo),
     subtitulo: texto(o.subtitulo),
