@@ -35,7 +35,9 @@ export default function Reveal({ children, as: Tag = "div", className = "", dela
           }
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
+      // threshold 0: dispara ao primeiro pixel dentro da faixa (um elemento
+      // mais alto que a tela nunca chegaria a 12% visível).
+      { rootMargin: "0px 0px -10% 0px", threshold: 0 }
     );
     io.observe(el);
     return () => io.disconnect();

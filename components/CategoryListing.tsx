@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import ProductCard from "@/components/ProductCard";
+import Reveal from "@/components/ui/Reveal";
 import type { Category, Product } from "@/lib/catalog";
 
 type SortKey = "destaque" | "az" | "za" | "novidades";
@@ -224,11 +225,11 @@ export default function CategoryListing({
           {filtered.length === 0 ? (
             <p className="listing-empty">Nenhum produto nesta seleção ainda.</p>
           ) : (
-            <div className="listing-grid">
-              {filtered.map((p) => (
-                <ProductCard key={p.slug} product={p} />
+            <Reveal className="listing-grid rail-3d" plain>
+              {filtered.map((p, i) => (
+                <ProductCard key={p.slug} product={p} index={i} />
               ))}
-            </div>
+            </Reveal>
           )}
         </div>
       </div>

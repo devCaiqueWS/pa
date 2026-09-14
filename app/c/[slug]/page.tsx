@@ -5,6 +5,9 @@ import CategoryListing from "@/components/CategoryListing";
 import ProductRail from "@/components/ProductRail";
 import { productsByCategory } from "@/lib/catalog-source";
 import { getCategorias, getCategoriaBySlug } from "@/lib/categorias";
+import ScrollProgress, { SAIDA } from "@/components/ui/ScrollProgress";
+import { imagemSrc } from "@/lib/site";
+import { srcSetDeCaminho } from "@/lib/imagens";
 
 export const revalidate = 60;
 
@@ -40,17 +43,23 @@ export default async function CategoryPage({
 
   return (
     <>
-      <section className="cat-hero">
-        <div className="container">
+      {/* Foto da categoria em 21:9 com parallax (--p via ScrollProgress); sem foto, cabeçalho em marfim. */}
+      <ScrollProgress as="section" className={`cat-hero${category.image ? " has-img" : ""}`} faixa={SAIDA}>
+        {category.image && (
+          <div className="cat-hero-media" aria-hidden="true">
+            <img src={imagemSrc(category.image)} srcSet={srcSetDeCaminho(category.image)} sizes="100vw" alt="" loading="eager" fetchPriority="high" />
+          </div>
+        )}
+        <div className="container cat-hero-copy">
           <nav className="crumbs" aria-label="Caminho">
             <Link href="/">Início</Link>
             <span>/</span>
             <span>{category.name}</span>
           </nav>
           <h1>{category.name}</h1>
-          <p>{category.tagline}</p>
+          {category.tagline && <p>{category.tagline}</p>}
         </div>
-      </section>
+      </ScrollProgress>
 
       {mostrarDestaques && (
         <ProductRail
