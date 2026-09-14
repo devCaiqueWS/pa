@@ -160,13 +160,13 @@
 .her-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .her-img-before{transform:scale(calc(1 + var(--p,0) * .08))}
 /* O par inteiro (foto + véu + legenda) é revelado de baixo para cima; assim a legenda da primeira foto fica atrás da segunda. */
-.her-pair{position:absolute;inset:0}
+.her-pair{position:absolute;inset:0;isolation:isolate}
 .her-pair:nth-child(2){clip-path:inset(calc((1 - var(--p,0)) * 100%) 0 0 0)}
 /* Véu vinho-noir na base de cada foto: as cenas são claras e a legenda é
    marfim. A segunda foto (presente) recebe o mesmo recorte da transição, para
    o véu só aparecer na parte já revelada. */
 .her-pair::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(43,24,30,0) 38%,rgba(43,24,30,.28) 62%,rgba(43,24,30,.68) 100%)}
-.her-cap{position:absolute;left:clamp(20px,4vw,48px);bottom:clamp(20px,4vw,44px);color:var(--marfim);text-shadow:0 2px 18px rgba(43,24,30,.45)}
+.her-cap{position:absolute;z-index:1;left:clamp(20px,4vw,48px);bottom:clamp(20px,4vw,44px);color:var(--marfim);text-shadow:0 2px 18px rgba(43,24,30,.45)}
 .her-cap-before{opacity:calc(1 - var(--p,0) * 1.8)}
 .her-cap-after{opacity:calc((var(--p,0) - .5) * 2.4)}
 .her-cap small{display:block;font-size:var(--fs-small);letter-spacing:.06em;opacity:.85;margin-bottom:2px}
