@@ -216,25 +216,34 @@ em,.ital{font-style:italic}
 }
 
 /* --- Footer ---------------------------------------------------------------- */
-.ftr{background:var(--espresso);color:#fff;padding:var(--space-9) 0 var(--space-6);position:relative;overflow:hidden}
-.ftr-top{display:grid;grid-template-columns:1.4fr repeat(var(--ftr-cols,4),1fr);gap:var(--space-6);padding-bottom:var(--space-8);border-bottom:1px solid rgba(255,255,255,.14);position:relative;z-index:1}
-.ftr-logo{height:56px;width:auto;margin-bottom:var(--space-5)}
-.ftr-brand-col p{color:rgba(255,255,255,.7);font-size:.95rem;line-height:1.65;max-width:34ch;margin-bottom:var(--space-3)}
-.ftr-sac{font-size:.85rem!important;color:rgba(255,255,255,.55)!important}
-.ftr-col h4{margin:0 0 var(--space-4);font-family:var(--font-serif);font-size:1.35rem;font-weight:500;color:#fff}
-.ftr-col a{display:block;padding:6px 0;color:rgba(255,255,255,.66);font-size:.92rem;transition:color var(--t-fast)}
-.ftr-col a:hover{color:#fff}
-.ftr-bottom{display:flex;justify-content:space-between;align-items:center;gap:var(--space-5);padding-top:var(--space-5);color:rgba(255,255,255,.5);font-size:.82rem;flex-wrap:wrap;position:relative;z-index:1}
-.ftr-social{display:flex;gap:6px;flex-wrap:wrap}
-.ftr-social a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid rgba(255,255,255,.18);border-radius:999px;color:rgba(255,255,255,.8);font-size:.85rem;transition:border-color var(--t-fast),color var(--t-fast)}
-.ftr-social a:hover{border-color:#fff;color:#fff}
-.ftr-mark{position:absolute;right:-2%;bottom:-6%;width:min(52vw,560px);opacity:.06;pointer-events:none;user-select:none;z-index:0}
-@media (max-width:1000px){.ftr-top{grid-template-columns:1fr 1fr}.ftr-brand-col{grid-column:1/-1}}
+.ftr{background:var(--vinho-noir);color:var(--marfim);padding:var(--space-9) 0 var(--space-6);position:relative;overflow:hidden}
+.ftr-top{display:grid;grid-template-columns:1.4fr repeat(var(--ftr-cols,4),1fr);gap:0;padding-bottom:var(--space-8);border-bottom:1px solid var(--line-ouro);position:relative;z-index:1}
+.ftr-top > *{padding:0 var(--space-6)}
+.ftr-top > :first-child{padding-left:0}
+.ftr-top > :last-child{padding-right:0}
+.ftr-top > * + *{border-left:1px solid color-mix(in srgb,var(--ouro) 20%,transparent)}
+.ftr-logo{height:52px;width:auto;margin-bottom:var(--space-5)}
+.ftr-brand-col p{color:color-mix(in srgb,var(--marfim) 72%,transparent);font-size:.95rem;line-height:1.65;max-width:34ch;margin-bottom:var(--space-3)}
+.ftr-sac{font-size:.85rem!important;color:color-mix(in srgb,var(--marfim) 55%,transparent)!important}
+.ftr-col h4{margin:0 0 var(--space-4);font-family:var(--font-serif);font-style:italic;font-size:1.3rem;font-weight:400;color:var(--marfim)}
+.ftr-col a{display:block;padding:6px 0;color:color-mix(in srgb,var(--marfim) 70%,transparent);font-size:.92rem;transition:color var(--t-fast)}
+.ftr-col a:hover{color:var(--ouro-claro)}
+.ftr-bottom{display:flex;justify-content:space-between;align-items:center;gap:var(--space-5);padding-top:var(--space-5);color:color-mix(in srgb,var(--marfim) 50%,transparent);font-size:.82rem;flex-wrap:wrap;position:relative;z-index:1}
+.ftr-social{display:flex;gap:8px;flex-wrap:wrap}
+.ftr-social a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border:1px solid color-mix(in srgb,var(--ouro) 40%,transparent);border-radius:2px;color:color-mix(in srgb,var(--marfim) 82%,transparent);font-size:.85rem;letter-spacing:.03em;transition:border-color var(--t-fast),color var(--t-fast)}
+.ftr-social a:hover{border-color:var(--ouro);color:var(--marfim)}
+.ftr-mark{position:absolute;right:-2%;bottom:-6%;width:min(52vw,560px);opacity:.05;pointer-events:none;user-select:none;z-index:0}
+@media (max-width:1000px){
+  .ftr-top{grid-template-columns:1fr 1fr;gap:var(--space-6)}
+  .ftr-top > *{padding:0}
+  .ftr-top > * + *{border-left:0}
+  .ftr-brand-col{grid-column:1/-1;padding-bottom:var(--space-5);border-bottom:1px solid color-mix(in srgb,var(--ouro) 20%,transparent)}
+}
 @media (max-width:560px){.ftr{padding-top:var(--space-8)}.ftr-top{grid-template-columns:1fr;gap:var(--space-5)}.ftr-bottom{flex-direction:column;align-items:flex-start}}
 
 /* --- WhatsApp flutuante ---------------------------------------------------- */
-.wa-float{position:fixed;right:20px;bottom:20px;background:#25d366;color:#fff;border-radius:999px;min-height:48px;padding:0 18px 0 14px;font-weight:600;font-size:.875rem;display:flex;align-items:center;gap:8px;box-shadow:0 10px 28px rgba(0,0,0,.22);z-index:60;transition:transform var(--t-fast),background var(--t-fast)}
-.wa-float:hover{background:#1eb858;transform:translateY(-2px)}
+.wa-float{position:fixed;right:20px;bottom:20px;background:#25d366;color:#fff;border-radius:2px;min-height:48px;padding:0 18px 0 14px;font-weight:500;font-size:.875rem;display:flex;align-items:center;gap:8px;box-shadow:0 12px 28px -12px rgba(0,0,0,.35);z-index:60;transition:background var(--t-fast)}
+.wa-float:hover{background:#1eb858}
 @media (max-width:560px){.wa-float span{display:none}.wa-float{width:52px;height:52px;padding:0;justify-content:center}}
 
 /* --- Vitrine e card de produto -------------------------------------------- */

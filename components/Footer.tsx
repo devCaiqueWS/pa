@@ -35,7 +35,7 @@ export default function Footer({ data }: { data: FooterData }) {
   return (
     <footer className="ftr">
       {/* Marca em grande escala, quase invisível: assinatura de fundo. */}
-      <img className="ftr-mark" src={asset("/assets/img/logo-pierre-white.png")} alt="" aria-hidden="true" width={256} height={160} />
+      <img className="ftr-mark" src={asset("/assets/img/logo-pierre-gold.png")} alt="" aria-hidden="true" width={256} height={160} />
 
       <div className="container ftr-top" style={{ ["--ftr-cols" as string]: cols.length } as React.CSSProperties}>
         <div className="ftr-brand-col">
