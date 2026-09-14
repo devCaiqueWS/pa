@@ -1,6 +1,6 @@
 import Picture from "@/components/ui/Picture";
 import Reveal from "@/components/ui/Reveal";
-import ScrollProgress, { LEITURA } from "@/components/ui/ScrollProgress";
+import ScrollProgress, { LEITURA, VIAGEM } from "@/components/ui/ScrollProgress";
 import SplitWords from "@/components/ui/SplitWords";
 import CountUp from "@/components/ui/CountUp";
 import type { CSSProperties } from "react";
@@ -48,13 +48,13 @@ export default function Heritage({ titulo, corpo, marcos = [] }: Props) {
   return (
     <section className="her" id="historia" aria-labelledby="historia-titulo">
       <div className="container her-head">
-        <div className="her-num" aria-hidden="true">
+        <ScrollProgress className="her-num" faixa={VIAGEM} aria-hidden="true">
           <p className="her-num-big">
             <CountUp ate={45} />
             <sup>+</sup>
           </p>
           <p className="her-num-label">anos de beleza, cuidado e presença</p>
-        </div>
+        </ScrollProgress>
         <Reveal className="her-copy" plain>
           <span className="sr-only">Mais de 45 anos de história.</span>
           <h2 id="historia-titulo">

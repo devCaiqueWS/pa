@@ -121,7 +121,7 @@
 /* --- Mosaico de universos (coleções) --------------------------------------- */
 .mosaic{padding:var(--section) 0}
 .mosaic-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(220px,24vw);grid-auto-flow:dense;gap:var(--space-4)}
-.mosaic-tile{position:relative;display:block;border-radius:var(--radius-lg);overflow:hidden;background:var(--areia);isolation:isolate;min-height:200px}
+.mosaic-tile{position:relative;display:block;border-radius:var(--radius);overflow:hidden;background:var(--areia);isolation:isolate;min-height:200px}
 .mosaic-tile:nth-child(1){grid-column:span 2;grid-row:span 2}
 .mosaic-tile:nth-child(4),.mosaic-tile:nth-child(7){grid-column:span 2}
 /* Parallax em colunas: cada foto desliza numa velocidade (--v) diferente
@@ -158,7 +158,7 @@
 .her-num{position:sticky;top:calc(var(--hdr-h) + var(--space-5))}
 .her-num-big{font-family:var(--font-serif);font-size:clamp(7rem,3.5rem + 15vw,17rem);line-height:.9;font-weight:600;letter-spacing:-.03em;margin:0 0 var(--space-4);display:flex;align-items:flex-start;background:var(--ouro-foil);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
 .her-num-big sup{font-size:.34em;line-height:1;margin-top:.14em;letter-spacing:0;font-family:var(--font-sans);font-weight:500}
-.her-num-big{font-variation-settings:"opsz" 12}
+.her-num-big{font-variation-settings:"opsz" 12;background-position:calc(var(--p,0) * 100%) 0}
 .her-num-label{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:clamp(1.3rem,1.1rem + .9vw,1.9rem);color:var(--vinho);margin:0;max-width:18ch;line-height:1.2}
 .her-copy h2{margin-bottom:var(--space-5)}
 .her-copy p{font-size:1.1rem;line-height:1.7}
@@ -168,13 +168,13 @@
    nasce inteiro. */
 .her-leitura p{--lp:clamp(0, calc(var(--p,1) * (var(--n,1) + .6) - var(--i,0)), 1);color:transparent;background:linear-gradient(180deg,var(--ink-2) calc(var(--lp) * 100%),color-mix(in srgb,var(--ink-2) 55%,var(--marfim)) calc(var(--lp) * 100% + 10%));-webkit-background-clip:text;background-clip:text}
 .her-num-big{font-variant-numeric:tabular-nums}
-.her-marcos{list-style:none;padding:0;margin:var(--space-7) 0 0;border-top:1px solid var(--line-strong)}
-.her-marco{display:grid;grid-template-columns:120px 1fr;gap:var(--space-5);padding:var(--space-4) 0;border-bottom:1px solid var(--line-strong)}
+.her-marcos{list-style:none;padding:0;margin:var(--space-7) 0 0;border-top:1px solid var(--line-ouro)}
+.her-marco{display:grid;grid-template-columns:120px 1fr;gap:var(--space-5);padding:var(--space-4) 0;border-bottom:1px solid var(--line)}
 .her-marco-ano{font-family:var(--font-serif);font-size:1.9rem;line-height:1;color:var(--vinho);font-weight:600}
 .her-marco p{margin:0;font-size:1rem}
 .her-scene{height:240svh;position:relative;margin-top:var(--space-8)}
 .her-sticky{position:sticky;top:0;height:100svh;display:grid;place-items:center;overflow:hidden}
-.her-frame{position:relative;margin:0;width:min(1140px,calc(100% - 2*var(--gutter)));aspect-ratio:16/10;max-height:82svh;border-radius:var(--radius-xl);overflow:hidden;background:var(--vinho-deep)}
+.her-frame{position:relative;margin:0;width:min(1140px,calc(100% - 2*var(--gutter)));aspect-ratio:16/10;max-height:82svh;border-radius:var(--radius-lg);overflow:hidden;background:var(--vinho-deep)}
 .her-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .her-img-before{transform:scale(calc(1 + var(--p,0) * .08))}
 /* O par inteiro (foto + véu + legenda) é revelado de baixo para cima; assim a legenda da primeira foto fica atrás da segunda. */
@@ -239,7 +239,7 @@
 .feat-copy h2{margin-bottom:var(--space-5)}
 .feat-copy p{font-size:1.05rem;line-height:1.7}
 .feat-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 var(--space-5);padding:0;list-style:none}
-.feat-tags li{display:inline-flex;align-items:center;min-height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line-strong);font-size:.8rem;font-weight:600;color:var(--ink-2)}
+.feat-tags li{display:inline-flex;align-items:center;min-height:34px;padding:0 13px;border-radius:2px;border:1px solid var(--line-strong);font-size:.8rem;font-weight:500;color:var(--ink-2)}
 .feat-actions{display:flex;flex-wrap:wrap;gap:var(--space-3) var(--space-5);align-items:center}
 @media (max-width:900px){
   .feat-grid{display:block}
@@ -248,9 +248,9 @@
 
 /* --- Manifesto (bloco "cta" na home) --------------------------------------- */
 .mani{background:var(--vinho-noir);color:var(--marfim);padding:var(--space-8) 0 var(--section);overflow:hidden;position:relative;isolation:isolate}
-.mani-mark{position:absolute;right:-6%;top:-14%;width:min(52vw,640px);opacity:.09;pointer-events:none;user-select:none;z-index:0;animation:mani-float 14s ease-in-out infinite alternate;translate:0 calc(var(--p,0) * -160px)}
+.mani-mark{position:absolute;right:-6%;top:-14%;width:min(52vw,640px);opacity:.07;pointer-events:none;user-select:none;z-index:0;animation:mani-float 14s ease-in-out infinite alternate;translate:0 calc(var(--p,0) * -160px)}
 @keyframes mani-float{to{transform:translateY(-18px)}}
-.mani-marquee{position:relative;white-space:nowrap;overflow:hidden;font-family:var(--font-serif);font-style:italic;font-size:clamp(1.4rem,1rem + 1.8vw,2.6rem);color:rgba(255,255,255,.62);margin-bottom:var(--space-8);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.mani-marquee{position:relative;white-space:nowrap;overflow:hidden;font-family:var(--font-serif);font-style:italic;font-size:clamp(1.4rem,1rem + 1.8vw,2.6rem);color:color-mix(in srgb,var(--ouro) 60%,transparent);margin-bottom:var(--space-8);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
 .mani-marquee-track{display:inline-flex;gap:3.5rem;padding-right:3.5rem;animation:mani-drift 48s linear infinite}
 @keyframes mani-drift{to{transform:translateX(-50%)}}
 .mani-marquee:hover .mani-marquee-track{animation-play-state:paused}
@@ -259,7 +259,7 @@
 /* A frase acende palavra a palavra conforme a faixa passa (--p da seção). */
 .mani-scrub .split-w{overflow:visible;padding:0;margin:0}
 .mani-scrub .split-w>span{transform:none;transition:none;opacity:calc(.22 + .78 * clamp(0, calc(var(--p,1) * (var(--n,1) + 3) - var(--i,0) - 1), 1))}
-.mani-side p{color:rgba(255,255,255,.9);font-size:var(--fs-lead);margin-bottom:var(--space-5);max-width:38ch}
+.mani-side p{color:color-mix(in srgb,var(--marfim) 86%,transparent);font-size:var(--fs-lead);margin-bottom:var(--space-5);max-width:38ch}
 @media (max-width:900px){.mani-body{grid-template-columns:1fr;gap:var(--space-6)}.mani-mark{width:70vw;right:-20%;top:-6%}}
 @media (prefers-reduced-motion:reduce){.mani-marquee-track{animation:none}.mani-mark{animation:none}}
 
@@ -267,8 +267,8 @@
 .close{padding:var(--section) 0;background:var(--marfim);overflow-x:clip}
 .close-grid{display:grid;grid-template-columns:5fr 7fr;gap:var(--space-7);align-items:center}
 .close-copy p{font-size:var(--fs-lead)}
-.close-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-strong)}
-.close-item a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line-strong);min-height:64px}
+.close-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-ouro)}
+.close-item a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);min-height:64px}
 .close-item strong{font-family:var(--font-serif);font-size:clamp(1.4rem,1.2rem + .8vw,1.9rem);font-weight:600;color:var(--ink);transition:color var(--t-fast)}
 .close-item span{color:var(--muted);font-size:.9rem;text-align:right}
 .close-item a:hover strong{color:var(--vinho)}

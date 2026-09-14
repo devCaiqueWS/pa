@@ -24,7 +24,7 @@ export default function Manifesto({ titulo, texto, botaoTexto, botaoLink }: Prop
     // --p na faixa inteira: a marca ao fundo desliza na vertical e a frase
     // grande vai "acendendo" palavra a palavra conforme a faixa passa.
     <ScrollProgress as="section" className="mani" faixa={LEITURA} id="manifesto">
-      <img className="mani-mark" src={asset("/assets/img/logo-pierre-white.png")} alt="" aria-hidden="true" width={256} height={160} loading="lazy" />
+      <img className="mani-mark" src={asset("/assets/img/logo-pierre-gold.png")} alt="" aria-hidden="true" width={256} height={160} loading="lazy" />
       <div className="mani-marquee" aria-hidden="true">
         <div className="mani-marquee-track">
           {frase.map((p, i) => (
@@ -39,7 +39,7 @@ export default function Manifesto({ titulo, texto, botaoTexto, botaoLink }: Prop
         <Reveal className="mani-side" delay={1}>
           {texto && <p>{texto}</p>}
           {botaoTexto && (
-            <Link className="btn btn-light" href={botaoLink || "/consultora"}>
+            <Link className="btn btn-primary" href={botaoLink || "/consultora"}>
               {botaoTexto}
             </Link>
           )}
