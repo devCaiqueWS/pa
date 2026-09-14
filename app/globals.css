@@ -259,19 +259,28 @@ em,.ital{font-style:italic}
   .rail-track > *{flex:0 0 min(72vw,300px);scroll-snap-align:start}
   .rail-head{flex-direction:column;align-items:flex-start;gap:var(--space-3)}
 }
-.pcard{display:flex;flex-direction:column;background:var(--branco);border-radius:var(--radius);overflow:hidden;height:100%;position:relative}
-.pcard-media{position:relative;aspect-ratio:4/5;background:#fff;border:1px solid var(--line);overflow:hidden;border-radius:var(--radius)}
-.pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform var(--t-slow) var(--ease-out)}
-@media (hover:hover){.pcard:hover .pcard-media img{transform:scale(1.045)}}
+.pcard{display:flex;flex-direction:column;background:transparent;border-radius:0;overflow:visible;height:100%;position:relative}
+/* Mídia em marfim, sem borda; o packshot (fundo branco) "senta" no marfim via multiply. */
+.pcard-media{position:relative;aspect-ratio:4/5;background:var(--marfim);border:0;overflow:hidden;border-radius:var(--radius)}
+.pcard-media img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;transition:transform var(--t-slow) var(--ease-out)}
+@media (hover:hover){.pcard:hover .pcard-media img{transform:scale(1.04)}}
 .pcard-badges{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:6px;z-index:2}
-.pcard-badge{background:var(--branco);color:var(--vinho);font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:999px}
-.pcard-body{padding:16px 4px 6px;display:flex;flex-direction:column;flex:1;gap:4px}
-.pcard-eyebrow{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
-.pcard-name{font-family:var(--font-serif);font-size:1.35rem;font-weight:600;margin:0;line-height:1.15;letter-spacing:0}
+.pcard-badge{background:var(--lilas);color:var(--vinho-noir);font-size:.74rem;font-weight:500;letter-spacing:0;text-transform:none;padding:6px 10px;border-radius:2px}
+.pcard-badge:nth-child(2n){background:var(--blush)}
+.pcard-body{padding:16px 2px 6px;display:flex;flex-direction:column;flex:1;gap:4px}
+.pcard-eyebrow{font-size:.78rem;letter-spacing:0;text-transform:none;font-weight:500;color:var(--muted)}
+.pcard-name{font-family:var(--font-serif);font-size:1.3rem;font-weight:600;margin:0;line-height:1.1;letter-spacing:0}
 .pcard-desc{font-size:.9rem;line-height:1.5;color:var(--muted);margin:2px 0 8px;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.pcard-price{display:block;font-weight:600;color:var(--ink);margin:0 0 6px}
-.pcard-cta{font-size:.875rem;font-weight:500;color:var(--vinho)}
-.pcard-noimg{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:200px;background:var(--soft);color:var(--vinho);font-family:var(--font-serif);font-size:1.6rem;letter-spacing:.12em;text-transform:uppercase}
+.pcard-price{display:block;font-weight:500;color:var(--ink);margin:0 0 6px}
+.pcard-cta{align-self:flex-start;font-size:.875rem;font-weight:500;color:var(--vinho);padding-bottom:2px;border-bottom:1px solid var(--line-ouro)}
+.pcard-noimg{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:200px;background:var(--marfim)}
+.pcard-noimg span{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:2.2rem;letter-spacing:0;text-transform:none;background:var(--ouro-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* Inclinação + reflexo (Tilt): só com ponteiro fino e sem reduced-motion. */
+.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .6s var(--ease-out);will-change:transform}
+.tilt.is-tilt{transition:transform .08s linear}
+.tilt::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(230,207,159,.38),rgba(230,207,159,0) 55%);opacity:0;transition:opacity .4s var(--ease);pointer-events:none;z-index:1}
+.tilt.is-tilt::after{opacity:1}
+@media (hover:none),(prefers-reduced-motion:reduce){.tilt,.tilt.is-tilt{transform:none;transition:none}.tilt::after{display:none}}
 
 /* --- Categoria (hero, breadcrumbs, listagem) ------------------------------- */
 .cat-hero{background:var(--soft);padding:var(--space-7) 0 var(--space-6)}
@@ -603,26 +612,6 @@ code{background:var(--soft);padding:2px 6px;border-radius:5px;font-size:.9em}
 @media (max-width:680px){.cms-form .form-grid{grid-template-columns:1fr}}
 
 /* Produto: placeholder sem foto e preço no card */
-.pcard-noimg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-  background: #f4f1ec;
-  color: #cbb48f;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.5rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.pcard-price {
-  display: block;
-  font-weight: 600;
-  color: #3a2a1e;
-  margin: 0.15rem 0 0.35rem;
-}
 
 /* ============================================================================
    FORMULÁRIOS PÚBLICOS (/forms/[id]) — mesma linguagem visual do site:

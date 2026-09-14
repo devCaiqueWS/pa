@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ProductImage from "@/components/ProductImage";
+import Tilt from "@/components/ui/Tilt";
 import type { Product } from "@/lib/catalog";
 import type { CSSProperties } from "react";
 
@@ -8,7 +9,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
   const style = index == null ? undefined : ({ "--i": index } as CSSProperties);
   return (
     <Link className="pcard" href={`/p/${product.slug}`} style={style}>
-      <div className="pcard-media">
+      <Tilt className="pcard-media">
         {product.badges && product.badges.length > 0 && (
           <div className="pcard-badges">
             {product.badges.map((b) => (
@@ -19,7 +20,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
           </div>
         )}
         <ProductImage src={product.image} alt={product.name} sizes="(min-width: 1000px) 25vw, (min-width: 760px) 33vw, 72vw" />
-      </div>
+      </Tilt>
       <div className="pcard-body">
         {product.line && <span className="pcard-eyebrow">{product.line}</span>}
         <h3 className="pcard-name">{product.name}</h3>
