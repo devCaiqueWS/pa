@@ -28,6 +28,7 @@ export type BlocoTipo =
   | "atalhos"
   | "colecoes"
   | "historia"
+  | "original"
   | "manifesto"
   | "newsletter";
 
@@ -266,9 +267,21 @@ export const CATALOGO: DefBloco[] = [
     ],
   },
   {
+    tipo: "original",
+    label: "Faixa Original",
+    descricao: "A arte do desodorante Original em tela cheia, inclinada com o scroll, com uma chamada e um botão. Campos vazios usam os textos padrão.",
+    campos: [
+      { name: "titulo", label: "Título", tipo: "text", ajuda: "Vazio = 'O Original.'" },
+      { name: "texto", label: "Texto", tipo: "textarea" },
+      { name: "botao_texto", label: "Texto do botão", tipo: "text", ajuda: "Vazio = 'Conhecer o Original'" },
+      { name: "botao_link", label: "Link do botão", tipo: "text", ajuda: "Vazio = /original" },
+      { name: "imagem_url", label: "Imagem (URL, opcional)", tipo: "url", ajuda: "Vazio = a arte 'Original de Vivre' local." },
+    ],
+  },
+  {
     tipo: "manifesto",
-    label: "Manifesto (faixa vermelha)",
-    descricao: "Frase editorial grande em vermelho Pierre, texto de apoio e um botão. Na home, o bloco 'Chamada com botão' já é exibido assim.",
+    label: "Manifesto (faixa vinho)",
+    descricao: "Frase editorial grande em vinho-noir com o botão vermelho, texto de apoio. Na home, o bloco 'Chamada com botão' já é exibido assim.",
     campos: [
       { name: "titulo", label: "Frase principal", tipo: "text" },
       { name: "texto", label: "Texto de apoio", tipo: "textarea" },

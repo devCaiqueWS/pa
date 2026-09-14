@@ -13,6 +13,7 @@ import UniverseMosaic from "@/components/home/UniverseMosaic";
 import Heritage, { parseMarcos } from "@/components/home/Heritage";
 import EditorialFeature from "@/components/home/EditorialFeature";
 import Manifesto from "@/components/home/Manifesto";
+import OriginalBand from "@/components/home/OriginalBand";
 import Closing from "@/components/home/Closing";
 import ProductRail from "@/components/ProductRail";
 import { featuredProducts, newProducts } from "@/lib/catalog-source";
@@ -189,6 +190,8 @@ function RenderBloco({ bloco }: { bloco: Bloco }) {
       return <UniverseMosaic titulo={c.titulo} subtitulo={c.subtitulo} />;
     case "historia":
       return <Heritage titulo={c.titulo} corpo={c.corpo} marcos={parseMarcos(c.marcos)} />;
+    case "original":
+      return <OriginalBand titulo={c.titulo} texto={c.texto} botaoTexto={c.botao_texto} botaoLink={c.botao_link} imagem={c.imagem_url} />;
     case "manifesto":
       return <Manifesto titulo={c.titulo} texto={c.texto} botaoTexto={c.botao_texto} botaoLink={c.botao_link} />;
     case "newsletter":

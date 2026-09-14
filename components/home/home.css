@@ -101,6 +101,23 @@
   .ustrip-bar::after{transform:none}
 }
 
+/* --- Faixa Original: arte em bleed inclinada com o scroll ------------------ */
+.orig{position:relative;min-height:min(90svh,820px);display:flex;align-items:center;background:var(--vinho-noir);color:var(--marfim);overflow:hidden;isolation:isolate;perspective:1400px}
+.orig-stage{position:absolute;inset:-6% 0;z-index:0;transform:rotateX(calc((var(--p,.5) - .5) * -12deg)) translateY(calc((var(--p,.5) - .5) * -8%));transform-origin:center;will-change:transform}
+.orig-img{width:100%;height:100%;object-fit:cover;object-position:center 62%}
+.orig-veil{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(43,24,30,.86) 0%,rgba(43,24,30,.55) 42%,rgba(43,24,30,.05) 72%);pointer-events:none}
+.orig-body{position:relative;z-index:2;padding:var(--section) 0}
+.orig-copy{max-width:520px}
+.orig-kicker{display:block;font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:1.3rem;color:var(--ouro-claro);margin-bottom:var(--space-3)}
+.orig-copy h2{color:var(--marfim);font-size:clamp(3rem,1.8rem + 4.6vw,6.4rem);line-height:.92;margin-bottom:var(--space-5)}
+.orig-copy p{color:color-mix(in srgb,var(--marfim) 88%,transparent);font-size:var(--fs-lead);margin-bottom:var(--space-6)}
+@media (max-width:900px){
+  .orig{min-height:0;perspective:none}
+  .orig-stage{inset:0;transform:none}
+  .orig-veil{background:linear-gradient(0deg,rgba(43,24,30,.9) 0%,rgba(43,24,30,.55) 55%,rgba(43,24,30,.15) 100%)}
+}
+@media (prefers-reduced-motion:reduce){.orig-stage{transform:none;inset:0}}
+
 /* --- Mosaico de universos (coleções) --------------------------------------- */
 .mosaic{padding:var(--section) 0}
 .mosaic-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(220px,24vw);grid-auto-flow:dense;gap:var(--space-4)}

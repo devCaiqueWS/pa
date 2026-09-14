@@ -4,6 +4,7 @@ import UniverseMosaic from "@/components/home/UniverseMosaic";
 import Heritage from "@/components/home/Heritage";
 import EditorialFeature from "@/components/home/EditorialFeature";
 import Manifesto from "@/components/home/Manifesto";
+import OriginalBand from "@/components/home/OriginalBand";
 import Closing from "@/components/home/Closing";
 import ProductRail from "@/components/ProductRail";
 import BlockRenderer from "@/components/cms/BlockRenderer";
@@ -58,6 +59,7 @@ async function HomeClassica() {
         imagemAlt="Linha de desodorantes Pierre"
         botoes={[{ texto: "Conhecer a linha", link: "/c/desodorantes", estilo: "primario" }]}
       />
+      <OriginalBand />
       <UniverseMosaic titulo={t.home_categorias_titulo ?? "Explore por categoria"} subtitulo={t.home_categorias_subtitulo ?? "Escolha pelo momento, pelo cuidado ou pelo desejo."} />
       <ProductRail
         title={t.home_novidades_titulo ?? "Novidades & Lançamentos"}
