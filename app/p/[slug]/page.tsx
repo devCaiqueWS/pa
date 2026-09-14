@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ProductRail from "@/components/ProductRail";
+import Tilt from "@/components/ui/Tilt";
+import PdpBar from "@/components/PdpBar";
 import { imagemSrc } from "@/lib/site";
 import { srcSetProduto } from "@/lib/imagens";
 import { getProduct, relatedProducts } from "@/lib/catalog-source";
@@ -50,7 +52,7 @@ export default async function ProductPage({
           </nav>
 
           <div className="pdp-grid">
-            <div className="pdp-gallery">
+            <Tilt className="pdp-gallery" max={4}>
               {product.badges && product.badges.length > 0 && (
                 <div className="pcard-badges">
                   {product.badges.map((b) => (
@@ -61,15 +63,14 @@ export default async function ProductPage({
                 </div>
               )}
               <img src={imagemSrc(product.image)} srcSet={srcSetProduto(product.image)} sizes="(min-width: 820px) 50vw, 100vw" alt={product.name} />
-            </div>
+            </Tilt>
 
             <div className="pdp-info">
               {product.line && <span className="eyebrow">{product.line}</span>}
               <h1>{product.name}</h1>
-              <div className="pdp-rating" aria-label="Avaliação">
-                <span className="stars">★★★★★</span>
-                <span className="pdp-rating-count">Avaliado por clientes Pierre</span>
-              </div>
+              {product.preco != null && (
+                <p className="pdp-price">{product.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>
+              )}
               <p className="pdp-lead">{product.shortDesc}</p>
 
               <dl className="pdp-attrs">
@@ -118,6 +119,7 @@ export default async function ProductPage({
             </p>
           </div>
         </div>
+        <PdpBar nome={product.name} preco={product.preco} />
       </section>
 
       {related.length > 0 && (
