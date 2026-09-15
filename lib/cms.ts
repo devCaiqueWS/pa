@@ -28,6 +28,9 @@ export type BlocoTipo =
   | "atalhos"
   | "colecoes"
   | "historia"
+  | "valores"
+  | "timeline"
+  | "novidades"
   | "original"
   | "manifesto"
   | "newsletter";
@@ -143,6 +146,7 @@ export const CATALOGO: DefBloco[] = [
     label: "Texto",
     descricao: "Um título e um parágrafo. Para conteúdo institucional e explicações.",
     campos: [
+      { name: "eyebrow", label: "Selo (linha pequena acima do título)", tipo: "text" },
       { name: "titulo", label: "Título", tipo: "text" },
       { name: "corpo", label: "Texto", tipo: "textarea" },
       alinhamento,
@@ -276,6 +280,92 @@ export const CATALOGO: DefBloco[] = [
       { name: "botao_texto", label: "Texto do botão", tipo: "text", ajuda: "Vazio = 'Conhecer o Original'" },
       { name: "botao_link", label: "Link do botão", tipo: "text", ajuda: "Vazio = /original" },
       { name: "imagem_url", label: "Imagem (URL, opcional)", tipo: "url", ajuda: "Vazio = a arte 'Original de Vivre' local." },
+    ],
+  },
+  {
+    tipo: "valores",
+    label: "Valores numerados (01 / 02 / 03)",
+    descricao:
+      "Três a seis valores em sequência, cada um com rótulo, título e texto. O número é gerado pela ordem — não precisa digitar.",
+    campos: [
+      { name: "titulo", label: "Título da seção (opcional)", tipo: "text" },
+      { name: "subtitulo", label: "Subtítulo (opcional)", tipo: "text" },
+      {
+        name: "qtd",
+        label: "Quantos valores",
+        tipo: "select",
+        opcoes: [
+          { valor: "2", label: "2" },
+          { valor: "3", label: "3" },
+          { valor: "4", label: "4" },
+          { valor: "5", label: "5" },
+          { valor: "6", label: "6" },
+        ],
+      },
+    ],
+    colunas: {
+      max: 6,
+      campos: [
+        { name: "rotulo", label: "Rótulo (ex.: CONHECER)", tipo: "text" },
+        { name: "titulo", label: "Título", tipo: "text" },
+        { name: "texto", label: "Texto", tipo: "textarea" },
+      ],
+    },
+  },
+  {
+    tipo: "timeline",
+    label: "Linha do tempo",
+    descricao:
+      "Marcos em sequência, com um fio de ouro que se preenche conforme a pessoa rola a página. Use o campo Aviso para dizer, por exemplo, que os marcos ainda são ilustrativos.",
+    campos: [
+      { name: "eyebrow", label: "Selo (linha pequena acima do título)", tipo: "text" },
+      { name: "titulo", label: "Título", tipo: "text" },
+      {
+        name: "aviso",
+        label: "Aviso (aparece abaixo do título)",
+        tipo: "textarea",
+        ajuda: "Deixe vazio para não exibir. Ex.: datas ilustrativas, a confirmar.",
+      },
+      {
+        name: "qtd",
+        label: "Quantos marcos",
+        tipo: "select",
+        opcoes: [
+          { valor: "2", label: "2" },
+          { valor: "3", label: "3" },
+          { valor: "4", label: "4" },
+          { valor: "5", label: "5" },
+          { valor: "6", label: "6" },
+        ],
+      },
+    ],
+    colunas: {
+      max: 6,
+      campos: [
+        { name: "ano", label: "Ano / etiqueta", tipo: "text" },
+        { name: "rotulo", label: "Rótulo (linha pequena)", tipo: "text" },
+        { name: "titulo", label: "Título do marco", tipo: "text" },
+        { name: "texto", label: "Texto", tipo: "textarea" },
+      ],
+    },
+  },
+  {
+    tipo: "novidades",
+    label: "Novidades por e-mail",
+    descricao:
+      "Campo de e-mail com aviso. Atenção: o cadastro ainda NÃO grava nada — o aviso abaixo do formulário precisa deixar isso claro enquanto não houver backend.",
+    campos: [
+      { name: "eyebrow", label: "Selo (linha pequena acima do título)", tipo: "text" },
+      { name: "titulo", label: "Título", tipo: "text" },
+      { name: "texto", label: "Texto", tipo: "textarea" },
+      { name: "placeholder", label: "Texto dentro do campo", tipo: "text", ajuda: "Padrão: Seu melhor e-mail" },
+      { name: "botao_texto", label: "Texto do botão", tipo: "text", ajuda: "Padrão: Quero receber" },
+      {
+        name: "aviso",
+        label: "Aviso abaixo do formulário",
+        tipo: "text",
+        ajuda: "Padrão: Cadastro de novidades disponível em breve.",
+      },
     ],
   },
   {

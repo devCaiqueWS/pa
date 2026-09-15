@@ -14,6 +14,9 @@ import Heritage, { parseMarcos } from "@/components/home/Heritage";
 import EditorialFeature from "@/components/home/EditorialFeature";
 import Manifesto from "@/components/home/Manifesto";
 import OriginalBand from "@/components/home/OriginalBand";
+import Valores from "@/components/cms/Valores";
+import Timeline from "@/components/cms/Timeline";
+import Novidades from "@/components/cms/Novidades";
 import Closing from "@/components/home/Closing";
 import ProductRail from "@/components/ProductRail";
 import { featuredProducts, newProducts } from "@/lib/catalog-source";
@@ -60,6 +63,7 @@ function Texto({ c }: { c: Cfg }) {
   return (
     <section className={`cms-texto${c.alinhamento === "centro" ? " center" : ""}`}>
       <div className="container">
+        {c.eyebrow && <span className="eyebrow">{c.eyebrow}</span>}
         {c.titulo && <h2>{c.titulo}</h2>}
         {paragrafos(c.corpo).map((par, i) => (
           <p key={i}>{par}</p>
@@ -128,6 +132,15 @@ function Colunas({ c }: { c: Cfg }) {
   );
 }
 
+// Lê os campos repetidos (col1_*, col2_*, ...) de um bloco com colunas.
+function repetidos<T extends Record<string, string | undefined>>(c: Cfg, campos: (keyof T & string)[], max = 6): T[] {
+  const qtd = Math.min(Math.max(Number(c.qtd) || max, 1), max);
+  return Array.from({ length: qtd }, (_, i) => {
+    const n = i + 1;
+    return Object.fromEntries(campos.map((campo) => [campo, c[`col${n}_${campo}`]])) as T;
+  });
+}
+
 function Produtos({ c }: { c: Cfg }) {
   return (
     <section className="cms-produtos">
@@ -190,6 +203,29 @@ function RenderBloco({ bloco }: { bloco: Bloco }) {
       return <UniverseMosaic titulo={c.titulo} subtitulo={c.subtitulo} />;
     case "historia":
       return <Heritage titulo={c.titulo} corpo={c.corpo} marcos={parseMarcos(c.marcos)} />;
+    case "valores":
+      return <Valores titulo={c.titulo} subtitulo={c.subtitulo} valores={repetidos(c, ["rotulo", "titulo", "texto"])} />;
+    case "timeline":
+      return (
+        <Timeline
+          id="timeline"
+          eyebrow={c.eyebrow}
+          titulo={c.titulo}
+          aviso={c.aviso}
+          marcos={repetidos(c, ["ano", "rotulo", "titulo", "texto"])}
+        />
+      );
+    case "novidades":
+      return (
+        <Novidades
+          eyebrow={c.eyebrow}
+          titulo={c.titulo}
+          texto={c.texto}
+          placeholder={c.placeholder}
+          botaoTexto={c.botao_texto}
+          aviso={c.aviso}
+        />
+      );
     case "original":
       return <OriginalBand titulo={c.titulo} texto={c.texto} botaoTexto={c.botao_texto} botaoLink={c.botao_link} imagem={c.imagem_url} />;
     case "manifesto":

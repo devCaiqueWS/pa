@@ -38,6 +38,17 @@ bloco agora renderiza um componente editorial (`components/cms/BlockRenderer.tsx
 | Chamada com botão (na home) / **Manifesto** | `Manifesto` (faixa vinho-noir, marquee em ouro, botão vermelho) |
 | Encerramento: canais da marca (ex-newsletter) | `Closing` (WhatsApp da faixa do topo, redes do rodapé, onde comprar, seja consultora) |
 
+Blocos novos para páginas institucionais (set/2026), usados na página **Sobre**
+(`db/site_sobre_conteudo.sql`):
+
+| Bloco no painel | Componente | Observação |
+| --- | --- | --- |
+| Valores numerados (01 / 02 / 03) | `components/cms/Valores.tsx` | o numeral vem da ordem; o painel guarda rótulo, título e texto |
+| Linha do tempo | `components/cms/Timeline.tsx` | fio de ouro que se preenche com o scroll; campo *Aviso* para marcar conteúdo ilustrativo |
+| Novidades por e-mail | `components/cms/Novidades.tsx` | **não grava nada ainda**: o aviso abaixo do formulário diz isso e o envio não finge sucesso |
+
+O bloco *Texto* ganhou o campo **Selo**, a linha pequena acima do título.
+
 Sem página `home` no CMS, `app/page.tsx` monta a mesma narrativa com os textos
 de `site_textos`.
 

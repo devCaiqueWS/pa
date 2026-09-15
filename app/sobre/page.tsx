@@ -1,10 +1,71 @@
 import type { Metadata } from "next";
-import CtaBand from "@/components/CtaBand";
+import Link from "next/link";
 import { asset } from "@/lib/site";
+import { cmsBlocos } from "@/lib/cms-render";
+import Valores from "@/components/cms/Valores";
+import Timeline from "@/components/cms/Timeline";
+import Novidades from "@/components/cms/Novidades";
 
 export const metadata: Metadata = { title: "Sobre" };
 
-import { cmsBlocos } from "@/lib/cms-render";
+// Mesma narrativa dos blocos publicados no CMS (db/site_sobre_conteudo.sql),
+// para a página não empobrecer caso a página do painel seja despublicada.
+// ⚠️ A linha do tempo é ILUSTRATIVA — ver o aviso exibido na própria seção.
+const MARCOS = [
+  {
+    ano: "1981",
+    rotulo: "Marco ilustrativo",
+    titulo: "Uma ideia começa a ganhar forma",
+    texto:
+      "Na história que imaginamos para esta apresentação, a Pierre nasce do encontro entre o conhecimento das fórmulas e a vontade de aproximar a beleza das pessoas.",
+  },
+  {
+    ano: "1990",
+    rotulo: "Marco ilustrativo",
+    titulo: "A beleza encontra novos caminhos",
+    texto:
+      "O segundo capítulo simulado representa a ampliação das conversas e a chegada da marca a novas rotinas, com pessoas que compartilham descobertas e cuidado.",
+  },
+  {
+    ano: "2005",
+    rotulo: "Marco ilustrativo",
+    titulo: "Uma história feita de conexões",
+    texto:
+      "Neste marco ilustrativo, a rede de consultoras ganha destaque como parte da relação entre a marca e quem escolhe seus produtos.",
+  },
+  {
+    ano: "2015",
+    rotulo: "Marco ilustrativo",
+    titulo: "Curiosidade para continuar criando",
+    texto:
+      "A evolução do portfólio e novas possibilidades de cuidado entram em cena. Este capítulo será substituído pelos lançamentos e acontecimentos reais da Pierre.",
+  },
+  {
+    ano: "2026",
+    rotulo: "Marco ilustrativo",
+    titulo: "O próximo capítulo começa agora",
+    texto:
+      "A linha do tempo chega ao presente com uma proposta de marca mais próxima: conhecimento, escolhas e novas conversas sobre beleza. Os acontecimentos reais serão confirmados pela Pierre.",
+  },
+];
+
+const VALORES = [
+  {
+    rotulo: "Conhecer",
+    titulo: "Experiência que inspira",
+    texto: "Uma história que olha para o que aprendeu e mantém espaço para novas perguntas.",
+  },
+  {
+    rotulo: "Criar",
+    titulo: "Curiosidade que move",
+    texto: "Novas ideias para acompanhar os diferentes jeitos de viver e de se cuidar.",
+  },
+  {
+    rotulo: "Conectar",
+    titulo: "Beleza que aproxima",
+    texto: "Relações, encontros e pessoas que ajudam a escrever os próximos capítulos.",
+  },
+];
 
 export default async function SobrePage() {
   const cms = await cmsBlocos("sobre");
@@ -44,6 +105,25 @@ export default async function SobrePage() {
         </div>
       </section>
 
+      <section className="cms-texto">
+        <div className="container">
+          <span className="eyebrow">Beleza que tem história</span>
+          <h2>Conhecimento nas fórmulas. Sensibilidade nas relações.</h2>
+          <p>
+            A Pierre encontra inspiração na vida real: nas escolhas de todos os
+            dias, nas conversas que aproximam e na vontade de experimentar algo
+            novo.
+          </p>
+          <p>
+            É assim que imaginamos esta história sendo contada: com o olhar de
+            quem entende de beleza e a atenção de quem sabe que, por trás de cada
+            escolha, existe uma pessoa.
+          </p>
+        </div>
+      </section>
+
+      <Valores valores={VALORES} />
+
       <section className="section section-paper">
         <div className="container">
           <div className="section-title">
@@ -74,7 +154,31 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      <CtaBand />
+      <Timeline
+        id="timeline"
+        eyebrow="Do primeiro capítulo ao agora"
+        titulo="Uma história que segue em movimento."
+        aviso="Linha do tempo ilustrativa: as datas e os marcos abaixo são uma proposta para esta apresentação e serão substituídos pela história oficial da Pierre."
+        marcos={MARCOS}
+      />
+
+      <section className="cms-cta">
+        <div className="container">
+          <h2>A próxima história também pode ser sua.</h2>
+          <Link className="btn btn-primary" href="/onde-comprar">
+            Encontre a Pierre
+          </Link>
+        </div>
+      </section>
+
+      <Novidades
+        eyebrow="Continue por perto"
+        titulo="Uma boa novidade sempre faz bem."
+        texto="Conteúdos, lançamentos e novas conversas sobre beleza. Receba o universo Pierre no seu e-mail."
+        placeholder="Seu melhor e-mail"
+        botaoTexto="Quero receber"
+        aviso="Cadastro de novidades disponível em breve."
+      />
     </>
   );
 }

@@ -383,6 +383,53 @@ em,.ital{font-style:italic}
 .cms-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 var(--space-5)}
 .cms-botoes{display:flex;flex-wrap:wrap;gap:12px}
 
+/* --- Valores numerados (bloco "valores") ----------------------------------- */
+.svalues{padding:var(--section) 0;background:var(--papel)}
+.svalues-head{max-width:640px;margin:0 0 var(--space-7)}
+.svalues-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-6) var(--space-7)}
+.svalue{border-top:1px solid var(--line-ouro);padding-top:var(--space-4);opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .9s var(--ease-out);transition-delay:calc(var(--i,0) * 110ms)}
+.reveal-plain.is-in .svalue{opacity:1;transform:none}
+.svalue-num{display:block;font-family:var(--font-serif);font-weight:700;font-size:2.6rem;line-height:1;margin-bottom:var(--space-3);background:var(--ouro-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+.svalue-rotulo{display:block;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:var(--space-2)}
+.svalue h3{margin-bottom:var(--space-2)}
+.svalue p{font-size:.98rem;margin:0}
+@media (prefers-reduced-motion:reduce){.svalue{opacity:1;transform:none;transition:none}}
+
+/* --- Linha do tempo (bloco "timeline") ------------------------------------- */
+/* O fio de ouro se preenche com --p (ScrollProgress, faixa de leitura). */
+.tline{padding:var(--section) 0;background:var(--marfim);--c:clamp(64px,8vw,120px);--g:clamp(18px,2.4vw,34px)}
+.tline-head{max-width:680px;margin:0 0 var(--space-8)}
+.tline-aviso{margin:var(--space-4) 0 0;padding:14px 18px;border-left:2px solid var(--ouro);background:color-mix(in srgb,var(--papel) 70%,transparent);font-size:.92rem;color:var(--ink-2);max-width:60ch}
+.tline-list{position:relative;list-style:none;margin:0;padding:0}
+.tline-list::before,.tline-list::after{content:"";position:absolute;left:calc(var(--c) + var(--g));top:6px;bottom:6px;width:1px}
+.tline-list::before{background:var(--line-strong)}
+.tline-list::after{background:var(--ouro);transform:scaleY(var(--p,0));transform-origin:top}
+.tline-item{position:relative;display:grid;grid-template-columns:var(--c) 1fr;column-gap:calc(var(--g) * 2 + 1px);padding-bottom:var(--space-8)}
+.tline-item:last-child{padding-bottom:0}
+.tline-item::before{content:"";position:absolute;left:calc(var(--c) + var(--g) - 3.5px);top:8px;width:8px;height:8px;border-radius:50%;background:var(--marfim);border:1px solid var(--ouro)}
+.tline-ano{font-family:var(--font-serif);font-weight:700;font-size:clamp(1.5rem,1.1rem + 1.4vw,2.4rem);line-height:1;color:var(--vinho);font-variant-numeric:tabular-nums}
+.tline-rotulo{display:block;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:var(--space-2)}
+.tline-corpo h3{margin-bottom:var(--space-2)}
+.tline-corpo p{margin:0;max-width:60ch}
+@media (max-width:640px){
+  .tline{--c:0px;--g:14px}
+  .tline-item{grid-template-columns:1fr;column-gap:0;padding-left:calc(var(--g) * 2)}
+  .tline-list::before,.tline-list::after{left:0}
+  .tline-item::before{left:-3.5px}
+  .tline-ano{display:block;margin-bottom:var(--space-2)}
+}
+@media (prefers-reduced-motion:reduce){.tline-list::after{transform:scaleY(1)}}
+
+/* --- Novidades por e-mail (bloco "novidades") ------------------------------ */
+.novid{padding:var(--section) 0;background:var(--papel);border-top:1px solid var(--line-ouro)}
+.novid-inner{max-width:640px}
+.novid h2{margin-bottom:var(--space-3)}
+.novid p.lead{margin-bottom:var(--space-5)}
+.novid-form{display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--space-4)}
+.novid-form input{flex:1 1 260px;min-width:0}
+.novid-aviso{margin:var(--space-4) 0 0;font-size:.88rem;color:var(--muted)}
+@media (max-width:520px){.novid-form .btn{width:100%}}
+
 /* ============================================================================
    COMPATIBILIDADE — páginas legadas (sobre, consultora, onde-comprar, etc.)
    ========================================================================== */
