@@ -5,7 +5,9 @@
 // genéricos (hero, texto, cta, colunas) usam as classes .cms-* do globals.css.
 // =============================================================================
 import type { Bloco } from "@/lib/cms";
+import type { CSSProperties } from "react";
 import BotaoLink from "@/components/ui/BotaoLink";
+import Reveal from "@/components/ui/Reveal";
 import { imagemSrc } from "@/lib/site";
 import HeroEditorial from "@/components/home/HeroEditorial";
 import UniverseStrip from "@/components/home/UniverseStrip";
@@ -107,19 +109,40 @@ function Destaque({ c }: { c: Cfg }) {
   );
 }
 
+// Variantes de desenho do bloco de colunas. O conteúdo é o mesmo; muda a
+// forma de ler: percurso numerado, catálogo em cartões ou escada de níveis.
+const VARIANTES = ["padrao", "passos", "cards", "niveis"] as const;
+type Variante = (typeof VARIANTES)[number];
+
 function Colunas({ c }: { c: Cfg }) {
   const qtd = Math.min(Math.max(Number(c.qtd) || 3, 2), 6);
   const cols = Array.from({ length: qtd }, (_, i) => i + 1)
     .map((n) => ({ titulo: c[`col${n}_titulo`], texto: c[`col${n}_texto`], link: c[`col${n}_link`] }))
     .filter((col) => col.titulo || col.texto);
 
+  const variante = (VARIANTES as readonly string[]).includes(c.variante) ? (c.variante as Variante) : "padrao";
+  const total = cols.length;
+  // Cartões: escolhe o número de colunas que fecha as linhas (6 -> 3+3, 4 -> 4).
+  const colunasCards = total % 3 === 0 ? 3 : total % 4 === 0 ? 4 : Math.min(total, 3);
+
   return (
-    <section className="cms-colunas" id={c.ancora || undefined}>
-      <div className="container">
-        {c.titulo && <h2>{c.titulo}</h2>}
-        <div className="cms-colunas-grid">
+    <section className={`cms-colunas v-${variante}`} id={c.ancora || undefined}>
+      <div className="container" style={{ "--cols": colunasCards } as CSSProperties}>
+        {(c.titulo || c.subtitulo) && (
+          <Reveal className="cms-colunas-head">
+            {c.titulo && <h2>{c.titulo}</h2>}
+            {c.subtitulo && <p className="lead">{c.subtitulo}</p>}
+          </Reveal>
+        )}
+        <Reveal className="cms-colunas-grid" plain>
           {cols.map((col, i) => (
-            <div key={i} className="cms-col">
+            <div key={i} className="cms-col" style={{ "--i": i, "--n": total } as CSSProperties}>
+              {variante === "passos" && (
+                <span className="cms-col-num" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              )}
+              {variante === "niveis" && <span className="cms-col-bar" aria-hidden="true" />}
               {col.titulo && <h3>{col.titulo}</h3>}
               {col.texto && <p>{col.texto}</p>}
               {col.link && (
@@ -129,7 +152,7 @@ function Colunas({ c }: { c: Cfg }) {
               )}
             </div>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

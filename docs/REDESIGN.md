@@ -50,6 +50,22 @@ Blocos novos para páginas institucionais (set/2026), usados na página **Sobre*
 
 O bloco *Texto* ganhou o campo **Selo**, a linha pequena acima do título.
 
+### Desenho do bloco *Colunas*
+
+A mesma lista pode ser lida de quatro formas (campo **Desenho**), porque nem
+toda lista é a mesma coisa:
+
+| Desenho | Quando usar | Como aparece |
+| --- | --- | --- |
+| Simples | itens soltos | fio de ouro no topo de cada coluna |
+| Passos numerados | etapas em ordem | numeral em ouro e um fio que segue para o próximo |
+| Cartões | catálogo (ex.: módulos) | cartões em papel com fio de ouro; as linhas fecham (6 → 3+3) |
+| Níveis | escada de progressão | barra de ouro que cresce a cada degrau |
+
+`db/site_consultora_desenho.sql` aplica isso na página Seja consultora: *Como
+funciona* vira percurso, *Universidade Pierre* vira catálogo e *Evolução e
+conquistas* vira escada. O bloco também ganhou **Subtítulo**.
+
 A página **Onde comprar** (`db/site_onde_comprar.sql`) usa o bloco de canais
 para levar a dois destinos reais: a loja oficial
 (`https://www.pierrecosmeticos.com.br`) e o WhatsApp da marca.

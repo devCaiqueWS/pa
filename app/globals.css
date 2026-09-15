@@ -375,11 +375,40 @@ em,.ital{font-style:italic}
 .cms-cta p{margin-inline:auto;font-size:var(--fs-lead);color:color-mix(in srgb,var(--marfim) 88%,transparent)}
 .cms-cta .btn{margin-top:var(--space-4)}
 .cms-colunas{padding:var(--section) 0;background:var(--soft)}
-.cms-colunas h2{margin-bottom:var(--space-7)}
-.cms-colunas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--space-5)}
-.cms-col{border-top:1px solid var(--line-ouro);padding-top:var(--space-4)}
+.cms-colunas-head{max-width:640px;margin:0 0 var(--space-7)}
+.cms-colunas-head h2{margin-bottom:var(--space-3)}
+.cms-colunas-head p{margin:0}
+.cms-colunas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--space-6) var(--space-5)}
+.cms-col{border-top:1px solid var(--line-ouro);padding-top:var(--space-4);opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .8s var(--ease-out);transition-delay:calc(var(--i,0) * 80ms)}
+.reveal-plain.is-in .cms-col{opacity:1;transform:none}
 .cms-col h3{margin-bottom:var(--space-2)}
 .cms-col p{font-size:.95rem;margin-bottom:var(--space-3)}
+@media (prefers-reduced-motion:reduce){.cms-col{opacity:1;transform:none;transition:none}}
+
+/* --- Variantes do bloco de colunas ----------------------------------------
+   A mesma lista lida de três formas: percurso em ordem, catálogo e escada. */
+
+/* Passos: numeral em ouro e um fio que segue para o próximo passo. */
+.cms-colunas.v-passos .cms-col{border-top:0;padding-top:0}
+.cms-col-num{display:flex;align-items:center;gap:14px;font-family:var(--font-serif);font-weight:700;font-size:clamp(1.9rem,1.5rem + 1vw,2.6rem);line-height:1;margin-bottom:var(--space-4);background:var(--ouro-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cms-col-num::after{content:"";flex:1;height:1px;background:var(--line-ouro)}
+
+/* Cartões: catálogo sobre o papel, com um fio de ouro no topo. */
+.cms-colunas.v-cards .cms-colunas-grid{grid-template-columns:repeat(var(--cols,3),1fr)}
+@media (max-width:900px){.cms-colunas.v-cards .cms-colunas-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.cms-colunas.v-cards .cms-colunas-grid{grid-template-columns:1fr}}
+.cms-colunas.v-cards .cms-col{background:var(--papel);border-top:2px solid var(--ouro);border-radius:2px;padding:var(--space-5);transition:box-shadow var(--t-base) var(--ease),opacity .6s var(--ease),transform .8s var(--ease-out)}
+.cms-colunas.v-cards .cms-col h3{font-size:1.35rem}
+.cms-colunas.v-cards .cms-col p{margin-bottom:0}
+@media (hover:hover){.cms-colunas.v-cards .cms-col:hover{box-shadow:0 18px 40px -28px rgba(43,24,30,.4)}}
+
+/* Níveis: a barra de ouro cresce a cada degrau (--i de 0 a --n). */
+/* Níveis cabem numa linha só: é uma escada, e ler de ponta a ponta importa. */
+.cms-colunas.v-niveis .cms-colunas-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--space-5) var(--space-4)}
+.cms-colunas.v-niveis .cms-col{border-top:0;padding-top:0}
+.cms-col-bar{display:block;position:relative;height:3px;background:var(--line-strong);margin-bottom:var(--space-4);border-radius:2px;overflow:hidden}
+.cms-col-bar::after{content:"";position:absolute;left:0;top:0;bottom:0;width:calc((var(--i,0) + 1) / var(--n,6) * 100%);background:var(--ouro-foil);border-radius:2px}
+.cms-colunas.v-niveis .cms-col h3{font-size:1.4rem}
 .cms-produtos{padding:var(--section) 0;text-align:center}
 .cms-produtos-vazio{border:1px dashed var(--line-strong);border-radius:2px;padding:2.5rem;color:var(--muted);max-width:600px;margin:0 auto}
 .cms-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 var(--space-5)}

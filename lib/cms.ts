@@ -171,9 +171,22 @@ export const CATALOGO: DefBloco[] = [
   {
     tipo: "colunas",
     label: "Colunas",
-    descricao: "2 a 4 colunas lado a lado, cada uma com título, texto e link. Bom para benefícios e destaques.",
+    descricao:
+      "2 a 6 colunas lado a lado, cada uma com título, texto e link. O desenho muda conforme o que a lista é: um percurso, um catálogo ou uma escada de níveis.",
     campos: [
       { name: "titulo", label: "Título da seção (opcional)", tipo: "text" },
+      { name: "subtitulo", label: "Subtítulo (opcional)", tipo: "textarea" },
+      {
+        name: "variante",
+        label: "Desenho",
+        tipo: "select",
+        opcoes: [
+          { valor: "padrao", label: "Simples (fio no topo de cada coluna)" },
+          { valor: "passos", label: "Passos numerados (para etapas em ordem)" },
+          { valor: "cards", label: "Cartões (para catálogo, ex.: módulos)" },
+          { valor: "niveis", label: "Níveis (escada: a barra cresce a cada nível)" },
+        ],
+      },
       {
         name: "ancora",
         label: "Âncora (opcional)",
