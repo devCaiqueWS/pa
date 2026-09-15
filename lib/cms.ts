@@ -28,6 +28,7 @@ export type BlocoTipo =
   | "atalhos"
   | "colecoes"
   | "historia"
+  | "canais"
   | "valores"
   | "timeline"
   | "novidades"
@@ -281,6 +282,50 @@ export const CATALOGO: DefBloco[] = [
       { name: "botao_link", label: "Link do botão", tipo: "text", ajuda: "Vazio = /original" },
       { name: "imagem_url", label: "Imagem (URL, opcional)", tipo: "url", ajuda: "Vazio = a arte 'Original de Vivre' local." },
     ],
+  },
+  {
+    tipo: "canais",
+    label: "Canais de compra",
+    descricao:
+      "Cartões que levam a um destino real (loja oficial, WhatsApp da consultora...). No campo de link, escreva \"whatsapp\" para usar o número cadastrado em Configurações.",
+    campos: [
+      { name: "titulo", label: "Título da seção", tipo: "text" },
+      { name: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+      {
+        name: "qtd",
+        label: "Quantos canais",
+        tipo: "select",
+        opcoes: [
+          { valor: "2", label: "2" },
+          { valor: "3", label: "3" },
+          { valor: "4", label: "4" },
+        ],
+      },
+    ],
+    colunas: {
+      max: 4,
+      campos: [
+        { name: "rotulo", label: "Rótulo (linha pequena)", tipo: "text" },
+        { name: "titulo", label: "Título", tipo: "text" },
+        { name: "texto", label: "Texto", tipo: "textarea" },
+        { name: "botao_texto", label: "Texto do botão", tipo: "text" },
+        {
+          name: "link",
+          label: "Destino do botão",
+          tipo: "text",
+          ajuda: 'Endereço completo (https://...), caminho do site (/consultora) ou a palavra "whatsapp".',
+        },
+        {
+          name: "botao_estilo",
+          label: "Estilo do botão",
+          tipo: "select",
+          opcoes: [
+            { valor: "primario", label: "Primário (preenchido)" },
+            { valor: "secundario", label: "Secundário (contorno)" },
+          ],
+        },
+      ],
+    },
   },
   {
     tipo: "valores",

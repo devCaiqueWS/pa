@@ -43,11 +43,16 @@ Blocos novos para páginas institucionais (set/2026), usados na página **Sobre*
 
 | Bloco no painel | Componente | Observação |
 | --- | --- | --- |
+| Canais de compra | `components/cms/Canais.tsx` | cartões com destino real; no campo de link, a palavra `whatsapp` usa o número de Configurações |
 | Valores numerados (01 / 02 / 03) | `components/cms/Valores.tsx` | o numeral vem da ordem; o painel guarda rótulo, título e texto |
 | Linha do tempo | `components/cms/Timeline.tsx` | fio de ouro que se preenche com o scroll; campo *Aviso* para marcar conteúdo ilustrativo |
 | Novidades por e-mail | `components/cms/Novidades.tsx` | **não grava nada ainda**: o aviso abaixo do formulário diz isso e o envio não finge sucesso |
 
 O bloco *Texto* ganhou o campo **Selo**, a linha pequena acima do título.
+
+A página **Onde comprar** (`db/site_onde_comprar.sql`) usa o bloco de canais
+para levar a dois destinos reais: a loja oficial
+(`https://www.pierrecosmeticos.com.br`) e o WhatsApp da marca.
 
 Sem página `home` no CMS, `app/page.tsx` monta a mesma narrativa com os textos
 de `site_textos`.

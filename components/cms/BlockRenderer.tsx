@@ -14,6 +14,7 @@ import Heritage, { parseMarcos } from "@/components/home/Heritage";
 import EditorialFeature from "@/components/home/EditorialFeature";
 import Manifesto from "@/components/home/Manifesto";
 import OriginalBand from "@/components/home/OriginalBand";
+import Canais from "@/components/cms/Canais";
 import Valores from "@/components/cms/Valores";
 import Timeline from "@/components/cms/Timeline";
 import Novidades from "@/components/cms/Novidades";
@@ -203,6 +204,14 @@ function RenderBloco({ bloco }: { bloco: Bloco }) {
       return <UniverseMosaic titulo={c.titulo} subtitulo={c.subtitulo} />;
     case "historia":
       return <Heritage titulo={c.titulo} corpo={c.corpo} marcos={parseMarcos(c.marcos)} />;
+    case "canais":
+      return (
+        <Canais
+          titulo={c.titulo}
+          subtitulo={c.subtitulo}
+          canais={repetidos(c, ["rotulo", "titulo", "texto", "botao_texto", "link", "botao_estilo"], 4)}
+        />
+      );
     case "valores":
       return <Valores titulo={c.titulo} subtitulo={c.subtitulo} valores={repetidos(c, ["rotulo", "titulo", "texto"])} />;
     case "timeline":

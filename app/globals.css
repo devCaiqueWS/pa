@@ -383,6 +383,19 @@ em,.ital{font-style:italic}
 .cms-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 var(--space-5)}
 .cms-botoes{display:flex;flex-wrap:wrap;gap:12px}
 
+/* --- Canais de compra (bloco "canais") ------------------------------------- */
+.canais{padding:var(--section) 0;background:var(--papel)}
+.canais-head{max-width:640px;margin:0 0 var(--space-7)}
+.canais-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--space-6) var(--space-7)}
+.canal{display:flex;flex-direction:column;align-items:flex-start;border-top:1px solid var(--line-ouro);padding-top:var(--space-5);opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .9s var(--ease-out);transition-delay:calc(var(--i,0) * 110ms)}
+.reveal-plain.is-in .canal{opacity:1;transform:none}
+.canal-rotulo{display:block;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:var(--space-3)}
+.canal h3{font-size:clamp(1.6rem,1.3rem + 1.2vw,2.2rem);margin-bottom:var(--space-3)}
+.canal p{margin:0 0 var(--space-5);max-width:36ch}
+.canal-acao{margin:auto 0 0}
+.canal-detalhe{margin-top:var(--space-3);font-size:.9rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.canal{opacity:1;transform:none;transition:none}}
+
 /* --- Valores numerados (bloco "valores") ----------------------------------- */
 .svalues{padding:var(--section) 0;background:var(--papel)}
 .svalues-head{max-width:640px;margin:0 0 var(--space-7)}
