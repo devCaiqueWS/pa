@@ -54,6 +54,27 @@ A página **Onde comprar** (`db/site_onde_comprar.sql`) usa o bloco de canais
 para levar a dois destinos reais: a loja oficial
 (`https://www.pierrecosmeticos.com.br`) e o WhatsApp da marca.
 
+### Para onde os botões levam
+
+Todo campo de link do painel passa por `lib/links.ts` e é renderizado pelo
+`components/ui/BotaoLink.tsx`. O campo aceita:
+
+| No painel | Resultado |
+| --- | --- |
+| `https://...` | abre em nova aba (`target=_blank`, `rel=noopener`) |
+| `/consultora`, `#universidade` | navegação interna |
+| `whatsapp` | o número cadastrado em Configurações (faixa do topo) |
+| `whatsapp:Quero ser consultora` | o mesmo número, com a mensagem já escrita |
+
+Campo vazio **não vira botão** — link morto (`#`) não chega ao ar. O bloco
+*Colunas* ganhou o campo **Âncora**, que dá um `id` à seção (é assim que
+`/consultora#universidade` e `#conquistas`, linkados no rodapé, funcionam).
+
+`db/site_links_reais.sql` aplica isso na página Seja consultora (botões para o
+WhatsApp com mensagem pronta, âncoras, uma faixa de chamada em vez de duas) e
+arruma o rodapé, que tinha links para páginas inexistentes. O formulário falso
+de cadastro de consultora (dizia "Recebido!" sem enviar nada) foi removido.
+
 Sem página `home` no CMS, `app/page.tsx` monta a mesma narrativa com os textos
 de `site_textos`.
 

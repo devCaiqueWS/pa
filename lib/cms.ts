@@ -88,6 +88,10 @@ const alinhamento: Campo = {
   ],
 };
 
+// Texto de ajuda repetido nos campos de destino de botão.
+const AJUDA_LINK =
+  'Endereço completo (https://...), caminho do site (/consultora), âncora (#universidade) ou "whatsapp" — e "whatsapp:Quero ser consultora" já abre a conversa com a mensagem escrita.';
+
 const botaoEstilo: Campo = {
   name: "botao_estilo",
   label: "Estilo do botão",
@@ -109,7 +113,7 @@ export const CATALOGO: DefBloco[] = [
       { name: "subtitulo", label: "Subtítulo", tipo: "textarea" },
       { name: "imagem_url", label: "Imagem de fundo (URL)", tipo: "url", ajuda: "Cole o endereço de uma imagem. O upload direto entra na próxima etapa." },
       { name: "botao_texto", label: "Texto do botão", tipo: "text" },
-      { name: "botao_link", label: "Link do botão", tipo: "text", ajuda: "Ex.: /p/produtos, https://... ou #ancora" },
+      { name: "botao_link", label: "Link do botão", tipo: "text", ajuda: AJUDA_LINK },
       botaoEstilo,
       alinhamento,
     ],
@@ -171,6 +175,12 @@ export const CATALOGO: DefBloco[] = [
     campos: [
       { name: "titulo", label: "Título da seção (opcional)", tipo: "text" },
       {
+        name: "ancora",
+        label: "Âncora (opcional)",
+        tipo: "text",
+        ajuda: 'Nome sem "#" para poder linkar direto para esta seção. Ex.: universidade → /consultora#universidade',
+      },
+      {
         name: "qtd",
         label: "Quantas colunas",
         tipo: "select",
@@ -188,7 +198,7 @@ export const CATALOGO: DefBloco[] = [
       campos: [
         { name: "titulo", label: "Título", tipo: "text" },
         { name: "texto", label: "Texto", tipo: "textarea" },
-        { name: "link", label: "Link (opcional)", tipo: "text" },
+        { name: "link", label: "Link (opcional)", tipo: "text", ajuda: AJUDA_LINK },
       ],
     },
   },
@@ -313,7 +323,7 @@ export const CATALOGO: DefBloco[] = [
           name: "link",
           label: "Destino do botão",
           tipo: "text",
-          ajuda: 'Endereço completo (https://...), caminho do site (/consultora) ou a palavra "whatsapp".',
+          ajuda: AJUDA_LINK,
         },
         {
           name: "botao_estilo",

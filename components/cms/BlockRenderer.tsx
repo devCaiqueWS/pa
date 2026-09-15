@@ -4,8 +4,8 @@
 // tipo. Os blocos "ricos" da home reaproveitam os componentes editoriais; os
 // genéricos (hero, texto, cta, colunas) usam as classes .cms-* do globals.css.
 // =============================================================================
-import Link from "next/link";
 import type { Bloco } from "@/lib/cms";
+import BotaoLink from "@/components/ui/BotaoLink";
 import { imagemSrc } from "@/lib/site";
 import HeroEditorial from "@/components/home/HeroEditorial";
 import UniverseStrip from "@/components/home/UniverseStrip";
@@ -22,18 +22,20 @@ import Closing from "@/components/home/Closing";
 import ProductRail from "@/components/ProductRail";
 import { featuredProducts, newProducts } from "@/lib/catalog-source";
 import { getBanners } from "@/lib/banners";
+import { getSiteConfig } from "@/lib/site-config";
+import { acharWhatsApp, resolverHref } from "@/lib/links";
 
 type Cfg = Record<string, string>;
 
 function Botao({ texto, link, estilo = "primario", claro = false }: { texto?: string; link?: string; estilo?: string; claro?: boolean }) {
   if (!texto) return null;
-  const href = link || "/onde-comprar";
   const primario = estilo !== "secundario";
   const cls = claro ? (primario ? "btn btn-light" : "btn btn-ghost-light") : primario ? "btn btn-primary" : "btn btn-outline";
+  // Sem destino no painel, o botão não aparece (nada de "#" levando a lugar nenhum).
   return (
-    <Link href={href} className={cls}>
+    <BotaoLink href={link || ""} className={cls}>
       {texto}
-    </Link>
+    </BotaoLink>
   );
 }
 
@@ -112,7 +114,7 @@ function Colunas({ c }: { c: Cfg }) {
     .filter((col) => col.titulo || col.texto);
 
   return (
-    <section className="cms-colunas">
+    <section className="cms-colunas" id={c.ancora || undefined}>
       <div className="container">
         {c.titulo && <h2>{c.titulo}</h2>}
         <div className="cms-colunas-grid">
@@ -121,9 +123,9 @@ function Colunas({ c }: { c: Cfg }) {
               {col.titulo && <h3>{col.titulo}</h3>}
               {col.texto && <p>{col.texto}</p>}
               {col.link && (
-                <Link href={col.link} className="link-line">
+                <BotaoLink href={col.link} className="link-line">
                   Saiba mais
-                </Link>
+                </BotaoLink>
               )}
             </div>
           ))}
@@ -173,10 +175,17 @@ async function Vitrine({ c }: { c: Cfg }) {
   );
 }
 
-// Hero de topo: os slides vêm do painel (/painel/banners).
+// Hero de topo: os slides vêm do painel (/painel/banners). Os destinos dos
+// botões são resolvidos aqui (servidor) porque o hero é componente de cliente.
 async function Carrossel() {
-  const slides = await getBanners();
-  return <HeroEditorial slides={slides} />;
+  const [slides, cfg] = await Promise.all([getBanners(), getSiteConfig()]);
+  const whats = acharWhatsApp(cfg.topStrip);
+  const resolvidos = slides.map((s) => ({
+    ...s,
+    botao1Link: resolverHref(s.botao1Link, whats).href,
+    botao2Link: resolverHref(s.botao2Link, whats).href,
+  }));
+  return <HeroEditorial slides={resolvidos} />;
 }
 
 function RenderBloco({ bloco }: { bloco: Bloco }) {

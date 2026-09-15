@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import CtaBand from "@/components/CtaBand";
-import ConsultoraForm from "@/components/ConsultoraForm";
+import BotaoLink from "@/components/ui/BotaoLink";
 import { asset } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Seja Consultora" };
@@ -155,21 +154,18 @@ export default async function ConsultoraPage() {
         </div>
       </section>
 
-      <section className="section" id="lead-consultora">
-        <div className="container grid-2">
-          <div className="big-copy">
-            <div className="eyebrow">cadastro</div>
-            <h2>A próxima consultora Pierre pode ser você.</h2>
-            <p>
-              Preencha seus dados e uma executiva Pierre entrará em contato em até
-              48 horas para apresentar sua primeira oportunidade.
-            </p>
-          </div>
-          <ConsultoraForm />
+      <section className="cms-cta" id="lead-consultora">
+        <div className="container">
+          <h2>A próxima consultora Pierre pode ser você.</h2>
+          <p>
+            Chame a Pierre no WhatsApp: uma executiva orienta o primeiro passo,
+            do cadastro ao primeiro pedido.
+          </p>
+          <BotaoLink className="btn btn-light" href="whatsapp:Olá! Quero ser consultora Pierre Alexander.">
+            Falar no WhatsApp
+          </BotaoLink>
         </div>
       </section>
-
-      <CtaBand />
     </>
   );
 }

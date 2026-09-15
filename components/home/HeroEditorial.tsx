@@ -120,14 +120,14 @@ export default function HeroEditorial({ slides }: { slides: Banner[] }) {
   const acoes = (s.botao1Texto || s.botao2Texto) && (
     <div className="hero-cta">
       {s.botao1Texto && (
-        <Link className="btn btn-primary" href={s.botao1Link || "/onde-comprar"}>
+        <Acao className="btn btn-primary" href={s.botao1Link}>
           {s.botao1Texto}
-        </Link>
+        </Acao>
       )}
       {s.botao2Texto && (
-        <Link className={s.tom === "claro" ? "link-line" : "btn btn-ghost-light"} href={s.botao2Link || "/onde-comprar"}>
+        <Acao className={s.tom === "claro" ? "link-line" : "btn btn-ghost-light"} href={s.botao2Link}>
           {s.botao2Texto}
-        </Link>
+        </Acao>
       )}
     </div>
   );
@@ -197,6 +197,25 @@ function Midia({ s, prioridade }: { s: Banner; prioridade: boolean }) {
     );
   }
   return <img src={imagemSrc(s.imagem)} alt={s.alt || s.titulo} loading={prioridade ? "eager" : "lazy"} fetchPriority={prioridade ? "high" : undefined} />;
+}
+
+// Botão do slide: endereço externo (loja, WhatsApp) abre em nova aba; caminho
+// interno usa o roteador. Os destinos já chegam resolvidos do servidor.
+function Acao({ href, className, children }: { href?: string; className: string; children: React.ReactNode }) {
+  const url = (href || "").trim();
+  if (!url) return null;
+  if (/^https?:\/\//i.test(url)) {
+    return (
+      <a className={className} href={url} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link className={className} href={url}>
+      {children}
+    </Link>
+  );
 }
 
 function Seta({ dir }: { dir: "esq" | "dir" }) {

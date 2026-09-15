@@ -1,4 +1,4 @@
-import Link from "next/link";
+import BotaoLink from "@/components/ui/BotaoLink";
 import { asset } from "@/lib/site";
 import Reveal from "@/components/ui/Reveal";
 import ScrollProgress, { LEITURA } from "@/components/ui/ScrollProgress";
@@ -39,9 +39,9 @@ export default function Manifesto({ titulo, texto, botaoTexto, botaoLink }: Prop
         <Reveal className="mani-side" delay={1}>
           {texto && <p>{texto}</p>}
           {botaoTexto && (
-            <Link className="btn btn-primary" href={botaoLink || "/consultora"}>
+            <BotaoLink className="btn btn-primary" href={botaoLink || "/consultora"}>
               {botaoTexto}
-            </Link>
+            </BotaoLink>
           )}
         </Reveal>
       </div>

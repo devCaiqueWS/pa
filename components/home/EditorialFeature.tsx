@@ -1,4 +1,4 @@
-import Link from "next/link";
+import BotaoLink from "@/components/ui/BotaoLink";
 import { imagemSrc } from "@/lib/site";
 import { srcSetDeCaminho } from "@/lib/imagens";
 import Reveal from "@/components/ui/Reveal";
@@ -57,17 +57,11 @@ export default function EditorialFeature({ eyebrow, titulo, corpo, imagem, image
           )}
           {acoes.length > 0 && (
             <div className="feat-actions">
-              {acoes.map((b, i) =>
-                b.estilo === "secundario" || i > 0 ? (
-                  <Link key={i} className="link-line" href={b.link || "/onde-comprar"}>
-                    {b.texto}
-                  </Link>
-                ) : (
-                  <Link key={i} className="btn btn-primary" href={b.link || "/onde-comprar"}>
-                    {b.texto}
-                  </Link>
-                )
-              )}
+              {acoes.map((b, i) => (
+                <BotaoLink key={i} href={b.link} className={b.estilo === "secundario" || i > 0 ? "link-line" : "btn btn-primary"}>
+                  {b.texto}
+                </BotaoLink>
+              ))}
             </div>
           )}
         </Reveal>

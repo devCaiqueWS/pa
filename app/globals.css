@@ -78,6 +78,8 @@
 /* --- Base ------------------------------------------------------------------ */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* Âncoras (#universidade, #conquistas...) não param atrás do cabeçalho fixo. */
+:target,[id]{scroll-margin-top:calc(var(--hdr-h) + var(--space-5))}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{
   margin:0;color:var(--ink);background:var(--bg);

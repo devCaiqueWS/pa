@@ -1,4 +1,4 @@
-import Link from "next/link";
+import BotaoLink from "@/components/ui/BotaoLink";
 import Picture from "@/components/ui/Picture";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import SplitWords from "@/components/ui/SplitWords";
@@ -29,9 +29,9 @@ export default function OriginalBand({ titulo, texto, botaoTexto, botaoLink, ima
             <SplitWords texto={titulo || "O Original."} />
           </h2>
           <p>{texto || "O desodorante em creme que abriu caminho para tudo o que a Pierre faz hoje. Simples de entender, fácil de indicar, difícil de largar."}</p>
-          <Link className="btn btn-light" href={botaoLink || "/original"}>
+          <BotaoLink className="btn btn-light" href={botaoLink || "/original"}>
             {botaoTexto || "Conhecer o Original"}
-          </Link>
+          </BotaoLink>
         </Reveal>
       </div>
     </ScrollProgress>
