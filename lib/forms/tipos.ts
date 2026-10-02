@@ -19,6 +19,7 @@ export type Opcao = {
   rotulo: string; // texto exibido
   // Quando marcada, exige um campo de texto complementar ("Outro" → qual?).
   abreDetalhe?: boolean;
+  imagem?: { src: string; alt: string }; // miniatura ao lado do rótulo
 };
 
 export type NivelEscala = {

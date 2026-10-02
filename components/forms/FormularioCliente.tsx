@@ -427,7 +427,9 @@ function BlocoPergunta({
         </legend>
         {p.ajuda && <p className="frm-ajuda">{p.ajuda}</p>}
         <div className="frm-opcoes">
-          {(p.opcoes ?? []).map((o) => {
+          {(p.opcoes ?? []).map((o, _i, todas) => {
+            // Com fotos na lista, as opções sem foto ganham o mesmo recuo.
+            const comFotos = todas.some((x) => x.imagem);
             const marcado = multipla
               ? (valor.valores ?? []).includes(o.valor)
               : valor.valor === o.valor;
@@ -451,6 +453,17 @@ function BlocoPergunta({
                     }
                   }}
                 />
+                {o.imagem ? (
+                  <img
+                    className="frm-opcao-foto"
+                    src={asset(o.imagem.src)}
+                    alt=""
+                    width={72}
+                    height={72}
+                  />
+                ) : (
+                  comFotos && <span className="frm-opcao-foto" aria-hidden="true" />
+                )}
                 {o.rotulo}
               </label>
             );

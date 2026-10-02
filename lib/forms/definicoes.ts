@@ -226,11 +226,24 @@ const ESCALA_RECOMENDACAO: NivelEscala[] = Array.from({ length: 11 }, (_, nota) 
   rotulo: nota === 0 ? "Nada provável" : nota === 10 ? "Extremamente provável" : "",
 }));
 
+const FOTO_IC = {
+  shampoo: { src: "/assets/img/intensive-care/shampoo.webp", alt: "Shampoo Intensive Care 300 ml" },
+  condicionador: {
+    src: "/assets/img/intensive-care/condicionador.webp",
+    alt: "Condicionador Intensive Care 300 ml",
+  },
+  mascara: {
+    src: "/assets/img/intensive-care/mascara.webp",
+    alt: "Máscara Reconstrutora Intensive Care 250 g",
+  },
+  leave_in: { src: "/assets/img/intensive-care/leave-in.webp", alt: "Leave-in Intensive Care 200 ml" },
+};
+
 const PRODUTOS_IC = [
-  { valor: "shampoo", rotulo: "Shampoo" },
-  { valor: "condicionador", rotulo: "Condicionador" },
-  { valor: "mascara", rotulo: "Máscara Reconstrutora" },
-  { valor: "leave_in", rotulo: "Leave-in" },
+  { valor: "shampoo", rotulo: "Shampoo", imagem: FOTO_IC.shampoo },
+  { valor: "condicionador", rotulo: "Condicionador", imagem: FOTO_IC.condicionador },
+  { valor: "mascara", rotulo: "Máscara Reconstrutora", imagem: FOTO_IC.mascara },
+  { valor: "leave_in", rotulo: "Leave-in", imagem: FOTO_IC.leave_in },
 ];
 
 const SECAO_PERFIL = "Sobre você e seus cabelos";
@@ -294,16 +307,10 @@ const FORM_3: FormularioDef = {
     alt: "Linha Intensive Care: shampoo, condicionador, máscara reconstrutora e leave-in",
   },
   imagensGrupo: {
-    Shampoo: { src: "/assets/img/intensive-care/shampoo.webp", alt: "Shampoo Intensive Care 300 ml" },
-    Condicionador: {
-      src: "/assets/img/intensive-care/condicionador.webp",
-      alt: "Condicionador Intensive Care 300 ml",
-    },
-    "Máscara Reconstrutora": {
-      src: "/assets/img/intensive-care/mascara.webp",
-      alt: "Máscara Reconstrutora Intensive Care 250 g",
-    },
-    "Leave-in": { src: "/assets/img/intensive-care/leave-in.webp", alt: "Leave-in Intensive Care 200 ml" },
+    Shampoo: FOTO_IC.shampoo,
+    Condicionador: FOTO_IC.condicionador,
+    "Máscara Reconstrutora": FOTO_IC.mascara,
+    "Leave-in": FOTO_IC.leave_in,
   },
   avisoPrivacidade:
     "O preenchimento é anônimo: não pedimos nome, e-mail nem telefone. As respostas são usadas apenas para aprimorar a linha Intensive Care.",
