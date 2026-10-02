@@ -35,6 +35,12 @@ export type Pergunta = {
   // avaliações do formulário 2), mas continuam sendo perguntas independentes
   // para validação, dashboard e exportação.
   grupo?: string;
+  // Título de seção (ex.: "Sobre você e seus cabelos"), exibido uma vez
+  // quando muda em relação à pergunta anterior. Só apresentação.
+  secao?: string;
+  // Pergunta condicional: só aparece (e só é validada/gravada) quando a
+  // pergunta `pergunta` tiver ALGUM dos `valores` marcado.
+  dependeDe?: { pergunta: string; valores: string[] };
   tipo: TipoPergunta;
   obrigatoria: boolean;
   opcoes?: Opcao[];
@@ -53,6 +59,15 @@ export type FormularioDef = {
   criadoEm: string; // ISO (data de criação da definição)
   // Assunto curto usado em metadados/exportação.
   resumo: string;
+  // Anônimo: sem bloco de identificação; grava nome "Anônimo" e e-mail/
+  // telefone vazios (as colunas são NOT NULL).
+  anonimo?: boolean;
+  eyebrow: string; // rótulo acima do título no topo da página
+  banner: { src: string; alt: string }; // imagem larga acima do topo
+  // Foto exibida ao lado do título de um `grupo` (chave = texto do grupo).
+  imagensGrupo?: Record<string, { src: string; alt: string }>;
+  avisoPrivacidade: string;
+  mensagemSucesso: string;
   perguntas: Pergunta[];
 };
 

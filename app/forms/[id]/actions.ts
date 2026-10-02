@@ -92,11 +92,15 @@ export async function enviarRespostaAction(
 
   try {
     // 4. Duplo clique / reenvio imediato: devolve OK sem criar outra linha.
-    const repetida = await respostaRecenteDoMesmoEmail(
-      def.id,
-      resultado.identificacao.email
-    );
-    if (repetida) return { ok: true };
+    //    (Anônimo não tem e-mail para comparar; a trava do botão e o rate
+    //    limit por remetente cobrem o caso.)
+    if (!def.anonimo) {
+      const repetida = await respostaRecenteDoMesmoEmail(
+        def.id,
+        resultado.identificacao.email
+      );
+      if (repetida) return { ok: true };
+    }
 
     // 5. Grava. A versão registrada é a da DEFINIÇÃO atual (a que o visitante
     //    de fato respondeu), não a que o navegador alegou.

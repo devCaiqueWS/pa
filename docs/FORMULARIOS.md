@@ -10,6 +10,7 @@ vivem em [lib/forms/definicoes.ts](../lib/forms/definicoes.ts).
 | --- | --- | --- |
 | `/forms/1` | Ausência — Evento Radicaline | pública |
 | `/forms/2` | Pesquisa — Evento Radicaline | pública |
+| `/forms/3` | Avaliação da linha capilar Intensive Care (anônima) | pública |
 | `/forms/respostas` | Índice de todos os formulários | admin (`admin`, `admin_ti`) |
 | `/forms/[id]/respostas` | Dashboard: métricas, filtros, tabela, detalhe | admin |
 | `/api/forms/[id]/export` | Exportação XLSX (aceita `?de&ate&q&ordem`) | admin |
@@ -31,11 +32,15 @@ Migration: [db/site_form_respostas.sql](../db/site_form_respostas.sql) — cria
 **Já aplicada** no banco em 01/09/2026. Datas gravadas em UTC; exibição sempre em
 `America/Sao_Paulo`.
 
-## Como adicionar o /forms/3
+## Como adicionar o /forms/4
 
-1. Em `lib/forms/definicoes.ts`, crie uma `FormularioDef` com `id: 3` e as
+1. Em `lib/forms/definicoes.ts`, crie uma `FormularioDef` com `id: 4` e as
    perguntas (tipos: `unica`, `multipla`, `escala`, `texto`; opção com
-   `abreDetalhe: true` abre o campo "Outro" obrigatório).
+   `abreDetalhe: true` abre o campo "Outro" obrigatório). Cada formulário
+   define o próprio `eyebrow`, `banner`, `avisoPrivacidade` e
+   `mensagemSucesso`. Extras: `anonimo: true` dispensa nome/e-mail/telefone
+   (grava "Anônimo"); `secao` agrupa perguntas sob um título; `dependeDe`
+   só mostra/exige a pergunta quando outra tiver certos valores marcados.
 2. Acrescente-a ao array `FORMULARIOS`.
 
 Pronto: página pública, validação (cliente + servidor), gravação, dashboard,

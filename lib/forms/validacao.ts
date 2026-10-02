@@ -12,11 +12,13 @@ import type {
   Pergunta,
   ValorResposta,
 } from "./tipos";
-import { perguntasOrdenadas } from "./definicoes";
+import { perguntaVisivel, perguntasOrdenadas } from "./definicoes";
 
 export const LIMITE_NOME = 120;
 export const LIMITE_EMAIL = 190;
 export const LIMITE_DETALHE = 300;
+// Gravado no lugar do nome quando o formulário é anônimo.
+export const NOME_ANONIMO = "Anônimo";
 
 // ---------------------------------------------------------------------------
 // Sanitização
@@ -205,21 +207,35 @@ export function validarEnvio(
 ): ResultadoValidacao {
   const erros: ErrosFormulario = {};
 
-  const eNome = validarNome(ident.nome);
-  if (eNome) erros.nome = eNome;
-  const eEmail = validarEmail(ident.email);
-  if (eEmail) erros.email = eEmail;
-  const eTel = validarTelefone(ident.telefone);
-  if (eTel) erros.telefone = eTel;
+  if (!def.anonimo) {
+    const eNome = validarNome(ident.nome);
+    if (eNome) erros.nome = eNome;
+    const eEmail = validarEmail(ident.email);
+    if (eEmail) erros.email = eEmail;
+    const eTel = validarTelefone(ident.telefone);
+    if (eTel) erros.telefone = eTel;
+  }
 
   const limpas: MapaRespostas = {};
+  const brutas = respostas ?? {};
   for (const p of perguntasOrdenadas(def)) {
-    const { erros: e, valor } = validarPergunta(p, respostas?.[p.id]);
+    // Condicional oculta não é exigida nem gravada (mesmo que o navegador mande).
+    if (!perguntaVisivel(p, brutas)) continue;
+    const { erros: e, valor } = validarPergunta(p, brutas[p.id]);
     Object.assign(erros, e);
     if (valor && Object.keys(valor).length > 0) limpas[p.id] = valor;
   }
 
   if (Object.keys(erros).length > 0) return { ok: false, erros };
+
+  if (def.anonimo) {
+    return {
+      ok: true,
+      erros: {},
+      identificacao: { nome: NOME_ANONIMO, email: "", telefone: "" },
+      respostas: limpas,
+    };
+  }
 
   return {
     ok: true,
@@ -235,7 +251,7 @@ export function validarEnvio(
 
 // Ordem dos campos na tela — usada para rolar até o PRIMEIRO campo inválido.
 export function ordemDosCampos(def: FormularioDef): string[] {
-  const ids = ["nome", "email", "telefone"];
+  const ids = def.anonimo ? [] : ["nome", "email", "telefone"];
   for (const p of perguntasOrdenadas(def)) {
     ids.push(p.id, `${p.id}__detalhe`);
   }

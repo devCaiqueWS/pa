@@ -319,7 +319,7 @@ export default async function DashboardRespostas({ params, searchParams }: Props
                         <p className="fdash-painel-sub">
                           Média entre {m.respondentes} avaliação(ões)
                         </p>
-                        <MediaEscala media={m.media ?? 0} maximo={p.niveis?.length ?? 3} />
+                        <MediaEscala media={m.media ?? 0} maximo={Math.max(...(p.niveis ?? []).map((n) => n.nota), 0) || 3} />
                         <Barras fatias={m.notas} />
                       </section>
                     );

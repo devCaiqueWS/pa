@@ -10,6 +10,7 @@
 // rede — o estado fica no cliente e o visitante só reenvia.
 // =============================================================================
 import Link from "next/link";
+import { asset } from "@/lib/site";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   ErrosFormulario,
@@ -18,7 +19,11 @@ import type {
   Pergunta,
   ValorResposta,
 } from "@/lib/forms/tipos";
-import { perguntasOrdenadas } from "@/lib/forms/definicoes";
+import {
+  perguntaNumerada,
+  perguntasOrdenadas,
+  perguntaVisivel,
+} from "@/lib/forms/definicoes";
 import {
   mascararTelefone,
   primeiroCampoInvalido,
@@ -172,10 +177,7 @@ export default function FormularioCliente({ def }: { def: FormularioDef }) {
             <IconeOk />
           </div>
           <h2>Resposta enviada. Obrigado!</h2>
-          <p>
-            Recebemos suas respostas com sucesso. Elas nos ajudam a preparar
-            eventos cada vez melhores para você.
-          </p>
+          <p>{def.mensagemSucesso}</p>
           <Link className="btn btn-primary" href="/">
             Voltar ao site
           </Link>
@@ -184,8 +186,11 @@ export default function FormularioCliente({ def }: { def: FormularioDef }) {
     );
   }
 
-  // Blocos na ordem, com o título de grupo aparecendo uma única vez.
+  // Blocos na ordem, com títulos de seção/grupo aparecendo uma única vez e
+  // as condicionais ocultas fora da tela (e da numeração).
+  let secaoAnterior: string | undefined;
   let grupoAnterior: string | undefined;
+  let numero = 0;
 
   return (
     <div className="container frm-wrap">
@@ -194,7 +199,8 @@ export default function FormularioCliente({ def }: { def: FormularioDef }) {
           pessoais na URL como faria com o GET padrão. Depois de hidratado, o
           onSubmit assume e o envio é sempre via server action. */}
       <form ref={formRef} className="frm-form" method="post" onSubmit={enviar} noValidate>
-        {/* Identificação ----------------------------------------------------- */}
+        {/* Identificação (formulários anônimos não pedem) ------------------- */}
+        {!def.anonimo && (
         <section className="frm-bloco" aria-labelledby={`frm-${def.id}-ident`}>
           <h2 className="frm-legenda" id={`frm-${def.id}-ident`}>
             Preencha os dados a seguir
@@ -279,19 +285,26 @@ export default function FormularioCliente({ def }: { def: FormularioDef }) {
             </div>
           </div>
         </section>
+        )}
 
         {/* Perguntas --------------------------------------------------------- */}
-        {perguntas.map((p, indice) => {
-          const mostrarGrupo = !!p.grupo && p.grupo !== grupoAnterior;
+        {perguntas.filter((p) => perguntaVisivel(p, respostas)).map((p) => {
+          const mostrarSecao = !!p.secao && p.secao !== secaoAnterior;
+          const mostrarGrupo = !!p.grupo && (p.grupo !== grupoAnterior || mostrarSecao);
+          secaoAnterior = p.secao;
           grupoAnterior = p.grupo;
-          const numero = indice + 1;
+          const numerada = perguntaNumerada(p);
+          if (numerada) numero++;
           return (
             <div key={p.id}>
-              {mostrarGrupo && <h2 className="frm-grupo-titulo">{p.grupo}</h2>}
+              {mostrarSecao && <h2 className="frm-secao-titulo">{p.secao}</h2>}
+              {mostrarGrupo && (
+                <GrupoTitulo titulo={p.grupo!} imagem={def.imagensGrupo?.[p.grupo!]} />
+              )}
               <BlocoPergunta
                 def={def}
                 pergunta={p}
-                numero={numero}
+                numero={numerada ? numero : undefined}
                 valor={respostas[p.id] ?? {}}
                 erros={erros}
                 aoMudar={(m, chaves) => {
@@ -325,6 +338,23 @@ export default function FormularioCliente({ def }: { def: FormularioDef }) {
   );
 }
 
+// Título de grupo; com foto (ex.: o produto avaliado) quando a definição tiver.
+function GrupoTitulo({
+  titulo,
+  imagem,
+}: {
+  titulo: string;
+  imagem?: { src: string; alt: string };
+}) {
+  if (!imagem) return <h3 className="frm-grupo-titulo">{titulo}</h3>;
+  return (
+    <div className="frm-grupo-produto">
+      <img src={asset(imagem.src)} alt={imagem.alt} width={112} height={112} />
+      <h3 className="frm-grupo-titulo">{titulo}</h3>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Um bloco por pergunta
 // ---------------------------------------------------------------------------
@@ -338,7 +368,7 @@ function BlocoPergunta({
 }: {
   def: FormularioDef;
   pergunta: Pergunta;
-  numero: number;
+  numero?: number;
   valor: ValorResposta;
   erros: ErrosFormulario;
   aoMudar: (mudanca: Partial<ValorResposta>, limparChaves: string[]) => void;
@@ -391,7 +421,8 @@ function BlocoPergunta({
         aria-describedby={erro ? `${base}-erro` : undefined}
       >
         <legend className="frm-legenda">
-          {numero}. {p.titulo}
+          {numero !== undefined && `${numero}. `}
+          {p.titulo}
           {p.obrigatoria && <Obrigatorio />}
         </legend>
         {p.ajuda && <p className="frm-ajuda">{p.ajuda}</p>}
@@ -440,11 +471,15 @@ function BlocoPergunta({
         aria-describedby={erro ? `${base}-erro` : undefined}
       >
         <legend className="frm-legenda">
+          {numero !== undefined && `${numero}. `}
           {p.titulo}
           {p.obrigatoria && <Obrigatorio />}
         </legend>
         {p.ajuda && <p className="frm-ajuda">{p.ajuda}</p>}
-        <div className="frm-escala">
+        <div
+          className={`frm-escala${(p.niveis?.length ?? 0) > 5 ? " frm-escala-compacta" : ""}`}
+          style={{ "--frm-niveis": p.niveis?.length ?? 3 } as React.CSSProperties}
+        >
           {(p.niveis ?? []).map((n) => (
             <label className="frm-escala-item" key={n.nota} htmlFor={`${base}-${n.nota}`}>
               <input
@@ -461,10 +496,14 @@ function BlocoPergunta({
                 </svg>
                 {n.nota}
               </span>
-              <span className="frm-escala-rotulo">
-                <span className="sr-only">{n.nota} — </span>
-                {n.rotulo}
-              </span>
+              {n.rotulo ? (
+                <span className="frm-escala-rotulo">
+                  <span className="sr-only">{n.nota} — </span>
+                  {n.rotulo}
+                </span>
+              ) : (
+                <span className="sr-only">{n.nota}</span>
+              )}
             </label>
           ))}
         </div>
@@ -481,7 +520,8 @@ function BlocoPergunta({
       data-campo={p.id}
     >
       <label className="frm-legenda" htmlFor={`${base}-texto`}>
-        {numero}. {p.titulo}
+        {numero !== undefined && `${numero}. `}
+        {p.titulo}
         {p.obrigatoria && <Obrigatorio />}
       </label>
       {p.ajuda && <p className="frm-ajuda">{p.ajuda}</p>}

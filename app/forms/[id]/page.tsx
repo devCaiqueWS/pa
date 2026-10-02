@@ -8,11 +8,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import AjusteBasePath from "@/components/forms/AjusteBasePath";
 import FormularioCliente from "@/components/forms/FormularioCliente";
-import {
-  AVISO_PRIVACIDADE,
-  FORMULARIOS,
-  getFormulario,
-} from "@/lib/forms/definicoes";
+import { FORMULARIOS, getFormulario } from "@/lib/forms/definicoes";
 import { asset, imagemSrc } from "@/lib/site";
 import { getSiteConfig } from "@/lib/site-config";
 
@@ -52,16 +48,13 @@ export default async function PaginaFormulario({ params }: Props) {
           <img src={imagemSrc(cfg.headerLogoUrl)} alt="Pierre Alexander" />
         </Link>
       </header>
-      {/* Banner da linha Radicaline (mesmo nos dois formulários do evento). */}
+      {/* Banner da linha de produto do formulário. */}
       <div className="frm-banner">
-        <img
-          src={asset("/assets/img/banner-radicaline.jpg")}
-          alt="Linha Radicaline: sérum facial, resveratrol sérum facial, sabonete facial, loção tônica e creme facial"
-        />
+        <img src={asset(def.banner.src)} alt={def.banner.alt} />
       </div>
       <section className="frm-hero">
         <div className="container frm-wrap">
-          <span className="eyebrow">Eventos Pierre</span>
+          <span className="eyebrow">{def.eyebrow}</span>
           <h1>{def.titulo}</h1>
           <p>{def.descricao}</p>
           <div className="frm-privacidade">
@@ -69,7 +62,7 @@ export default async function PaginaFormulario({ params }: Props) {
               <path d="M12 3 5 6v5c0 4.4 3 8.1 7 9 4-0.9 7-4.6 7-9V6l-7-3Z" strokeLinejoin="round" />
               <path d="m9.2 12 2 2 3.6-3.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <p>{AVISO_PRIVACIDADE}</p>
+            <p>{def.avisoPrivacidade}</p>
           </div>
         </div>
       </section>
